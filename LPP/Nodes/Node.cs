@@ -12,8 +12,11 @@ namespace LPP.Nodes
         public Node right;
         public Node parent;
 
-        public string value;
-        public int number;
+        protected readonly string value;
+        protected readonly int number;
+
+        public string Value { get { return value; } }
+        public int NodeNumber { get { return number; } }
 
         public Node () {
             number = ++GlobalCounter.nodes_count;

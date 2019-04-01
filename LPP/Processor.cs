@@ -40,5 +40,51 @@ namespace LPP
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
             }
         }
+
+        // TODO: Correct building of the tree. Example input that should work: =( >(A,B), |( ~(A) ,B) )
+        private void BuildTree(string input, Node root) {
+            if (input == string.Empty) return;
+
+            char first_character = input[0];
+            
+            if (first_character == '~') {
+
+                NotNode node = new NotNode (input, root);
+                root.Insert (node);
+                BuildTree (node.Value, node);
+
+            } else if (first_character == '>') {
+
+                ImplicationNode node = new ImplicationNode (input, root);
+                root.Insert (node);
+                BuildTree (node.Value, node);
+
+
+            } else if (first_character == '=') {
+
+                BiImplicationNode node = new BiImplicationNode (input, root);
+                root.Insert (node);
+                BuildTree (node.Value, node);
+
+            } else if (first_character == '&') {
+
+                ConjunctionNode node = new ConjunctionNode (input, root);
+                root.Insert (node);
+                BuildTree (node.Value, node);
+
+            } else if (first_character == '|') {
+
+                DisjunctionNode node = new DisjunctionNode (input, root);
+                root.Insert (node);
+                BuildTree (node.Value, node);
+
+            } else if (first_character == ',') {
+                if (root.parent == null) throw new Exception ("Error in your input");
+
+                root = root.parent;
+                input = input.Substring (1);
+                BuildTree (input, root);
+            }
+        }
     }
 }
