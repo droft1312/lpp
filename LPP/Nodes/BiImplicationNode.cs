@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    class BiImplicationNode
+    class BiImplicationNode : Node
     {
     }
 }

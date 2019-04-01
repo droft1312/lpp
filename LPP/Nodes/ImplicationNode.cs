@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    class ImplicationNode
+    class ImplicationNode : Node
     {
     }
 }

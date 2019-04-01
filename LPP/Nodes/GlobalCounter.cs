@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    class NotNode : Node
+    static class GlobalCounter
     {
+        public static int nodes_count = 0;
     }
 }
