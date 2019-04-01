@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    class ImplicationNode : Node
+    public class ImplicationNode : Node, INode
     {
+        public ImplicationNode (string input, Node parent) : base (input, parent) {
+
+        }
+
+        public string Print () {
+            throw new NotImplementedException ();
+        }
     }
 }

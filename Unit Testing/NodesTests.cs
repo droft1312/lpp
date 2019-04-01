@@ -8,7 +8,8 @@ namespace Unit_Testing
     public class NodesTests
     {
         [TestMethod]
-        public void TestMethod1 () {
+        public void TestInput() {
+
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    class Node
+    public class Node
     {
         public Node left;
         public Node right;
@@ -17,6 +17,11 @@ namespace LPP.Nodes
 
         public Node () {
             number = ++GlobalCounter.nodes_count;
+        }
+
+        public Node(string input, Node parent) : this() {
+            value = input.Substring (1);
+            this.parent = parent;
         }
 
         public void Insert(Node node) {

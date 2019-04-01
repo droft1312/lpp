@@ -6,7 +6,14 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    class DisjunctionNode : Node
+    public class DisjunctionNode : Node, INode
     {
+        public DisjunctionNode (string input, Node parent) : base (input, parent) {
+
+        }
+
+        public string Print () {
+            throw new NotImplementedException ();
+        }
     }
 }
