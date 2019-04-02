@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
-    public class BiImplicationNode : Node, INode
+    public class BiImplicationNode : Node
     {
         public BiImplicationNode (string input, Node parent) : base (input, parent) {
 
-        }
-
-        public string Print () {
-            throw new NotImplementedException ();
         }
     }
 }

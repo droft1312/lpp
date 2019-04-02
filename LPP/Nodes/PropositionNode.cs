@@ -17,5 +17,9 @@ namespace LPP.Nodes
         public PropositionNode (char name, string input, Node parent) : base(input, parent) {
             this.name = name;
         }
+
+        public override string Print () {
+            throw new NotImplementedException ();
+        }
     }
 }

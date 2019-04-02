@@ -53,6 +53,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Functions.cs" />
+    <Compile Include="Graphiz.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Nodes\BiImplicationNode.cs" />
     <Compile Include="Nodes\ConjunctionNode.cs" />
