@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using static LPP.Functions;
+
 namespace LPP
 {
     public partial class Form1 : Form
@@ -22,7 +24,9 @@ namespace LPP
         }
 
         private void processInput_Click (object sender, EventArgs e) {
-            string input = inputTextBox.Text.Replace (" ", "");
+            string input = ParseInputString (inputTextBox.Text);
+            mainUnit.ProcessStringInput (input);
+            MessageBox.Show ("");
         }
     }
 }

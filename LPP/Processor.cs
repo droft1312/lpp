@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LPP.Nodes;
+using static LPP.Functions;
 
 namespace LPP
 {
@@ -39,14 +40,15 @@ namespace LPP
                 default:
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
             }
-        }
 
-        // TODO: Correct building of the tree. Example input that should work: =( >(A,B), |( ~(A) ,B) )
+            BuildTree (root.Value, root);
+        }
+        
         private void BuildTree(string input, Node root) {
             if (input == string.Empty) return;
 
             char first_character = input[0];
-            
+
             if (first_character == '~') {
 
                 NotNode node = new NotNode (input, root);
@@ -83,6 +85,24 @@ namespace LPP
 
                 root = root.parent;
                 input = input.Substring (1);
+                BuildTree (input, root);
+
+            } else if (Char.IsLetter (first_character)) {
+
+                PropositionNode node = new PropositionNode (first_character, input, root);
+                root.Insert (node);
+                BuildTree (node.Value, node);
+
+            } else if (first_character == ')') {
+
+                int numberOflevels = CalculateNumberOfLevelsToGoUp (input);
+
+                for (int i = 0; i < numberOflevels; i++) {
+                    if (root.parent != null) root = root.parent;
+                    else throw new Exception ("Error in string input. Source: class Processor, method BuildTree, else if (')')");
+                }
+
+                input = input.Substring (numberOflevels);
                 BuildTree (input, root);
             }
         }

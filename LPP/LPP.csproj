@@ -52,6 +52,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Functions.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Nodes\BiImplicationNode.cs" />
     <Compile Include="Nodes\ConjunctionNode.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="Nodes\ImplicationNode.cs" />
     <Compile Include="Nodes\Node.cs" />
     <Compile Include="Nodes\NotNode.cs" />
+    <Compile Include="Nodes\PropositionNode.cs" />
     <Compile Include="Processor.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
