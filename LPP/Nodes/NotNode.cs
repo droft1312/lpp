@@ -24,5 +24,9 @@ namespace LPP.Nodes
         public override string Print () {
             return string.Format ("node{0} -- node{1}\n", NodeNumber, left.NodeNumber);
         }
+
+        public override string ToString () {
+            return "~";
+        }
     }
 }

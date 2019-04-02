@@ -11,5 +11,9 @@ namespace LPP.Nodes
         public BiImplicationNode (string input, Node parent) : base (input, parent) {
 
         }
+
+        public override string ToString () {
+            return "=";
+        }
     }
 }
