@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LPP
 {
@@ -13,7 +9,7 @@ namespace LPP
         string output = string.Empty;
         int counterForInorderTraversal = 0;
         private string nodeConnections = "";
-        
+
 
         /// <summary>
         /// Returns a complete image of graphviz

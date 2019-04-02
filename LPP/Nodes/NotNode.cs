@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LPP.Nodes
 {
@@ -12,7 +8,7 @@ namespace LPP.Nodes
         private new readonly Node right;
 #pragma warning restore 0414
 
-        public NotNode (string input, Node parent) : base(input, parent) {
+        public NotNode (string input, Node parent) : base (input, parent) {
             right = null; // want to make sure that this.right will never be changed or anything
         }
 

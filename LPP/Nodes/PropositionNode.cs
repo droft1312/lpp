@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LPP.Nodes
+﻿namespace LPP.Nodes
 {
     public class PropositionNode : Node
     {
@@ -14,7 +8,7 @@ namespace LPP.Nodes
             left = right = null;
         }
 
-        public PropositionNode (char name, string input, Node parent) : base(input, parent) {
+        public PropositionNode (char name, string input, Node parent) : base (input, parent) {
             this.name = name;
         }
 
@@ -23,7 +17,7 @@ namespace LPP.Nodes
         }
 
         public override string ToString () {
-            return name.ToString();
+            return name.ToString ();
         }
     }
 }

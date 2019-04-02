@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LPP.Nodes;
+﻿using LPP.Nodes;
+using System;
 using static LPP.Functions;
 
 namespace LPP
@@ -14,13 +9,13 @@ namespace LPP
         Node root;
 
         public Node Root { get { return root; } }
-        
-        public void GenerateGraphImage(ref System.Windows.Forms.PictureBox pictureBox, Node node) {
+
+        public void GenerateGraphImage (ref System.Windows.Forms.PictureBox pictureBox, Node node) {
             Graphiz graphiz = new Graphiz ();
             graphiz.GetGraphImage (ref pictureBox, in node);
         }
 
-        public void ProcessStringInput(string input) {
+        public void ProcessStringInput (string input) {
             char first_character = input[0];
 
             switch (first_character) {
@@ -50,8 +45,8 @@ namespace LPP
 
             BuildTree (root.Value, root);
         }
-        
-        private void BuildTree(string input, Node root) {
+
+        private void BuildTree (string input, Node root) {
             if (input == string.Empty) return;
 
             char first_character = input[0];
