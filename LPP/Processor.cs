@@ -13,6 +13,13 @@ namespace LPP
     {
         Node root;
 
+        public Node Root { get { return root; } }
+        
+        public void GenerateGraphImage(ref System.Windows.Forms.PictureBox pictureBox, Node node) {
+            Graphiz graphiz = new Graphiz ();
+            graphiz.GetGraphImage (ref pictureBox, in node);
+        }
+
         public void ProcessStringInput(string input) {
             char first_character = input[0];
 
@@ -106,5 +113,6 @@ namespace LPP
                 BuildTree (input, root);
             }
         }
+
     }
 }

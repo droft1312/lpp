@@ -19,7 +19,7 @@ namespace LPP.Nodes
         }
 
         public override string Print () {
-            throw new NotImplementedException ();
+            return "";
         }
 
         public override string ToString () {

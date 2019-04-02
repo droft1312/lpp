@@ -19,7 +19,7 @@ namespace LPP
         /// Returns a complete image of graphviz
         /// </summary>
         /// <returns></returns>
-        public void GetGraphImage (System.Windows.Forms.PictureBox pictureBox, Nodes.Node baseNode) {
+        public void GetGraphImage (ref System.Windows.Forms.PictureBox pictureBox, in Nodes.Node baseNode) {
             WriteFileGRAPHVIZ (baseNode);
             System.Diagnostics.Process dot = new System.Diagnostics.Process ();
             dot.StartInfo.FileName = "dot.exe";
@@ -32,7 +32,7 @@ namespace LPP
         /// <summary>
         /// Writes output of <see cref="GenerateGraphVIZTEXT"/>() to a specific file
         /// </summary>
-        private void WriteFileGRAPHVIZ (Nodes.Node baseNode) {
+        private void WriteFileGRAPHVIZ (in Nodes.Node baseNode) {
             try {
                 File.WriteAllText ("abc.dot", GenerateGraphVIZTEXT (baseNode));
             } catch (Exception e) {
@@ -44,7 +44,7 @@ namespace LPP
         /// Adds to the transitional_output relations between nodes. To be called ONLY AFTER <see cref="PreOrderTraverse"/>()
         /// </summary>
         /// <param name="root"></param>
-        private void PrintNodeConnections (Nodes.Node root) {
+        private void PrintNodeConnections (in Nodes.Node root) {
             if (root == null) {
                 return;
             }
@@ -64,10 +64,10 @@ namespace LPP
         /// Generates text that would be inputted to GraphVIZ
         /// </summary>
         /// <returns>Input string for graphviz</returns>
-        public string GenerateGraphVIZTEXT (Nodes.Node baseNode) {
+        public string GenerateGraphVIZTEXT (in Nodes.Node baseNode) {
             // -------------------------------------------------------------------
             // resetting all variables
-            output = "graph calculus {\nnode [ fontname = \"Arial\" ]\n";
+            output = "graph logics {\nnode [ fontname = \"Arial\" ]\n";
             transitional_output = string.Empty;
             nodeConnections = string.Empty;
             counterForInorderTraversal = 0;
@@ -87,7 +87,7 @@ namespace LPP
         /// Does the pre-order traversal of the tree and prints it to the transitional_output
         /// </summary>
         /// <param name="node">Root node</param>
-        private void PreOrderTraverse (Nodes.Node node) {
+        private void PreOrderTraverse (in Nodes.Node node) {
             if (node == null) {
                 return;
             }

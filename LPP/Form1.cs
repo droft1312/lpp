@@ -26,7 +26,7 @@ namespace LPP
         private void processInput_Click (object sender, EventArgs e) {
             string input = ParseInputString (inputTextBox.Text);
             mainUnit.ProcessStringInput (input);
-            MessageBox.Show ("");
+            mainUnit.GenerateGraphImage (ref graphPictureBox, mainUnit.Root);
         }
     }
 }

@@ -27,6 +27,8 @@
         private void InitializeComponent () {
             this.inputTextBox = new System.Windows.Forms.TextBox();
             this.processInput = new System.Windows.Forms.Button();
+            this.graphPictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // inputTextBox
@@ -46,15 +48,25 @@
             this.processInput.UseVisualStyleBackColor = true;
             this.processInput.Click += new System.EventHandler(this.processInput_Click);
             // 
+            // graphPictureBox
+            // 
+            this.graphPictureBox.Location = new System.Drawing.Point(12, 76);
+            this.graphPictureBox.Name = "graphPictureBox";
+            this.graphPictureBox.Size = new System.Drawing.Size(776, 362);
+            this.graphPictureBox.TabIndex = 2;
+            this.graphPictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.graphPictureBox);
             this.Controls.Add(this.processInput);
             this.Controls.Add(this.inputTextBox);
             this.Name = "Form1";
             this.Text = "Form1";
+            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -64,6 +76,7 @@
 
         private System.Windows.Forms.TextBox inputTextBox;
         private System.Windows.Forms.Button processInput;
+        private System.Windows.Forms.PictureBox graphPictureBox;
     }
 }
 
