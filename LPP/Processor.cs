@@ -109,5 +109,16 @@ namespace LPP
             }
         }
 
+        // TODO: Create a method that prints out tree in infix notation (so the normal one)
+
+        private string PrintInfixNotation(Node root) {
+            return string.Empty;
+        }
+
+        // TODO: Calculate the truth-table
+
+        private void DetermineTruthTable(Node root) {
+
+        }
     }
 }

@@ -40,5 +40,9 @@ namespace LPP.Nodes
         public virtual string Print () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
+
+        public virtual string GetInfix () {
+            return left.GetInfix () + right.GetInfix ();
+        }
     }
 }

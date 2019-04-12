@@ -4,6 +4,8 @@
     {
         private readonly char name;
 
+        public char Name { get { return name; } }
+
         public PropositionNode () {
             left = right = null;
         }

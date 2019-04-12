@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using LPP;
+
+using static LPP.Functions;
 
 namespace ConsoleApplication
 {
     class Program
     {
         static void Main (string[] args) {
-            Console.WriteLine ("⇔");
+            Processor p = new Processor ();
+            p.ProcessStringInput (ParseInputString(">(A,B)"));
+            Console.WriteLine (p.Root);
             Console.ReadKey ();
         }
     }
