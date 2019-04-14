@@ -17,11 +17,14 @@ namespace ConsoleApplication
 
             //int a = 5; // number of variables
             //int max = Convert.ToInt32(new string ('1', a), 2);
-            
+
             //for (int i = max; i > 0; i--) {
             //    Console.WriteLine ("i: {0} ||||||| {1}", i, Convert.ToString(i, 2));
             //}
 
+            int a = 5;
+            var b = BitFluctuation (a);
+            
             Console.ReadKey ();
         }
 

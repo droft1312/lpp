@@ -120,13 +120,9 @@ namespace LPP
 
         private void DetermineTruthTable(Node root) {
             var nodes = GetPropositions (root).ToCharArray();
-            var total_cases = Math.Pow (2, nodes.Length); // so if there are two props A and B, total number of cases is 2^2 = 4
+            int number_of_props = nodes.Length;
 
-            List<string> usedCases = new List<string> ();
-            
-            for (int i = 0; i < total_cases; i++) {
-
-            }
+            var allCombinations = BitFluctuation (number_of_props);
         }
     }
 }

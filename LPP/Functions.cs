@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace LPP
 {
+    /// <summary>
+    /// Class containing helper-functions
+    /// </summary>
     public static class Functions
     {
         /// <summary>
@@ -19,31 +23,15 @@ namespace LPP
         }
 
         /// <summary>
-        /// Calculates the number of levels your current node will have to go up (how many times root = root.Parent)
-        /// </summary>
-        /// <param name="input">Input string to parse</param>
-        /// <returns></returns>
-        public static int CalculateNumberOfLevelsToGoUp(string input) {
-            int i = 0;
-
-            while (input[i] == ')' && (input[i] != ',' || input[i] != ' ')) {
-                i++;
-                if (i == input.Length) break;
-            }
-
-            return i;
-        }
-        
-        /// <summary>
         /// Returns a string containing all propositions(variables A,B,C, etc) in a specified binary tree
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public static string GetPropositions(Nodes.Node root) {
+        public static string GetPropositions (Nodes.Node root) {
             string visitedNodes = "";
 
             // Iterates through the binary tree and counts the number of propositions + adds to a string
-            void IterateThroughNodes(Nodes.Node node) {
+            void IterateThroughNodes (Nodes.Node node) {
 
                 if (node.left != null) {
                     IterateThroughNodes (node.left);
@@ -64,5 +52,35 @@ namespace LPP
 
             return visitedNodes;
         }
+
+        /// <summary>
+        /// Calculates the number of levels your current node will have to go up (how many times root = root.Parent)
+        /// </summary>
+        /// <param name="input">Input string to parse</param>
+        /// <returns></returns>
+        public static int CalculateNumberOfLevelsToGoUp(string input) {
+            int i = 0;
+
+            while (input[i] == ')' && (input[i] != ',' || input[i] != ' ')) {
+                i++;
+                if (i == input.Length) break;
+            }
+
+            return i;
+        }
+        
+        /// <summary>
+        /// Creates all possible combinations for truth-table
+        /// </summary>
+        /// <param name="numberOfVariables"></param>
+        /// <returns>List of lists of combinations</returns>
+        public static dynamic BitFluctuation(int numberOfVariables) {
+            const string set = "01";
+            List<char[]> setOfSets = new List<char[]> ();
+            for (int i = 0; i < numberOfVariables; i++) setOfSets.Add (set.ToArray ());
+            var result = setOfSets.CartesianProduct ();
+            return result;
+        }
+
     }
 }
