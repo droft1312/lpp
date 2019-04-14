@@ -6,6 +6,12 @@
 
         }
 
+        public override bool GetValue (bool input) {
+            bool leftVal = this.left.GetValue (input);
+            bool rightVal = this.right.GetValue (input);
+            return ((!leftVal || rightVal) && (!rightVal || leftVal));
+        }
+
         public override string ToString () {
             return "=";
         }

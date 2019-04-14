@@ -14,6 +14,10 @@
             this.name = name;
         }
 
+        public override bool GetValue (bool input) {
+            return input;
+        }
+
         public override string Print () {
             return "";
         }
