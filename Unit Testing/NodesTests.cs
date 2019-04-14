@@ -7,9 +7,5 @@ namespace Unit_Testing
     [TestClass]
     public class NodesTests
     {
-        [TestMethod]
-        public void TestInput() {
-
-        }
     }
 }

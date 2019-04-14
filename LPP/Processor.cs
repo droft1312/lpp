@@ -1,5 +1,6 @@
 ﻿using LPP.Nodes;
 using System;
+using System.Collections.Generic;
 using static LPP.Functions;
 
 namespace LPP
@@ -118,7 +119,14 @@ namespace LPP
         // TODO: Calculate the truth-table
 
         private void DetermineTruthTable(Node root) {
+            var nodes = GetPropositions (root).ToCharArray();
+            var total_cases = Math.Pow (2, nodes.Length); // so if there are two props A and B, total number of cases is 2^2 = 4
 
+            List<string> usedCases = new List<string> ();
+            
+            for (int i = 0; i < total_cases; i++) {
+
+            }
         }
     }
 }

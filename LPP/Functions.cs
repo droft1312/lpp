@@ -34,12 +34,15 @@ namespace LPP
             return i;
         }
         
-        public static (int total, string names) CountPropositions(Nodes.Node root) {
-            int total = 0;
+        /// <summary>
+        /// Returns a string containing all propositions(variables A,B,C, etc) in a specified binary tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static string GetPropositions(Nodes.Node root) {
             string visitedNodes = "";
 
             // Iterates through the binary tree and counts the number of propositions + adds to a string
-            // TOTEST: Test IterateThroughNodes(). Check whether it works properly
             void IterateThroughNodes(Nodes.Node node) {
 
                 if (node.left != null) {
@@ -51,8 +54,7 @@ namespace LPP
                 }
 
                 if (node.left == null && node.right == null) {
-                    if (!visitedNodes.Contains ((node as Nodes.PropositionNode).Name)) {
-                        total++;
+                    if (!visitedNodes.Contains ((node as Nodes.PropositionNode).Name)) { // if we haven't visited that node we add it to the list
                         visitedNodes += node;
                     }
                 }
@@ -60,7 +62,7 @@ namespace LPP
 
             IterateThroughNodes (root);
 
-            return (total, visitedNodes);
+            return visitedNodes;
         }
     }
 }
