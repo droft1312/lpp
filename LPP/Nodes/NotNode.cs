@@ -17,6 +17,10 @@ namespace LPP.Nodes
             else throw new Exception ("Insertion failed. Source: class NotNode, method Insert(Node node)");
         }
 
+        public override bool GetValue (bool input) {
+            return !(this.left.GetValue (input));
+        }
+
         public override string Print () {
             return string.Format ("node{0} -- node{1}\n", NodeNumber, left.NodeNumber);
         }

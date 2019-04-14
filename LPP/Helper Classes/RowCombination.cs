@@ -35,6 +35,11 @@ namespace LPP.Helper_Classes
             AssignValues (input);
         }
 
+        public bool GetValueOfElement(char c) {
+            foreach (var node in nodeValues) if (node.Name == c) return (node.Value == 1);
+            throw new Exception ("Such element wasn't found");
+        }
+
         /// <summary>
         /// Parses the input to assign values to the nodes
         /// </summary>

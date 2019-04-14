@@ -135,6 +135,12 @@ namespace LPP
         private void DetermineTruthTable(Node root) {
             var nodes = GetPropositions (root).ToCharArray();
             var combinations = GetAllCombinations (nodes);
+
+            var truthTable = new List<int> ();
+
+            foreach (var item in combinations) {
+
+            }
         }
     }
 }
