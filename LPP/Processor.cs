@@ -122,7 +122,7 @@ namespace LPP
             var nodes = GetPropositions (root).ToCharArray();
             int number_of_props = nodes.Length;
 
-            var allCombinations = BitFluctuation (number_of_props);
+           
         }
     }
 }

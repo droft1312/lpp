@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LPP.Helper_Classes;
 
 namespace LPP
 {
@@ -69,18 +70,34 @@ namespace LPP
             return i;
         }
         
+        
+
+        public static RowCombination[] GetAllCombinations(char[] nodes) {
+            var allCombinations = BitFluctuation (nodes.Length);
+            
+            List<RowCombination> rows = new List<RowCombination> ();
+
+            foreach (var combination in allCombinations) {
+                string temp = string.Empty;
+                foreach (var character in combination) temp += character;
+
+                rows.Add (new RowCombination (nodes, temp));
+            }
+
+            return rows.ToArray ();
+        }
+        
         /// <summary>
         /// Creates all possible combinations for truth-table
         /// </summary>
         /// <param name="numberOfVariables"></param>
         /// <returns>List of lists of combinations</returns>
-        public static dynamic BitFluctuation(int numberOfVariables) {
+        private static dynamic BitFluctuation(int numberOfVariables) {
             const string set = "01";
             List<char[]> setOfSets = new List<char[]> ();
             for (int i = 0; i < numberOfVariables; i++) setOfSets.Add (set.ToArray ());
             var result = setOfSets.CartesianProduct ();
             return result;
         }
-
     }
 }

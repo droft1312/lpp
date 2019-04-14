@@ -50,15 +50,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CartesianProductHelper.cs" />
+    <Compile Include="Helper Classes\CartesianProductHelper.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Functions.cs" />
-    <Compile Include="Graphiz.cs" />
+    <Compile Include="Helper Classes\Functions.cs" />
+    <Compile Include="Helper Classes\Graphiz.cs" />
+    <Compile Include="Helper Classes\RowCombination.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Nodes\BiImplicationNode.cs" />
     <Compile Include="Nodes\ConjunctionNode.cs" />
@@ -97,5 +98,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
