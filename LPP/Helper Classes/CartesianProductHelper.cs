@@ -8,6 +8,12 @@ namespace LPP
 {
     public static class CartesianProductHelper
     {
+        /// <summary>
+        /// This code has been supplied by Eric Lippert (link: https://bit.ly/2IxGxoe)
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sequences"></param>
+        /// <returns></returns>
         public static IEnumerable<IEnumerable<T>> CartesianProduct<T> (this IEnumerable<IEnumerable<T>> sequences) {
             IEnumerable<IEnumerable<T>> emptyProduct =
               new[] { Enumerable.Empty<T> () };

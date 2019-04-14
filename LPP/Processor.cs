@@ -11,11 +11,20 @@ namespace LPP
 
         public Node Root { get { return root; } }
 
+        /// <summary>
+        /// Generates Graphiz Image
+        /// </summary>
+        /// <param name="pictureBox">PictureBox image will be displayed on</param>
+        /// <param name="node">Tree imagige will be based upon</param>
         public void GenerateGraphImage (ref System.Windows.Forms.PictureBox pictureBox, Node node) {
             Graphiz graphiz = new Graphiz ();
             graphiz.GetGraphImage (ref pictureBox, in node);
         }
 
+        /// <summary>
+        /// Parses the string input and kicks off generation of a binary tree
+        /// </summary>
+        /// <param name="input"></param>
         public void ProcessStringInput (string input) {
             char first_character = input[0];
 
@@ -112,6 +121,11 @@ namespace LPP
 
         // TODO: Create a method that prints out tree in infix notation (so the normal one)
 
+        /// <summary>
+        /// Prints out tree in infix notation as opposed to prefix
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
         private string PrintInfixNotation(Node root) {
             return string.Empty;
         }
@@ -120,9 +134,7 @@ namespace LPP
 
         private void DetermineTruthTable(Node root) {
             var nodes = GetPropositions (root).ToCharArray();
-            int number_of_props = nodes.Length;
-
-           
+            var combinations = GetAllCombinations (nodes);
         }
     }
 }

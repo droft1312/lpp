@@ -8,6 +8,9 @@ namespace LPP.Helper_Classes
 {
     public class RowCombination
     {
+        /// <summary>
+        /// Represents the structure containing name of an abstract proposition and its value
+        /// </summary>
         struct NodeValue
         {
             public char Name { get; set; }
@@ -23,7 +26,7 @@ namespace LPP.Helper_Classes
             }
         }
 
-        NodeValue[] nodeValues;
+        NodeValue[] nodeValues; // values in this row
 
         public RowCombination(char[] names, string input) {
             nodeValues = new NodeValue[names.Length];
@@ -32,6 +35,10 @@ namespace LPP.Helper_Classes
             AssignValues (input);
         }
 
+        /// <summary>
+        /// Parses the input to assign values to the nodes
+        /// </summary>
+        /// <param name="input"></param>
         private void AssignValues (string input) {
             if (input.Length != nodeValues.Length) throw new Exception ("Input length different");
 

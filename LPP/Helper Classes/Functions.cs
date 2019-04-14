@@ -19,7 +19,6 @@ namespace LPP
         /// <param name="input">String to parse</param>
         /// <returns>String without specific characters</returns>
         public static string ParseInputString(string input) {
-            // CHECK: Figure out why if not using this method, tree will not be built properly
             return input.Replace (" ", "").Replace ("(", "");
         }
 
@@ -70,8 +69,11 @@ namespace LPP
             return i;
         }
         
-        
-
+        /// <summary>
+        /// Creates all combinations based on the given nodes
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
         public static RowCombination[] GetAllCombinations(char[] nodes) {
             var allCombinations = BitFluctuation (nodes.Length);
             
