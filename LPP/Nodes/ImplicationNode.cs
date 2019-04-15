@@ -7,7 +7,7 @@
         }
 
         public override bool GetValue (string input) {
-            return (!(this.left.GetValue (input) || this.right.GetValue (input)));
+            return (!(this.left.GetValue (input)) || this.right.GetValue (input));
         }
 
         public override string ToString () {

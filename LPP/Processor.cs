@@ -132,7 +132,7 @@ namespace LPP
 
         // TODO: Calculate the truth-table
 
-        private void DetermineTruthTable(Node root) {
+        public List<int> DetermineTruthTable(Node root) {
             var nodes = GetPropositions (root).ToCharArray();
             var combinations = GetAllCombinations (nodes);
 
@@ -140,7 +140,10 @@ namespace LPP
 
             foreach (var item in combinations) {
                 string truth_values = item.ToString ();
+                truthTable.Add (Convert.ToInt32 (root.GetValue (truth_values)));
             }
+
+            return truthTable;
         }
     }
 }
