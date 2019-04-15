@@ -1,4 +1,6 @@
-﻿namespace LPP.Nodes
+﻿using System;
+
+namespace LPP.Nodes
 {
     public class PropositionNode : Node
     {
@@ -14,8 +16,9 @@
             this.name = name;
         }
 
-        public override bool GetValue (bool input) {
-            return input;
+        public override bool GetValue (string input) {
+            int i = input.IndexOf (name);
+            return Convert.ToBoolean (int.Parse (input[i + 2].ToString ()));
         }
 
         public override string Print () {

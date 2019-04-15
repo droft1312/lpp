@@ -139,7 +139,7 @@ namespace LPP
             var truthTable = new List<int> ();
 
             foreach (var item in combinations) {
-
+                string truth_values = item.ToString ();
             }
         }
     }

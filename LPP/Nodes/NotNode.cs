@@ -17,7 +17,7 @@ namespace LPP.Nodes
             else throw new Exception ("Insertion failed. Source: class NotNode, method Insert(Node node)");
         }
 
-        public override bool GetValue (bool input) {
+        public override bool GetValue (string input) {
             return !(this.left.GetValue (input));
         }
 

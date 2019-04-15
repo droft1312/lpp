@@ -46,12 +46,14 @@ namespace LPP.Nodes
             return left.GetInfix () + right.GetInfix ();
         }
 
+        // TODO: Change the input for GetValue()
+
         /// <summary>
         /// Method that has to be overwritten in every class
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public virtual bool GetValue (bool input) {
+        public virtual bool GetValue (string input) {
             // is used when a value of the whole proposition has to be calculated
             throw new NotImplementedException ();
         }
