@@ -23,10 +23,36 @@ namespace LPP
             mainUnit = new Processor ();
         }
 
+        private void OutputInformationToTextBox(string input, ref RichTextBox textBox) {
+            textBox.Text = input;
+        }
+
         private void processInput_Click (object sender, EventArgs e) {
-            string input = ParseInputString (inputTextBox.Text);
+            string input = inputTextBox.Text;
             mainUnit.ProcessStringInput (input);
-            mainUnit.GenerateGraphImage (ref graphPictureBox, mainUnit.Root);
+            mainUnit.GenerateGraphImage (ref graphPicture, mainUnit.Root);
+        }
+
+        private void inputTextBox_KeyDown (object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Enter) {
+                this.processInput_Click (sender, EventArgs.Empty);
+            }
+        }
+
+        private void propositionsNamesButton_Click (object sender, EventArgs e) {
+            if (mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
+
+            var props = mainUnit.GetPropositions (mainUnit.Root);
+
+            string temp = "Propositions:\n";
+            foreach (var c in props) {
+                temp += c;
+                temp += Environment.NewLine;
+            }
+
+            props = temp;
+
+            OutputInformationToTextBox (props, ref outputTextbox);
         }
     }
 }

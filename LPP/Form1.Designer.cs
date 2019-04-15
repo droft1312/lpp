@@ -25,10 +25,16 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent () {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.inputTextBox = new System.Windows.Forms.TextBox();
             this.processInput = new System.Windows.Forms.Button();
-            this.graphPictureBox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).BeginInit();
+            this.graphPanel = new System.Windows.Forms.Panel();
+            this.graphPicture = new System.Windows.Forms.PictureBox();
+            this.outputTextbox = new System.Windows.Forms.RichTextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.propositionsNamesButton = new System.Windows.Forms.Button();
+            this.graphPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPicture)).BeginInit();
             this.SuspendLayout();
             // 
             // inputTextBox
@@ -37,6 +43,7 @@
             this.inputTextBox.Name = "inputTextBox";
             this.inputTextBox.Size = new System.Drawing.Size(194, 20);
             this.inputTextBox.TabIndex = 0;
+            this.inputTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.inputTextBox_KeyDown);
             // 
             // processInput
             // 
@@ -48,25 +55,69 @@
             this.processInput.UseVisualStyleBackColor = true;
             this.processInput.Click += new System.EventHandler(this.processInput_Click);
             // 
-            // graphPictureBox
+            // graphPanel
             // 
-            this.graphPictureBox.Location = new System.Drawing.Point(12, 76);
-            this.graphPictureBox.Name = "graphPictureBox";
-            this.graphPictureBox.Size = new System.Drawing.Size(776, 362);
-            this.graphPictureBox.TabIndex = 2;
-            this.graphPictureBox.TabStop = false;
+            this.graphPanel.AutoScroll = true;
+            this.graphPanel.Controls.Add(this.graphPicture);
+            this.graphPanel.Location = new System.Drawing.Point(12, 67);
+            this.graphPanel.Name = "graphPanel";
+            this.graphPanel.Size = new System.Drawing.Size(401, 371);
+            this.graphPanel.TabIndex = 2;
+            // 
+            // graphPicture
+            // 
+            this.graphPicture.Image = ((System.Drawing.Image)(resources.GetObject("graphPicture.Image")));
+            this.graphPicture.InitialImage = null;
+            this.graphPicture.Location = new System.Drawing.Point(3, 3);
+            this.graphPicture.Name = "graphPicture";
+            this.graphPicture.Size = new System.Drawing.Size(1024, 683);
+            this.graphPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.graphPicture.TabIndex = 0;
+            this.graphPicture.TabStop = false;
+            // 
+            // outputTextbox
+            // 
+            this.outputTextbox.Location = new System.Drawing.Point(419, 67);
+            this.outputTextbox.Name = "outputTextbox";
+            this.outputTextbox.Size = new System.Drawing.Size(369, 186);
+            this.outputTextbox.TabIndex = 3;
+            this.outputTextbox.Text = "";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(746, 48);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Output:";
+            // 
+            // propositionsNamesButton
+            // 
+            this.propositionsNamesButton.Location = new System.Drawing.Point(713, 9);
+            this.propositionsNamesButton.Name = "propositionsNamesButton";
+            this.propositionsNamesButton.Size = new System.Drawing.Size(75, 23);
+            this.propositionsNamesButton.TabIndex = 5;
+            this.propositionsNamesButton.Text = "Get Props";
+            this.propositionsNamesButton.UseVisualStyleBackColor = true;
+            this.propositionsNamesButton.Click += new System.EventHandler(this.propositionsNamesButton_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.graphPictureBox);
+            this.Controls.Add(this.propositionsNamesButton);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.outputTextbox);
+            this.Controls.Add(this.graphPanel);
             this.Controls.Add(this.processInput);
             this.Controls.Add(this.inputTextBox);
             this.Name = "Form1";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.graphPictureBox)).EndInit();
+            this.graphPanel.ResumeLayout(false);
+            this.graphPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.graphPicture)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -76,7 +127,11 @@
 
         private System.Windows.Forms.TextBox inputTextBox;
         private System.Windows.Forms.Button processInput;
-        private System.Windows.Forms.PictureBox graphPictureBox;
+        private System.Windows.Forms.Panel graphPanel;
+        private System.Windows.Forms.PictureBox graphPicture;
+        private System.Windows.Forms.RichTextBox outputTextbox;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button propositionsNamesButton;
     }
 }
 

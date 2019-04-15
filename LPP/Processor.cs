@@ -1,6 +1,8 @@
-﻿using LPP.Nodes;
+﻿using LPP.Helper_Classes;
+using LPP.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static LPP.Functions;
 
 namespace LPP
@@ -26,6 +28,8 @@ namespace LPP
         /// </summary>
         /// <param name="input"></param>
         public void ProcessStringInput (string input) {
+            input = ParseInputString (input); // delete all unneccesary stuff
+
             char first_character = input[0];
 
             switch (first_character) {
@@ -129,21 +133,55 @@ namespace LPP
         private string PrintInfixNotation(Node root) {
             return string.Empty;
         }
-
-        // TODO: Calculate the truth-table
-
-        public List<int> DetermineTruthTable(Node root) {
+        
+        /// <summary>
+        /// Creates a truth table
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns>Returns a dictionary of RowCombination(A:0,B:1,C:0 etc.) : Int (result when those vars are plugged into formula)</returns>
+        public Dictionary<RowCombination, int> DetermineTruthTable(Node root) {
             var nodes = GetPropositions (root).ToCharArray();
             var combinations = GetAllCombinations (nodes);
-
-            var truthTable = new List<int> ();
+            
+            Dictionary<RowCombination, int> result = new Dictionary<RowCombination, int> ();
 
             foreach (var item in combinations) {
                 string truth_values = item.ToString ();
-                truthTable.Add (Convert.ToInt32 (root.GetValue (truth_values)));
+                result.Add (item, Convert.ToInt32 (root.GetValue (truth_values)));
             }
 
-            return truthTable;
+            return result;
+        }
+
+        /// <summary>
+        /// Returns a string containing all propositions(variables A,B,C, etc) in a specified binary tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public string GetPropositions (Nodes.Node root) {
+            string visitedNodes = "";
+
+            // Iterates through the binary tree and counts the number of propositions + adds to a string
+            void IterateThroughNodes (Nodes.Node node) {
+
+                if (node.left != null) {
+                    IterateThroughNodes (node.left);
+                }
+
+                if (node.right != null) {
+                    IterateThroughNodes (node.right);
+                }
+
+                if (node.left == null && node.right == null) {
+                    if (!visitedNodes.Contains ((node as Nodes.PropositionNode).Name)) { // if we haven't visited that node we add it to the list
+                        visitedNodes += node;
+                    }
+                }
+            }
+
+            IterateThroughNodes (root);
+
+            return visitedNodes;
         }
     }
 }

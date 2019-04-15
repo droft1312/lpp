@@ -16,14 +16,8 @@ namespace ConsoleApplication
         static void Main (string[] args) {
             Processor p = new Processor ();
             //p.ProcessStringInput (ParseInputString("=( >(A,B), |( ~(C) ,D) "));
-            p.ProcessStringInput (ParseInputString(inputs[1]));
-
+            p.ProcessStringInput (ParseInputString (inputs[1]));
             var res = p.DetermineTruthTable (p.Root);
-
-            foreach (var item in res) {
-                Console.WriteLine (item);
-            }
-
             Console.ReadKey ();
         }
     }
