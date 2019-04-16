@@ -133,6 +133,11 @@ namespace LPP
             return root.GetInfix ();
         }
 
+        /// <summary>
+        /// Prints out a tree in infix notation to a given textbox
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="textBox"></param>
         public void PrintOutInfixNotation(Node root, TextBox textBox) {
             var result = GetInfixNotation (root);
             textBox.Text = result;
@@ -155,6 +160,17 @@ namespace LPP
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Converts binary to hexadecimal
+        /// </summary>
+        /// <param name="num">Binary to convert</param>
+        /// <returns></returns>
+        public string GenerateHexaDecimal(Dictionary<RowCombination, int> truthTable) {
+            string results = string.Empty;
+            for (int i = truthTable.Values.Count () - 1; i >= 0; i--) results += truthTable.Values.ElementAt (i);
+            return Convert.ToInt32 (results, 2).ToString ("X");
         }
 
         /// <summary>

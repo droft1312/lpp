@@ -62,17 +62,9 @@ namespace LPP
 
             var truth_table = mainUnit.DetermineTruthTable (mainUnit.Root);
 
-            string output = string.Empty;
+            string output = PrintOutTruthTable (truth_table);
 
-            foreach (var pair in truth_table) {
-                var rowCombination = pair.Key;
-                var result = pair.Value;
-
-                string temp = rowCombination.ToString () + " -- " + result;
-
-                output += temp;
-                output += Environment.NewLine;
-            }
+            output += "Hexadecimal: " + mainUnit.GenerateHexaDecimal (truth_table);
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }

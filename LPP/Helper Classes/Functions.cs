@@ -14,6 +14,27 @@ namespace LPP
     public static class Functions
     {
         /// <summary>
+        /// Returns a printed truth-table
+        /// </summary>
+        /// <param name="truthTable"></param>
+        /// <returns></returns>
+        public static string PrintOutTruthTable(Dictionary<RowCombination, int> truthTable) {
+            string output = string.Empty;
+            
+            foreach (var pair in truthTable) {
+                var rowCombination = pair.Key;
+                var result = pair.Value;
+
+                string temp = rowCombination.ToString () + " -- " + result;
+
+                output += temp;
+                output += Environment.NewLine;
+            }
+
+            return output;
+        }
+
+        /// <summary>
         /// Deletes ' ', '(' from a string
         /// </summary>
         /// <param name="input">String to parse</param>
