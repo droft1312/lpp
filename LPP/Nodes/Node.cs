@@ -42,11 +42,8 @@ namespace LPP.Nodes
         }
 
         public virtual string GetInfix () {
-            // CHECK: This piece of code probably doesn't work
-            return left.GetInfix () + right.GetInfix ();
+            throw new NotImplementedException ();
         }
-
-        // TODO: Change the input for GetValue()
 
         /// <summary>
         /// Method that has to be overwritten in every class

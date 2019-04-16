@@ -16,6 +16,10 @@ namespace LPP.Nodes
             this.name = name;
         }
 
+        public override string GetInfix () {
+            return name.ToString ();
+        }
+
         public override bool GetValue (string input) {
             int i = input.IndexOf (name);
             return Convert.ToBoolean (int.Parse (input[i + 2].ToString ()));

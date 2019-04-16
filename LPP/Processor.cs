@@ -130,8 +130,8 @@ namespace LPP
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        private string PrintInfixNotation(Node root) {
-            return string.Empty;
+        public string GetInfixNotation(Node root) {
+            return root.GetInfix ();
         }
         
         /// <summary>

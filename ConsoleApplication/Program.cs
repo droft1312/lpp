@@ -11,13 +11,14 @@ namespace ConsoleApplication
 {
     class Program
     {
-        static string[] inputs = { ">(A,B)", "=(A,B)" };
+        static string[] inputs = { ">(A,~(B))", "=(A,B)", "=( >(A,B), |( ~(A) ,B) )" };
 
         static void Main (string[] args) {
             Processor p = new Processor ();
             //p.ProcessStringInput (ParseInputString("=( >(A,B), |( ~(C) ,D) "));
-            p.ProcessStringInput (ParseInputString (inputs[1]));
-            var res = p.DetermineTruthTable (p.Root);
+            p.ProcessStringInput (ParseInputString (inputs[2]));
+            var res = p.GetInfixNotation (p.Root);
+            Console.WriteLine (res);
             Console.ReadKey ();
         }
     }

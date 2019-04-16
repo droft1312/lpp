@@ -6,6 +6,11 @@
 
         }
 
+        public override string GetInfix () {
+            string res = "(" + left.GetInfix () + ")" + " = " + "(" + right.GetInfix () + ")";
+            return res;
+        }
+
         public override bool GetValue (string input) {
             bool leftVal = this.left.GetValue (input);
             bool rightVal = this.right.GetValue (input);
