@@ -57,7 +57,7 @@ namespace LPP.Helper_Classes
         public override string ToString () {
             string s = "";
             foreach (var node in nodeValues) {
-                s += string.Format ("{0}:{1},", node.Name, node.Value);
+                s += string.Format ("{0}:{1} ", node.Name, node.Value);
             }
             
             return s;

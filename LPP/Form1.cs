@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static LPP.Functions;
+using LPP.Helper_Classes;
 
 namespace LPP
 {
@@ -53,6 +54,26 @@ namespace LPP
             props = temp;
 
             OutputInformationToTextBox (props, ref outputTextbox);
+        }
+
+        private void truthtableButton_Click (object sender, EventArgs e) {
+            if (mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
+
+            var truth_table = mainUnit.DetermineTruthTable (mainUnit.Root);
+
+            string output = string.Empty;
+
+            foreach (var pair in truth_table) {
+                var rowCombination = pair.Key;
+                var result = pair.Value;
+
+                string temp = rowCombination.ToString () + " -- " + result;
+
+                output += temp;
+                output += Environment.NewLine;
+            }
+
+            OutputInformationToTextBox (output, ref outputTextbox);
         }
     }
 }

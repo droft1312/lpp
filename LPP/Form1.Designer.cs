@@ -33,6 +33,7 @@
             this.outputTextbox = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.propositionsNamesButton = new System.Windows.Forms.Button();
+            this.truthtableButton = new System.Windows.Forms.Button();
             this.graphPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphPicture)).BeginInit();
             this.SuspendLayout();
@@ -102,11 +103,22 @@
             this.propositionsNamesButton.UseVisualStyleBackColor = true;
             this.propositionsNamesButton.Click += new System.EventHandler(this.propositionsNamesButton_Click);
             // 
+            // truthtableButton
+            // 
+            this.truthtableButton.Location = new System.Drawing.Point(632, 9);
+            this.truthtableButton.Name = "truthtableButton";
+            this.truthtableButton.Size = new System.Drawing.Size(75, 23);
+            this.truthtableButton.TabIndex = 6;
+            this.truthtableButton.Text = "Truth-Table";
+            this.truthtableButton.UseVisualStyleBackColor = true;
+            this.truthtableButton.Click += new System.EventHandler(this.truthtableButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.truthtableButton);
             this.Controls.Add(this.propositionsNamesButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.outputTextbox);
@@ -132,6 +144,7 @@
         private System.Windows.Forms.RichTextBox outputTextbox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button propositionsNamesButton;
+        private System.Windows.Forms.Button truthtableButton;
     }
 }
 
