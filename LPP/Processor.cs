@@ -3,6 +3,7 @@ using LPP.Nodes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using static LPP.Functions;
 
 namespace LPP
@@ -122,9 +123,7 @@ namespace LPP
                 BuildTree (input, root);
             }
         }
-
-        // TODO: Create a method that prints out tree in infix notation (so the normal one)
-
+        
         /// <summary>
         /// Prints out tree in infix notation as opposed to prefix
         /// </summary>
@@ -132,6 +131,11 @@ namespace LPP
         /// <returns></returns>
         public string GetInfixNotation(Node root) {
             return root.GetInfix ();
+        }
+
+        public void PrintOutInfixNotation(Node root, TextBox textBox) {
+            var result = GetInfixNotation (root);
+            textBox.Text = result;
         }
         
         /// <summary>

@@ -32,6 +32,7 @@ namespace LPP
             string input = inputTextBox.Text;
             mainUnit.ProcessStringInput (input);
             mainUnit.GenerateGraphImage (ref graphPicture, mainUnit.Root);
+            mainUnit.PrintOutInfixNotation (mainUnit.Root, infixTextBox);
         }
 
         private void inputTextBox_KeyDown (object sender, KeyEventArgs e) {

@@ -17,8 +17,6 @@ namespace ConsoleApplication
             Processor p = new Processor ();
             //p.ProcessStringInput (ParseInputString("=( >(A,B), |( ~(C) ,D) "));
             p.ProcessStringInput (ParseInputString (inputs[2]));
-            var res = p.GetInfixNotation (p.Root);
-            Console.WriteLine (res);
             Console.ReadKey ();
         }
     }

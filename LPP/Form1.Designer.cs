@@ -34,6 +34,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.propositionsNamesButton = new System.Windows.Forms.Button();
             this.truthtableButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.infixTextBox = new System.Windows.Forms.TextBox();
             this.graphPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphPicture)).BeginInit();
             this.SuspendLayout();
@@ -113,11 +115,30 @@
             this.truthtableButton.UseVisualStyleBackColor = true;
             this.truthtableButton.Click += new System.EventHandler(this.truthtableButton_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(229, 13);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(33, 16);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "Infix:";
+            // 
+            // infixTextBox
+            // 
+            this.infixTextBox.Location = new System.Drawing.Point(268, 12);
+            this.infixTextBox.Name = "infixTextBox";
+            this.infixTextBox.Size = new System.Drawing.Size(100, 20);
+            this.infixTextBox.TabIndex = 8;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.infixTextBox);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.truthtableButton);
             this.Controls.Add(this.propositionsNamesButton);
             this.Controls.Add(this.label1);
@@ -145,6 +166,8 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button propositionsNamesButton;
         private System.Windows.Forms.Button truthtableButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox infixTextBox;
     }
 }
 
