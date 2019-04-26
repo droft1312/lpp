@@ -10,7 +10,7 @@ namespace LPP
 {
     public class Processor
     {
-        Node root;
+        private Node root;
 
         public Node Root { get { return root; } }
 
@@ -141,6 +141,36 @@ namespace LPP
         public void PrintOutInfixNotation(Node root, TextBox textBox) {
             var result = GetInfixNotation (root);
             textBox.Text = result;
+        }
+
+        public void Simplify() {
+            if (root == null) throw new Exception ("Root is null!");
+
+            /* 
+             Algorithm:
+             1) Evaluate if a row is simplifiable (all but one of the nodes in a row are the same)
+             2) Go over the truth-table.rowCombination and find a matching row to our current one
+             3) Add it to the new table
+             
+             */
+
+            var truthTable = DetermineTruthTable (root);
+
+            
+            foreach (KeyValuePair<RowCombination, int> pair in truthTable) {
+                var simplifiable = pair.Key.SatisfiesConditionForSimplification ();
+
+                if (simplifiable) {
+                    var row = pair.Key;
+                    var resultOfRow = pair.Value;
+
+                    foreach (KeyValuePair<RowCombination, int> item in truthTable) {
+                        if (item.Key != pair.Key && item.Value == pair.Value) {
+                            
+                        }
+                    }
+                }
+            }
         }
         
         /// <summary>

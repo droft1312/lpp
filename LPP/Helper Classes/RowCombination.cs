@@ -11,7 +11,7 @@ namespace LPP.Helper_Classes
         /// <summary>
         /// Represents the structure containing name of an abstract proposition and its value
         /// </summary>
-        struct NodeValue
+        private struct NodeValue
         {
             public char Name { get; set; }
             public int Value { get; set; }
@@ -23,6 +23,13 @@ namespace LPP.Helper_Classes
 
             public void SetValue(int value) {
                 Value = value;
+            }
+
+            public static bool operator ==(NodeValue n1, NodeValue n2) {
+                return (n1.Name == n2.Name) && (n1.Value == n2.Value);
+            }
+            public static bool operator != (NodeValue n1, NodeValue n2) {
+                return !(n1 == n2);
             }
         }
 
@@ -38,14 +45,61 @@ namespace LPP.Helper_Classes
         // indexer for rowcombination
         public bool this[char c] {
             get {
-                return GetValueOfElement (c);
+                foreach (var node in nodeValues) if (node.Name == c) return (node.Value == 1);
+                throw new Exception ("Such element wasn't found");
             }
         }
 
-        private bool GetValueOfElement(char c) {
-            foreach (var node in nodeValues) if (node.Name == c) return (node.Value == 1);
-            throw new Exception ("Such element wasn't found");
+        
+        private NodeValue GetDistinctVariable() {
+            if (!SatisfiesConditionForSimplification ()) throw new Exception ("Not Good");
+
+
         }
+
+        /// <summary>
+        /// This method shall be used in simplification process
+        /// </summary>
+        /// <returns></returns>
+        public bool SatisfiesConditionForSimplification() {
+
+            List<int> GetValues () {
+                List<int> result = new List<int> (nodeValues.Length);
+                foreach (var item in nodeValues) result.Add (item.Value);
+                return result;
+            }
+
+            var vals = GetValues ().Distinct().ToList();
+
+            if (vals.Count != 2) return false;
+
+            // count 0s and 1s
+            Dictionary<int, int> counter = new Dictionary<int, int> ();
+            counter.Add (0, 0);
+            counter.Add (1, 0);
+
+            for (int i = 0; i < vals.Count(); i++) {
+                counter[vals[i]]++;
+            }
+
+            if (counter[0] == vals.Count - 1 || counter[1] == vals.Count - 1) return true;
+            else return false;
+        }
+
+        public bool Matches(RowCombination r) {
+
+            // 0001     =>   1
+            // 1111     =>   1
+            // 0101     =>   1
+
+            /*    
+             *  Find which variable is different, for example 0001 means that variable D = 1 and thus is a distinct one
+             *  Check if the other rowcombination has it as well, if so, return true, if not, return false
+             */
+
+            return false;
+        }
+
 
         /// <summary>
         /// Parses the input to assign values to the nodes
@@ -68,6 +122,27 @@ namespace LPP.Helper_Classes
             }
             
             return s;
+        }
+
+        public static bool operator ==(RowCombination r1, RowCombination r2) {
+            if (object.ReferenceEquals(r1, null)) {
+                if (object.ReferenceEquals(r2, null)) {
+                    return true;
+                }
+                return false;
+            }
+            if (object.ReferenceEquals (r2, null)) {
+                if (object.ReferenceEquals (r1, null)) {
+                    return true;
+                }
+                return false;
+            }
+
+            return r1.nodeValues == r2.nodeValues;
+        }
+
+        public static bool operator != (RowCombination r1, RowCombination r2) {
+            return !(r1 == r2);
         }
     }
 }
