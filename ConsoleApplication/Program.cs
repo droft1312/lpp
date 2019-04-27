@@ -5,7 +5,7 @@ using System.Linq;
 
 using static LPP.Functions;
 using LPP;
-using LPP.Helper_Classes;
+using LPP.TruthTable;
 using System.Collections;
 
 namespace ConsoleApplication
@@ -20,10 +20,10 @@ namespace ConsoleApplication
 
             p.ProcessStringInput (inputs[3]);
 
-            RowCombination r = new RowCombination ("ABC".ToCharArray (), "1*1");
-            RowCombination r2 = new RowCombination ("PQR".ToCharArray (), "101");
+            RowCombination r = new RowCombination ("ABC".ToCharArray (), "111");
+            RowCombination r2 = new RowCombination ("ABC".ToCharArray (), "111");
 
-            Console.WriteLine (r.Matches (r2));
+            Console.WriteLine (r == r2);
 
 
             Console.ReadKey ();

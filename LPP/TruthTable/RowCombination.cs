@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LPP.Helper_Classes
+namespace LPP.TruthTable
 {
+#pragma warning disable 0660
+#pragma warning disable 0661
     public class RowCombination
     {
         /// <summary>
@@ -139,7 +141,7 @@ namespace LPP.Helper_Classes
 
                 try {
                     toAdd = Functions.Convert<int> (character.ToString ());
-                } catch (Exception f) {
+                } catch (Exception) {
                     toAdd = character.ToString ();
                 } finally {
                     nodeValues[i].SetValue (toAdd);
@@ -171,11 +173,14 @@ namespace LPP.Helper_Classes
                 return false;
             }
 
-            return r1.nodeValues == r2.nodeValues;
+            return r1.Matches (r2);
         }
 
         public static bool operator != (RowCombination r1, RowCombination r2) {
             return !(r1 == r2);
         }
     }
+
+#pragma warning restore 0660
+#pragma warning restore 0661
 }

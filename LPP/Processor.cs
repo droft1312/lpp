@@ -1,9 +1,11 @@
-﻿using LPP.Helper_Classes;
-using LPP.Nodes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+
+
+using LPP.Nodes;
+using LPP.TruthTable;
 using static LPP.Functions;
 
 namespace LPP
@@ -142,96 +144,20 @@ namespace LPP
             var result = GetInfixNotation (root);
             textBox.Text = result;
         }
-
-        public void Simplify() {
-            if (root == null) throw new Exception ("Root is null!");
-
-            /* 
-             Algorithm:
-             1) Evaluate if a row is simplifiable (all but one of the nodes in a row are the same)
-             2) Go over the truth-table.rowCombination and find a matching row to our current one
-             3) Add it to the new table
-             
-             */
-
-            var truthTable = DetermineTruthTable (root);
-
-            
-            foreach (KeyValuePair<RowCombination, int> pair in truthTable) {
-                var simplifiable = pair.Key.SatisfiesConditionForSimplification ();
-
-                if (simplifiable) {
-                    var row = pair.Key;
-                    var resultOfRow = pair.Value;
-
-                    foreach (KeyValuePair<RowCombination, int> item in truthTable) {
-                        if (item.Key != pair.Key && item.Value == pair.Value) {
-                            
-                        }
-                    }
-                }
-            }
-        }
         
         /// <summary>
-        /// Creates a truth table
-        /// </summary>
-        /// <param name="root"></param>
-        /// <returns>Returns a dictionary of RowCombination(A:0,B:1,C:0 etc.) : Int (result when those vars are plugged into formula)</returns>
-        public Dictionary<RowCombination, int> DetermineTruthTable(Node root) {
-            var nodes = GetPropositions (root).ToCharArray();
-            var combinations = GetAllCombinations (nodes);
-            
-            Dictionary<RowCombination, int> result = new Dictionary<RowCombination, int> ();
-
-            foreach (var item in combinations) {
-                string truth_values = item.ToString ();
-                result.Add (item, System.Convert.ToInt32 (root.GetValue (truth_values)));
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Converts binary to hexadecimal
-        /// </summary>
-        /// <param name="num">Binary to convert</param>
-        /// <returns></returns>
-        public string GenerateHexaDecimal(Dictionary<RowCombination, int> truthTable) {
-            string results = string.Empty;
-            for (int i = truthTable.Values.Count () - 1; i >= 0; i--) results += truthTable.Values.ElementAt (i);
-            return System.Convert.ToInt32 (results, 2).ToString ("X");
-        }
-
-        /// <summary>
-        /// Returns a string containing all propositions(variables A,B,C, etc) in a specified binary tree
+        /// Returns a truth table based off the root
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public string GetPropositions (Nodes.Node root) {
-            string visitedNodes = "";
+        public TruthTable.TruthTable DetermineTruthTable(Node root) {
+            TruthTable.TruthTable truth = new TruthTable.TruthTable ();
+            truth.CreateTruthTable (root);
+            return truth;
+        }
 
-            // Iterates through the binary tree and counts the number of propositions + adds to a string
-            void IterateThroughNodes (Nodes.Node node) {
-
-                if (node.left != null) {
-                    IterateThroughNodes (node.left);
-                }
-
-                if (node.right != null) {
-                    IterateThroughNodes (node.right);
-                }
-
-                if (node.left == null && node.right == null) {
-                    if (!visitedNodes.Contains ((node as Nodes.PropositionNode).Name)) { // if we haven't visited that node we add it to the list
-                        visitedNodes += node;
-                    }
-                }
-            }
-
-            IterateThroughNodes (root);
-
-            return visitedNodes;
+        public string GenerateHexaDecimal(TruthTable.TruthTable truth) {
+            return truth.GetHexaDecimal ();
         }
     }
 }

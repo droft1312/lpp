@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using static LPP.Functions;
-using LPP.Helper_Classes;
 
 namespace LPP
 {
@@ -44,7 +43,7 @@ namespace LPP
         private void propositionsNamesButton_Click (object sender, EventArgs e) {
             if (mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
 
-            var props = mainUnit.GetPropositions (mainUnit.Root);
+            var props = GetPropositions (mainUnit.Root);
 
             string temp = "Propositions:\n";
             foreach (var c in props) {
@@ -62,7 +61,7 @@ namespace LPP
 
             var truth_table = mainUnit.DetermineTruthTable (mainUnit.Root);
 
-            string output = PrintOutTruthTable (truth_table);
+            string output = PrintOutTruthTable (truth_table.RowResultPairs);
 
             output += "Hexadecimal: " + mainUnit.GenerateHexaDecimal (truth_table);
 
