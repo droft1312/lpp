@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,6 +91,21 @@ namespace LPP
             for (int i = 0; i < numberOfVariables; i++) setOfSets.Add (set.ToArray ());
             var result = setOfSets.CartesianProduct ();
             return result;
+        }
+
+        /// <summary>
+        /// Tries to convert string s to a format T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static T Convert<T> (string s) {
+            var typeConverter = TypeDescriptor.GetConverter (typeof (T));
+            if (typeConverter != null && typeConverter.CanConvertFrom (typeof (string))) {
+                return (T)typeConverter.ConvertFrom (s);
+            }
+
+            return default (T);
         }
     }
 }

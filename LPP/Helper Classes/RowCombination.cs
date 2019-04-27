@@ -14,7 +14,7 @@ namespace LPP.Helper_Classes
         private struct NodeValue
         {
             public char Name { get; set; }
-            public int Value { get; set; }
+            public object Value { get; set; }
 
             public NodeValue (char name, int value) {
                 Name = name;
@@ -22,6 +22,10 @@ namespace LPP.Helper_Classes
             }
 
             public void SetValue(int value) {
+                Value = value;
+            }
+
+            public void SetValue (string value) {
                 Value = value;
             }
 
@@ -45,27 +49,26 @@ namespace LPP.Helper_Classes
         // indexer for rowcombination
         public bool this[char c] {
             get {
-                foreach (var node in nodeValues) if (node.Name == c) return (node.Value == 1);
+                foreach (var node in nodeValues) {
+                    if (node.Name == c && node.Value is String) return true;
+                    if (node.Name == c && node.Value is Int32) return ((int)node.Value == 1);
+                }
                 throw new Exception ("Such element wasn't found");
             }
         }
 
-        
-        private NodeValue GetDistinctVariable() {
-            if (!SatisfiesConditionForSimplification ()) throw new Exception ("Not Good");
-
-
-        }
-
         /// <summary>
-        /// This method shall be used in simplification process
+        /// This method shall be used in simplification process. ONLY TO BE USED ON ROWS THAT DO NOT CONTAIN STRING VALUES (*)
         /// </summary>
         /// <returns></returns>
         public bool SatisfiesConditionForSimplification() {
 
             List<int> GetValues () {
                 List<int> result = new List<int> (nodeValues.Length);
-                foreach (var item in nodeValues) result.Add (item.Value);
+                foreach (var item in nodeValues) {
+                    if (item.Value is String) throw new Exception ("You used SatisfiesConditionForSimplification() on a row that has * in it!");
+                    result.Add ((int)item.Value);
+                }
                 return result;
             }
 
@@ -86,6 +89,11 @@ namespace LPP.Helper_Classes
             else return false;
         }
 
+        /// <summary>
+        /// Checks whether 'r' matches this instance of RowCombination
+        /// </summary>
+        /// <param name="r">Row combination to compare with</param>
+        /// <returns></returns>
         public bool Matches(RowCombination r) {
 
             // 0001     =>   1
@@ -97,7 +105,23 @@ namespace LPP.Helper_Classes
              *  Check if the other rowcombination has it as well, if so, return true, if not, return false
              */
 
-            return false;
+            if (this.nodeValues.Length != r.nodeValues.Length) return false;
+
+            var length = nodeValues.Length;
+
+            for (int i = 0; i < length; i++) {
+                var ourValue = this.nodeValues[i];
+                var valueToCompare = r.nodeValues[i];
+
+                if (!(ourValue.Value is String || valueToCompare.Value is String)) {
+                    if (!((int)ourValue.Value == (int)valueToCompare.Value)) {
+                        return false;
+                    }
+                }
+            }
+
+
+            return true;
         }
 
 
@@ -109,8 +133,17 @@ namespace LPP.Helper_Classes
             if (input.Length != nodeValues.Length) throw new Exception ("Input length different");
 
             for (int i = 0; i < input.Length; i++) {
-                int val = int.Parse (input[i].ToString());
-                nodeValues[i].SetValue (val);
+                char character = input[i];
+
+                dynamic toAdd = "";
+
+                try {
+                    toAdd = Functions.Convert<int> (character.ToString ());
+                } catch (Exception f) {
+                    toAdd = character.ToString ();
+                } finally {
+                    nodeValues[i].SetValue (toAdd);
+                }
             }
         }
 

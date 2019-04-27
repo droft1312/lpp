@@ -186,7 +186,7 @@ namespace LPP
 
             foreach (var item in combinations) {
                 string truth_values = item.ToString ();
-                result.Add (item, Convert.ToInt32 (root.GetValue (truth_values)));
+                result.Add (item, System.Convert.ToInt32 (root.GetValue (truth_values)));
             }
 
             return result;
@@ -200,7 +200,7 @@ namespace LPP
         public string GenerateHexaDecimal(Dictionary<RowCombination, int> truthTable) {
             string results = string.Empty;
             for (int i = truthTable.Values.Count () - 1; i >= 0; i--) results += truthTable.Values.ElementAt (i);
-            return Convert.ToInt32 (results, 2).ToString ("X");
+            return System.Convert.ToInt32 (results, 2).ToString ("X");
         }
 
         /// <summary>
