@@ -26,7 +26,7 @@ namespace LPP.Nodes
             return !(this.left.GetValue (input));
         }
 
-        public override string Print () {
+        public override string PrintConnections () {
             return string.Format ("node{0} -- node{1}\n", NodeNumber, left.NodeNumber);
         }
 

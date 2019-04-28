@@ -11,8 +11,8 @@ namespace LPP.Nodes
         protected readonly string value;
         protected readonly int number;
 
-        public string Value { get { return value; } }
         public int NodeNumber { get { return number; } }
+        public string Value { get { return value; } }
 
         public Node () {
             number = ++GlobalCounter.nodes_count;
@@ -34,13 +34,31 @@ namespace LPP.Nodes
         }
 
         /// <summary>
+        /// Outputs all propositions that this tree has to a string 'output'
+        /// </summary>
+        /// <param name="output">literally the output boy</param>
+        public void GetAllPropositions(ref string output) {
+            if (this.left == null && this.right == null) {
+                var c = (this as PropositionNode).Name.ToString();
+                if (!output.Contains (c)) output += c;
+            } else {
+                left.GetAllPropositions (ref output);
+                right?.GetAllPropositions (ref output);
+            }
+        }
+
+        /// <summary>
         /// Returns node connections used for making a Graphiz graph
         /// </summary>
         /// <returns></returns>
-        public virtual string Print () {
+        public virtual string PrintConnections () {
             return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
 
+        /// <summary>
+        /// Returns a whole proposition in infix notation
+        /// </summary>
+        /// <returns></returns>
         public virtual string GetInfix () {
             throw new NotImplementedException ();
         }

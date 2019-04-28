@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using LPP;
 using LPP.Nodes;
-using LPP.Helper_Classes;
+using static LPP.Functions;
 
 namespace Unit_Testing
 {
@@ -43,7 +43,8 @@ namespace Unit_Testing
             Processor p = new Processor ();
             p.ProcessStringInput ("&(|(A,B),>(C,=(D,A)))");
             var expected = "ABCD";
-            var result = p.GetPropositions (p.Root);
+            var result = "";
+            p.Root.GetAllPropositions (ref result);
             Assert.AreEqual (expected, result);
         }
     }

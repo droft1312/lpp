@@ -12,7 +12,6 @@ namespace LPP.TruthTable
         private bool TruthTableSimplified = false;
 
         public TruthTable () {
-
         }
 
         public void Simplify () {
@@ -55,7 +54,8 @@ namespace LPP.TruthTable
         }
 
         public void CreateTruthTable (Node root) {
-            var nodes = GetPropositions (root).ToCharArray ();
+            var props = ""; root.GetAllPropositions (ref props);
+            var nodes = props.ToCharArray ();
             var combinations = GetAllCombinations (nodes);
 
             Dictionary<RowCombination, int> result = new Dictionary<RowCombination, int> ();
@@ -67,6 +67,39 @@ namespace LPP.TruthTable
 
             RowResultPairs = result;
             TruthTableSimplified = false;
+        }
+
+        /// <summary>
+        /// Creates all combinations based on the given nodes
+        /// </summary>
+        /// <param name="nodes"></param>
+        /// <returns></returns>
+        public  RowCombination[] GetAllCombinations (char[] nodes) {
+            var allCombinations = BitFluctuation (nodes.Length);
+
+            List<RowCombination> rows = new List<RowCombination> ();
+
+            foreach (var combination in allCombinations) {
+                string temp = string.Empty;
+                foreach (var character in combination) temp += character;
+
+                rows.Add (new RowCombination (nodes, temp));
+            }
+
+            return rows.ToArray ();
+        }
+
+        /// <summary>
+        /// Creates all possible combinations for truth-table
+        /// </summary>
+        /// <param name="numberOfVariables"></param>
+        /// <returns>List of lists of combinations</returns>
+        private dynamic BitFluctuation (int numberOfVariables) {
+            const string set = "01";
+            List<char[]> setOfSets = new List<char[]> ();
+            for (int i = 0; i < numberOfVariables; i++) setOfSets.Add (set.ToArray ());
+            var result = setOfSets.CartesianProduct ();
+            return result;
         }
 
         public string GetHexaDecimal () {

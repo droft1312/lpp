@@ -43,7 +43,9 @@ namespace LPP
         private void propositionsNamesButton_Click (object sender, EventArgs e) {
             if (mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
 
-            var props = GetPropositions (mainUnit.Root);
+            string props = "";
+            mainUnit.Root.GetAllPropositions (ref props);
+
 
             string temp = "Propositions:\n";
             foreach (var c in props) {

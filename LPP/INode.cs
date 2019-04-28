@@ -8,6 +8,6 @@ namespace LPP
 {
     interface INode
     {
-        string Print ();
+        string PrintConnections ();
     }
 }

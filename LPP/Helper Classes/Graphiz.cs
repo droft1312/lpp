@@ -47,7 +47,7 @@ namespace LPP
 
             /* first print data of node */
 
-            nodeConnections += root.Print ();
+            nodeConnections += root.PrintConnections ();
 
             /* then recur on left sutree */
             PrintNodeConnections (root.left);

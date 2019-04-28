@@ -46,17 +46,6 @@ namespace LPP.TruthTable
             AssignValues (input);
         }
 
-        // indexer for rowcombination
-        public bool this[char c] {
-            get {
-                foreach (var node in nodeValues) {
-                    if (node.Name == c && node.Value is String) return true;
-                    if (node.Name == c && node.Value is Int32) return ((int)node.Value == 1);
-                }
-                throw new Exception ("Such element wasn't found");
-            }
-        }
-
         /// <summary>
         /// This method shall be used in simplification process. ONLY TO BE USED ON ROWS THAT DO NOT CONTAIN STRING VALUES (*)
         /// </summary>
@@ -141,6 +130,12 @@ namespace LPP.TruthTable
             }
         }
 
+        /// <summary>
+        /// Returns a KeyValuePair of a variable in a rowcombination that is different.
+        /// For instance: A:0, B:0, C:1. This function will return C:1, because it's a different one.
+        /// Before calling this function, <b>make sure</b> that this RowCombination satisifies condition for Simplification
+        /// </summary>
+        /// <returns></returns>
         public KeyValuePair<char, int> GetDistinctProposition() {
             if (!SatisfiesConditionForSimplification ()) throw new Exception ("This is not a Simplifiable RowCombination");
 

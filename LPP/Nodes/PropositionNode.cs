@@ -25,7 +25,7 @@ namespace LPP.Nodes
             return Convert.ToBoolean (int.Parse (input[i + 2].ToString ()));
         }
 
-        public override string Print () {
+        public override string PrintConnections () {
             return "";
         }
 
