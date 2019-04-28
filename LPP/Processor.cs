@@ -13,8 +13,10 @@ namespace LPP
     public class Processor
     {
         private Node root;
+        private TruthTable.TruthTable truthTable;
 
         public Node Root { get { return root; } }
+        public TruthTable.TruthTable Truth { get { return truthTable; } } 
 
         /// <summary>
         /// Generates Graphiz Image
@@ -153,7 +155,13 @@ namespace LPP
         public TruthTable.TruthTable DetermineTruthTable(Node root) {
             TruthTable.TruthTable truth = new TruthTable.TruthTable ();
             truth.CreateTruthTable (root);
+            truthTable = truth; 
             return truth;
+        }
+
+        public TruthTable.TruthTable SimplifyTruthTable (TruthTable.TruthTable table) {
+            table.Simplify ();
+            return table;
         }
 
         public string GenerateHexaDecimal(TruthTable.TruthTable truth) {

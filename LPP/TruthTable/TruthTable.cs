@@ -9,6 +9,7 @@ namespace LPP.TruthTable
     public class TruthTable
     {
         public Dictionary<RowCombination, int> RowResultPairs { get; private set; }
+        private bool TruthTableSimplified = false;
 
         public TruthTable () {
 
@@ -16,6 +17,7 @@ namespace LPP.TruthTable
 
         public void Simplify () {
             if (RowResultPairs == null) throw new Exception ("There's no truth-table to simplify");
+            if (TruthTableSimplified) return;
 
             bool DictionaryHasRowCombination (KeyValuePair<RowCombination, int> r, Dictionary<RowCombination, int> d) {
                 foreach (KeyValuePair<RowCombination, int> item in d) {
@@ -49,6 +51,7 @@ namespace LPP.TruthTable
             }
 
             RowResultPairs = simplifiedTruth;
+            TruthTableSimplified = true;
         }
 
         public void CreateTruthTable (Node root) {
@@ -63,6 +66,7 @@ namespace LPP.TruthTable
             }
 
             RowResultPairs = result;
+            TruthTableSimplified = false;
         }
 
         public string GetHexaDecimal () {

@@ -36,6 +36,7 @@
             this.truthtableButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.infixTextBox = new System.Windows.Forms.TextBox();
+            this.simplifyTruthTableButton = new System.Windows.Forms.Button();
             this.graphPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphPicture)).BeginInit();
             this.SuspendLayout();
@@ -80,7 +81,7 @@
             // 
             // outputTextbox
             // 
-            this.outputTextbox.Location = new System.Drawing.Point(419, 67);
+            this.outputTextbox.Location = new System.Drawing.Point(419, 91);
             this.outputTextbox.Name = "outputTextbox";
             this.outputTextbox.Size = new System.Drawing.Size(369, 186);
             this.outputTextbox.TabIndex = 3;
@@ -89,7 +90,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(746, 48);
+            this.label1.Location = new System.Drawing.Point(746, 67);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 13);
             this.label1.TabIndex = 4;
@@ -132,11 +133,22 @@
             this.infixTextBox.Size = new System.Drawing.Size(100, 20);
             this.infixTextBox.TabIndex = 8;
             // 
+            // simplifyTruthTableButton
+            // 
+            this.simplifyTruthTableButton.Location = new System.Drawing.Point(632, 38);
+            this.simplifyTruthTableButton.Name = "simplifyTruthTableButton";
+            this.simplifyTruthTableButton.Size = new System.Drawing.Size(75, 23);
+            this.simplifyTruthTableButton.TabIndex = 9;
+            this.simplifyTruthTableButton.Text = "Simplify";
+            this.simplifyTruthTableButton.UseVisualStyleBackColor = true;
+            this.simplifyTruthTableButton.Click += new System.EventHandler(this.simplifyTruthTableButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.simplifyTruthTableButton);
             this.Controls.Add(this.infixTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.truthtableButton);
@@ -168,6 +180,7 @@
         private System.Windows.Forms.Button truthtableButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox infixTextBox;
+        private System.Windows.Forms.Button simplifyTruthTableButton;
     }
 }
 

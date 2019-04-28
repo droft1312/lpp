@@ -67,5 +67,17 @@ namespace LPP
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }
+
+        private void simplifyTruthTableButton_Click (object sender, EventArgs e) {
+            if (mainUnit.Truth == null) return;
+
+            var simplified = mainUnit.SimplifyTruthTable (mainUnit.Truth);
+
+            string output = PrintOutTruthTable (simplified.RowResultPairs);
+
+            output += "Hexadecimal: " + mainUnit.GenerateHexaDecimal (simplified);
+
+            OutputInformationToTextBox (output, ref outputTextbox);
+        }
     }
 }

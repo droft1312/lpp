@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace LPP.TruthTable
 {
-//#pragma warning disable 0660
-//#pragma warning disable 0661
+#pragma warning disable 0660
+#pragma warning disable 0661
     public class RowCombination
     {
         /// <summary>
@@ -193,6 +193,6 @@ namespace LPP.TruthTable
         }
     }
 
-//#pragma warning restore 0660
-//#pragma warning restore 0661
+#pragma warning restore 0660
+#pragma warning restore 0661
 }
