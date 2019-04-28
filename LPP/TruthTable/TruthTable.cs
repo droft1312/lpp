@@ -1,10 +1,7 @@
-﻿using System;
+﻿using LPP.Nodes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using LPP.Nodes;
 using static LPP.Functions;
 
 namespace LPP.TruthTable
@@ -18,34 +15,43 @@ namespace LPP.TruthTable
         }
 
         public void Simplify () {
-
             if (RowResultPairs == null) throw new Exception ("There's no truth-table to simplify");
 
-            /* 
-             Algorithm:
-             1) Evaluate if a row is simplifiable (all but one of the nodes in a row are the same)
-             2) Go over the truth-table.rowCombination and find a matching row to our current one
-             3) Add it to the new table
-             
-             */
-
-            var simplifiedTruthTable = new Dictionary<RowCombination, int> ();
-
-
-            foreach (KeyValuePair<RowCombination, int> pair in RowResultPairs) {
-                var simplifiable = pair.Key.SatisfiesConditionForSimplification ();
-
-                if (simplifiable) {
-                    foreach (KeyValuePair<RowCombination, int> item in RowResultPairs) {
-                        if (item.Key != pair.Key && item.Value == pair.Value) {
-
-                        }
+            bool DictionaryHasRowCombination (KeyValuePair<RowCombination, int> r, Dictionary<RowCombination, int> d) {
+                foreach (KeyValuePair<RowCombination, int> item in d) {
+                    if (r.Key.Matches (item.Key) && r.Value == item.Value) {
+                        return true;
                     }
                 }
+                return false;
             }
+
+            Dictionary<RowCombination, int> simplifiedTruth = new Dictionary<RowCombination, int> ();
+
+            foreach (KeyValuePair<RowCombination, int> pair in RowResultPairs) {
+
+                if (DictionaryHasRowCombination (pair, simplifiedTruth)) continue;
+
+                if (pair.Key.SatisfiesConditionForSimplification ()) {
+                    var distinctVariable = pair.Key.GetDistinctProposition ();
+
+                    simplifiedTruth.Add (CreateRowCombinationWithStars (distinctVariable), pair.Value);
+                }
+
+            }
+
+            foreach (KeyValuePair<RowCombination, int> pair in RowResultPairs) {
+
+                if (!DictionaryHasRowCombination (pair, simplifiedTruth) && !pair.Key.SatisfiesConditionForSimplification ()) {
+                    simplifiedTruth.Add (pair.Key, pair.Value);
+                }
+
+            }
+
+            RowResultPairs = simplifiedTruth;
         }
 
-        public void CreateTruthTable(Node root) {
+        public void CreateTruthTable (Node root) {
             var nodes = GetPropositions (root).ToCharArray ();
             var combinations = GetAllCombinations (nodes);
 
@@ -59,10 +65,27 @@ namespace LPP.TruthTable
             RowResultPairs = result;
         }
 
-        public string GetHexaDecimal() {
+        public string GetHexaDecimal () {
             string results = string.Empty;
             for (int i = RowResultPairs.Values.Count () - 1; i >= 0; i--) results += RowResultPairs.Values.ElementAt (i);
             return System.Convert.ToInt32 (results, 2).ToString ("X");
+        }
+
+        private RowCombination CreateRowCombinationWithStars(KeyValuePair<char, int> pair) {
+
+            var random_row = RowResultPairs.First ().Key;
+            string names = random_row.GetNames ();
+            string values = string.Empty;
+
+            for (int i = 0; i < names.Length; i++) {
+                if (names[i] != pair.Key) {
+                    values += "*";
+                } else {
+                    values += pair.Value;
+                }
+            }
+
+            return new RowCombination (names.ToCharArray (), values);
         }
     }
 }

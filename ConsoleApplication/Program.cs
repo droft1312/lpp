@@ -20,10 +20,9 @@ namespace ConsoleApplication
 
             p.ProcessStringInput (inputs[3]);
 
-            RowCombination r = new RowCombination ("ABC".ToCharArray (), "111");
-            RowCombination r2 = new RowCombination ("ABC".ToCharArray (), "111");
+            var truthTable = p.DetermineTruthTable (p.Root);
 
-            Console.WriteLine (r == r2);
+            truthTable.Simplify ();
 
 
             Console.ReadKey ();

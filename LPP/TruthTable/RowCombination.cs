@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LPP.TruthTable
 {
-#pragma warning disable 0660
-#pragma warning disable 0661
+//#pragma warning disable 0660
+//#pragma warning disable 0661
     public class RowCombination
     {
         /// <summary>
@@ -102,11 +100,6 @@ namespace LPP.TruthTable
             // 1111     =>   1
             // 0101     =>   1
 
-            /*    
-             *  Find which variable is different, for example 0001 means that variable D = 1 and thus is a distinct one
-             *  Check if the other rowcombination has it as well, if so, return true, if not, return false
-             */
-
             if (this.nodeValues.Length != r.nodeValues.Length) return false;
 
             var length = nodeValues.Length;
@@ -116,7 +109,7 @@ namespace LPP.TruthTable
                 var valueToCompare = r.nodeValues[i];
 
                 if (!(ourValue.Value is String || valueToCompare.Value is String)) {
-                    if (!((int)ourValue.Value == (int)valueToCompare.Value)) {
+                    if ((int)ourValue.Value != (int)valueToCompare.Value) {
                         return false;
                     }
                 }
@@ -125,7 +118,6 @@ namespace LPP.TruthTable
 
             return true;
         }
-
 
         /// <summary>
         /// Parses the input to assign values to the nodes
@@ -149,6 +141,26 @@ namespace LPP.TruthTable
             }
         }
 
+        public KeyValuePair<char, int> GetDistinctProposition() {
+            if (!SatisfiesConditionForSimplification ()) throw new Exception ("This is not a Simplifiable RowCombination");
+
+            var truths = this.nodeValues.Where (x => (int)x.Value == 1).Count ();
+            var falses = this.nodeValues.Where (x => (int)x.Value == 0).Count ();
+
+            var result = this.nodeValues.First (node => (int)node.Value == ((truths < falses) ? 1 : 0));
+
+            return new KeyValuePair<char, int> (result.Name, (int)result.Value);
+        }
+
+        public string GetNames() {
+            string res = string.Empty;
+
+            for (int i = 0; i < nodeValues.Length; i++) {
+                res += nodeValues[i].Name;
+            }
+
+            return res;
+        }
 
         public override string ToString () {
             string s = "";
@@ -173,7 +185,7 @@ namespace LPP.TruthTable
                 return false;
             }
 
-            return r1.Matches (r2);
+            return Enumerable.SequenceEqual (r1.nodeValues, r2.nodeValues);
         }
 
         public static bool operator != (RowCombination r1, RowCombination r2) {
@@ -181,6 +193,6 @@ namespace LPP.TruthTable
         }
     }
 
-#pragma warning restore 0660
-#pragma warning restore 0661
+//#pragma warning restore 0660
+//#pragma warning restore 0661
 }
