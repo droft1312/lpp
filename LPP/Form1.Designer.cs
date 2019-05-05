@@ -37,6 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.infixTextBox = new System.Windows.Forms.TextBox();
             this.simplifyTruthTableButton = new System.Windows.Forms.Button();
+            this.disjunctiveFormButton = new System.Windows.Forms.Button();
             this.graphPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graphPicture)).BeginInit();
             this.SuspendLayout();
@@ -143,11 +144,22 @@
             this.simplifyTruthTableButton.UseVisualStyleBackColor = true;
             this.simplifyTruthTableButton.Click += new System.EventHandler(this.simplifyTruthTableButton_Click);
             // 
+            // disjunctiveFormButton
+            // 
+            this.disjunctiveFormButton.Location = new System.Drawing.Point(713, 38);
+            this.disjunctiveFormButton.Name = "disjunctiveFormButton";
+            this.disjunctiveFormButton.Size = new System.Drawing.Size(75, 23);
+            this.disjunctiveFormButton.TabIndex = 10;
+            this.disjunctiveFormButton.Text = "Disjunctive";
+            this.disjunctiveFormButton.UseVisualStyleBackColor = true;
+            this.disjunctiveFormButton.Click += new System.EventHandler(this.disjunctiveFormButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.disjunctiveFormButton);
             this.Controls.Add(this.simplifyTruthTableButton);
             this.Controls.Add(this.infixTextBox);
             this.Controls.Add(this.label2);
@@ -181,6 +193,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox infixTextBox;
         private System.Windows.Forms.Button simplifyTruthTableButton;
+        private System.Windows.Forms.Button disjunctiveFormButton;
     }
 }
 

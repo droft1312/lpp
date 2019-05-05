@@ -1,7 +1,8 @@
-﻿using LPP.Nodes;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
+using System.Collections.Generic;
+
+using LPP.Nodes;
 using static LPP.Functions;
 
 namespace LPP.TruthTable
@@ -51,6 +52,22 @@ namespace LPP.TruthTable
 
             RowResultPairs = simplifiedTruth;
             TruthTableSimplified = true;
+        }
+
+        public string CreateDisjunctiveForm() {
+            string result = string.Empty;
+
+            foreach (KeyValuePair<RowCombination, int> item in RowResultPairs) {
+                if (item.Value == 1) {
+                    var row = item.Key;
+
+                    result += row.GetDisjunctiveForm ();
+                    result += " | ";
+                    result += "\n";
+                }
+            }
+
+            return result;
         }
 
         public void CreateTruthTable (Node root) {

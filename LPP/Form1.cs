@@ -81,5 +81,11 @@ namespace LPP
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }
+
+        private void disjunctiveFormButton_Click (object sender, EventArgs e) {
+            if (mainUnit.Truth == null) return;
+
+            OutputInformationToTextBox (mainUnit.Truth.CreateDisjunctiveForm (), ref outputTextbox);
+        }
     }
 }

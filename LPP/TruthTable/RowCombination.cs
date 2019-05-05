@@ -46,6 +46,21 @@ namespace LPP.TruthTable
             AssignValues (input);
         }
 
+        public string GetDisjunctiveForm() {
+            string result = string.Empty;
+
+            for (int i = 0; i < nodeValues.Length; i++) {
+                if (nodeValues[i].Value is Int32) { 
+                    result += (((int)nodeValues[i].Value == 0) ? "~" : string.Empty) + nodeValues[i].Name;
+                    result += (i != nodeValues.Length - 1) ? " & " : string.Empty;
+                } else {
+                    throw new Exception ("There was a star in a row apparently");
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// This method shall be used in simplification process. ONLY TO BE USED ON ROWS THAT DO NOT CONTAIN STRING VALUES (*)
         /// </summary>
