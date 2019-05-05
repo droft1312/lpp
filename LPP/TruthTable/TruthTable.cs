@@ -56,14 +56,16 @@ namespace LPP.TruthTable
 
         public string CreateDisjunctiveForm() {
             string result = string.Empty;
-
+            
             foreach (KeyValuePair<RowCombination, int> item in RowResultPairs) {
                 if (item.Value == 1) {
                     var row = item.Key;
 
+                    result += "(";
                     result += row.GetDisjunctiveForm ();
+                    result += ")";
+                    if (item.Key == RowResultPairs.Last ().Key && item.Value == RowResultPairs.Last ().Value) break;
                     result += " | ";
-                    result += "\n";
                 }
             }
 
