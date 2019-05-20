@@ -19,6 +19,11 @@ namespace LPP.TruthTable
             if (RowResultPairs == null) throw new Exception ("There's no truth-table to simplify");
             if (TruthTableSimplified) return;
 
+            if (IsTautology ()) {
+                SimplifyTautology ();
+                return;
+            }
+
             bool DictionaryHasRowCombination (KeyValuePair<RowCombination, int> r, Dictionary<RowCombination, int> d) {
                 foreach (KeyValuePair<RowCombination, int> item in d) {
                     if (r.Key.Matches (item.Key) && r.Value == item.Value) {
@@ -52,6 +57,11 @@ namespace LPP.TruthTable
 
             RowResultPairs = simplifiedTruth;
             TruthTableSimplified = true;
+        }
+
+        private void SimplifyTautology () {
+            Dictionary<RowCombination, int> simplifiedTruth = new Dictionary<RowCombination, int> ();
+            //simplifiedTruth.Add()
         }
 
         public string CreateDisjunctiveForm() {
@@ -142,6 +152,10 @@ namespace LPP.TruthTable
             }
 
             return new RowCombination (names.ToCharArray (), values);
+        }
+
+        private bool IsTautology() {
+            return RowResultPairs.Values.All (x => x == 1);
         }
     }
 }

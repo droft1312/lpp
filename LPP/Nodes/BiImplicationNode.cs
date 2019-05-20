@@ -14,7 +14,8 @@
         public override bool GetValue (string input) {
             bool leftVal = this.left.GetValue (input);
             bool rightVal = this.right.GetValue (input);
-            return ((!leftVal || rightVal) && (!rightVal || leftVal));
+            //return ((!leftVal || rightVal) && (!rightVal || leftVal));
+            return leftVal == rightVal;
         }
 
         public override string ToString () {

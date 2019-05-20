@@ -38,12 +38,25 @@ namespace LPP.TruthTable
         }
 
         NodeValue[] nodeValues; // values in this row
+        private readonly string input;
 
         public RowCombination(char[] names, string input) {
             nodeValues = new NodeValue[names.Length];
             for (int i = 0; i < nodeValues.Length; i++) nodeValues[i] = new NodeValue (names[i], -1);
 
+            this.input = input; // is done for disjunctive to reverse
+
             AssignValues (input);
+        }
+
+        public string GetPrefixDisjunctiveForm() {
+            string result = string.Empty;
+
+            for (int i = 0; i < nodeValues.Length; i++) {
+                string temp = "&(";
+            }
+
+            return result;
         }
 
         public string GetDisjunctiveForm() {
