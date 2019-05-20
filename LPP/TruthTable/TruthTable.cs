@@ -20,6 +20,7 @@ namespace LPP.TruthTable
             if (TruthTableSimplified) return;
 
             if (IsTautology ()) {
+                // TODO: simplify when tautology
                 SimplifyTautology ();
                 return;
             }
@@ -65,6 +66,7 @@ namespace LPP.TruthTable
         }
 
         public string CreateDisjunctiveForm() {
+            // TODO: Make disjunctive creation wok 
             string result = string.Empty;
             
             foreach (KeyValuePair<RowCombination, int> item in RowResultPairs) {

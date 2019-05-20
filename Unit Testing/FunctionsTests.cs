@@ -20,8 +20,6 @@ namespace Unit_Testing
 
             int total;
             string nodes;
-
-            // TODO: figure out why this unit test doesnt wanna run
             //(total, nodes) = GetPropositions (p.Root);
 
             //Assert.AreEqual (2, total);
