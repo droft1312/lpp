@@ -53,7 +53,6 @@ namespace LPP.TruthTable
             string result = string.Empty;
 
             for (int i = 0; i < nodeValues.Length; i++) {
-                string temp = "&(";
             }
 
             return result;
@@ -213,6 +212,10 @@ namespace LPP.TruthTable
 
         public static bool operator != (RowCombination r1, RowCombination r2) {
             return !(r1 == r2);
+        }
+
+        public static RowCombination InstantiateRowCombinationOnlyWithStars(char[] names) {
+            return new RowCombination (names, new string ('*', names.Length));
         }
     }
 

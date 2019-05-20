@@ -20,7 +20,7 @@ namespace LPP.TruthTable
             if (TruthTableSimplified) return;
 
             if (IsTautology ()) {
-                // TODO: simplify when tautology
+                // if the truth-table is actually tautology
                 SimplifyTautology ();
                 return;
             }
@@ -60,9 +60,14 @@ namespace LPP.TruthTable
             TruthTableSimplified = true;
         }
 
+
+        /// <summary>
+        /// Creates a truth-table consisting only of *
+        /// </summary>
         private void SimplifyTautology () {
             Dictionary<RowCombination, int> simplifiedTruth = new Dictionary<RowCombination, int> ();
-            //simplifiedTruth.Add()
+            simplifiedTruth.Add (RowCombination.InstantiateRowCombinationOnlyWithStars (RowResultPairs.First().Key.GetNames().ToCharArray()), 1);
+            RowResultPairs = simplifiedTruth;
         }
 
         public string CreateDisjunctiveForm() {
@@ -156,6 +161,10 @@ namespace LPP.TruthTable
             return new RowCombination (names.ToCharArray (), values);
         }
 
+        /// <summary>
+        /// checks if a truth-table is tautology
+        /// </summary>
+        /// <returns></returns>
         private bool IsTautology() {
             return RowResultPairs.Values.All (x => x == 1);
         }
