@@ -4,24 +4,32 @@ using System.Collections.Generic;
 
 using LPP.Nodes;
 using static LPP.Functions;
+using System.Text;
 
 namespace LPP.TruthTable
 {
     public class TruthTable
     {
         public Dictionary<RowCombination, int> RowResultPairs { get; private set; }
-        private bool TruthTableSimplified = false;
+        private bool _truthTableSimplified = false;
 
         public TruthTable () {
         }
 
         public void Simplify () {
             if (RowResultPairs == null) throw new Exception ("There's no truth-table to simplify");
-            if (TruthTableSimplified) return;
+            if (_truthTableSimplified) return;
+
+            if (IsContradiction()) {
+                // truth-table is contradiction, thus it's not simplifiable 
+                _truthTableSimplified = true;
+                return;
+            }
 
             if (IsTautology ()) {
                 // if the truth-table is actually tautology
                 SimplifyTautology ();
+                _truthTableSimplified = true;
                 return;
             }
 
@@ -57,7 +65,7 @@ namespace LPP.TruthTable
             }
 
             RowResultPairs = simplifiedTruth;
-            TruthTableSimplified = true;
+            _truthTableSimplified = true;
         }
 
 
@@ -96,13 +104,16 @@ namespace LPP.TruthTable
 
             Dictionary<RowCombination, int> result = new Dictionary<RowCombination, int> ();
 
+            int tempCounter = 0;
+
             foreach (var item in combinations) {
+                tempCounter++;
                 string truth_values = item.ToString ();
                 result.Add (item, System.Convert.ToInt32 (root.GetValue (truth_values)));
             }
 
             RowResultPairs = result;
-            TruthTableSimplified = false;
+            _truthTableSimplified = false;
         }
 
         /// <summary>
@@ -139,9 +150,31 @@ namespace LPP.TruthTable
         }
 
         public string GetHexaDecimal () {
-            string results = string.Empty;
-            for (int i = RowResultPairs.Values.Count () - 1; i >= 0; i--) results += RowResultPairs.Values.ElementAt (i);
-            return System.Convert.ToInt32 (results, 2).ToString ("X");
+
+
+            // TODO: Make Hexadecimal work for bigger values
+
+
+            string binary = string.Empty;
+            for (int i = RowResultPairs.Values.Count () - 1; i >= 0; i--) binary += RowResultPairs.Values.ElementAt (i);
+
+            StringBuilder result = new StringBuilder (binary.Length / 8 + 1);
+
+            // TODO: check all 1's or 0's... Will throw otherwise
+
+            int mod4Len = binary.Length % 8;
+            if (mod4Len != 0) {
+                // pad to length multiple of 8
+                binary = binary.PadLeft (((binary.Length / 8) + 1) * 8, '0');
+            }
+
+            for (int i = 0; i < binary.Length; i += 8) {
+                string eightBits = binary.Substring (i, 8);
+                result.AppendFormat ("{0:X2}", System.Convert.ToByte (eightBits, 2));
+            }
+
+            return result.ToString ();
+
         }
 
         private RowCombination CreateRowCombinationWithStars(KeyValuePair<char, int> pair) {
@@ -167,6 +200,15 @@ namespace LPP.TruthTable
         /// <returns></returns>
         private bool IsTautology() {
             return RowResultPairs.Values.All (x => x == 1);
+        }
+
+        /// <summary>
+        /// checks if a truth-table is contradiction
+        /// </summary>
+        /// <returns></returns>
+        private bool IsContradiction()
+        {
+            return RowResultPairs.Values.All(x => x == 0);
         }
     }
 }
