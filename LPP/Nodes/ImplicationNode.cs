@@ -11,12 +11,16 @@
 
         public override bool GetValue(string input) {
             var leftVal = left.GetValue(input);
-            var rightVal = right.GetValue(input);
-
+            
+            // if the expression on the left is false, then there's no need to calculate 
+            // what's on the right cuz the expression is always gonna return true
             if (!leftVal)
                 return true;
-
-            return !leftVal || rightVal;
+            
+            
+            var rightVal = right.GetValue(input);
+            
+            return rightVal;
         }
 
         public override string ToString() {

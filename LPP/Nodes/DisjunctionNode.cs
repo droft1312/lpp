@@ -12,7 +12,10 @@
         }
 
         public override bool GetValue (string input) {
-            return (this.left.GetValue (input) || this.right.GetValue (input));
+            var leftVal = left.GetValue(input);
+            var rightVal = right.GetValue(input);
+            
+            return leftVal || rightVal;
         }
 
         public override string ToString () {

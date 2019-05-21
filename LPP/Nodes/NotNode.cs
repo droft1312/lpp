@@ -23,7 +23,8 @@ namespace LPP.Nodes
         }
 
         public override bool GetValue (string input) {
-            return !(this.left.GetValue (input));
+            var leftVal = left.GetValue(input);
+            return !leftVal;
         }
 
         public override string PrintConnections () {
