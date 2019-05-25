@@ -37,34 +37,42 @@ namespace LPP.TruthTable
             }
         }
 
-        NodeValue[] nodeValues; // values in this row
-        private readonly string input;
+        private readonly NodeValue[] _nodeValues; // values in this row
 
         public RowCombination(char[] names, string input) {
-            nodeValues = new NodeValue[names.Length];
-            for (int i = 0; i < nodeValues.Length; i++) nodeValues[i] = new NodeValue (names[i], -1);
+            _nodeValues = new NodeValue[names.Length];
+            for (int i = 0; i < _nodeValues.Length; i++) _nodeValues[i] = new NodeValue (names[i], -1);
 
-            this.input = input; // is done for disjunctive to reverse
 
             AssignValues (input);
         }
 
         public string GetPrefixDisjunctiveForm() {
-            string result = string.Empty;
 
-            for (int i = 0; i < nodeValues.Length; i++) {
+            string s = string.Empty;
+
+            for (int i = 0; i < _nodeValues.Length; i++) {
+                var nodeValue = _nodeValues[i];
+
+                if (nodeValue.Value is Int32) {
+                    s = Functions.Wrap(s, ((int) nodeValue.Value) == 1 ? nodeValue.Name.ToString() : "~(" + nodeValue.Name + ")", '&');
+                }
+                else {
+                    throw new Exception("There was a star in a row combination!");
+                }
             }
 
-            return result;
+
+            return s;
         }
 
         public string GetDisjunctiveForm() {
             string result = string.Empty;
 
-            for (int i = 0; i < nodeValues.Length; i++) {
-                if (nodeValues[i].Value is Int32) { 
-                    result += (((int)nodeValues[i].Value == 0) ? "~" : string.Empty) + nodeValues[i].Name;
-                    result += (i != nodeValues.Length - 1) ? " & " : string.Empty;
+            for (int i = 0; i < _nodeValues.Length; i++) {
+                if (_nodeValues[i].Value is Int32) { 
+                    result += (((int)_nodeValues[i].Value == 0) ? "~" : string.Empty) + _nodeValues[i].Name;
+                    result += (i != _nodeValues.Length - 1) ? " & " : string.Empty;
                 } else {
                     throw new Exception ("There was a star in a row apparently");
                 }
@@ -80,8 +88,8 @@ namespace LPP.TruthTable
         public bool SatisfiesConditionForSimplification() {
 
             List<int> GetValues () {
-                List<int> result = new List<int> (nodeValues.Length);
-                foreach (var item in nodeValues) {
+                List<int> result = new List<int> (_nodeValues.Length);
+                foreach (var item in _nodeValues) {
                     if (item.Value is String) throw new Exception ("You used SatisfiesConditionForSimplification() on a row that has * in it!");
                     result.Add ((int)item.Value);
                 }
@@ -116,13 +124,13 @@ namespace LPP.TruthTable
             // 1111     =>   1
             // 0101     =>   1
 
-            if (this.nodeValues.Length != r.nodeValues.Length) return false;
+            if (this._nodeValues.Length != r._nodeValues.Length) return false;
 
-            var length = nodeValues.Length;
+            var length = _nodeValues.Length;
 
             for (int i = 0; i < length; i++) {
-                var ourValue = this.nodeValues[i];
-                var valueToCompare = r.nodeValues[i];
+                var ourValue = this._nodeValues[i];
+                var valueToCompare = r._nodeValues[i];
 
                 if (!(ourValue.Value is String || valueToCompare.Value is String)) {
                     if ((int)ourValue.Value != (int)valueToCompare.Value) {
@@ -140,7 +148,7 @@ namespace LPP.TruthTable
         /// </summary>
         /// <param name="input"></param>
         private void AssignValues (string input) {
-            if (input.Length != nodeValues.Length) throw new Exception ("Input length different");
+            if (input.Length != _nodeValues.Length) throw new Exception ("Input length different");
 
             for (int i = 0; i < input.Length; i++) {
                 char character = input[i];
@@ -152,7 +160,7 @@ namespace LPP.TruthTable
                 } catch (Exception) {
                     toAdd = character.ToString ();
                 } finally {
-                    nodeValues[i].SetValue (toAdd);
+                    _nodeValues[i].SetValue (toAdd);
                 }
             }
         }
@@ -166,10 +174,10 @@ namespace LPP.TruthTable
         public KeyValuePair<char, int> GetDistinctProposition() {
             if (!SatisfiesConditionForSimplification ()) throw new Exception ("This is not a Simplifiable RowCombination");
 
-            var truths = this.nodeValues.Where (x => (int)x.Value == 1).Count ();
-            var falses = this.nodeValues.Where (x => (int)x.Value == 0).Count ();
+            var truths = this._nodeValues.Where (x => (int)x.Value == 1).Count ();
+            var falses = this._nodeValues.Where (x => (int)x.Value == 0).Count ();
 
-            var result = this.nodeValues.First (node => (int)node.Value == ((truths < falses) ? 1 : 0));
+            var result = this._nodeValues.First (node => (int)node.Value == ((truths < falses) ? 1 : 0));
 
             return new KeyValuePair<char, int> (result.Name, (int)result.Value);
         }
@@ -177,8 +185,8 @@ namespace LPP.TruthTable
         public string GetNames() {
             string res = string.Empty;
 
-            for (int i = 0; i < nodeValues.Length; i++) {
-                res += nodeValues[i].Name;
+            for (int i = 0; i < _nodeValues.Length; i++) {
+                res += _nodeValues[i].Name;
             }
 
             return res;
@@ -186,7 +194,7 @@ namespace LPP.TruthTable
 
         public override string ToString () {
             string s = "";
-            foreach (var node in nodeValues) {
+            foreach (var node in _nodeValues) {
                 s += string.Format ("{0}:{1} ", node.Name, node.Value);
             }
             
@@ -207,7 +215,7 @@ namespace LPP.TruthTable
                 return false;
             }
 
-            return Enumerable.SequenceEqual (r1.nodeValues, r2.nodeValues);
+            return Enumerable.SequenceEqual (r1._nodeValues, r2._nodeValues);
         }
 
         public static bool operator != (RowCombination r1, RowCombination r2) {

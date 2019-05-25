@@ -17,11 +17,8 @@ namespace ConsoleApplication
 
         static void Main (string[] args) {
 
-            Processor p = new Processor ();
-
-            p.ProcessStringInput (inputs[4]);
-
             Console.ReadKey ();
+            
         }
     }
 }

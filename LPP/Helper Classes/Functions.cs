@@ -16,6 +16,23 @@ namespace LPP
     public static class Functions
     {
         /// <summary>
+        /// Creates a prefix string
+        /// </summary>
+        /// <param name="initial">Current string</param>
+        /// <param name="toAdd">Thing you wanna add</param>
+        /// <param name="symbol">Symbol that you wrap it all around with</param>
+        /// <returns>Wrapped new string</returns>
+        public static string Wrap(string initial, string toAdd, char symbol) {
+
+            const char openingParentheses = '(';
+            const char closingParentheses = ')';
+            const char comma = ',';
+
+            if (initial == string.Empty) return toAdd;
+            return symbol.ToString() + openingParentheses + toAdd + comma + initial + closingParentheses;
+        }
+        
+        /// <summary>
         /// Returns a printed truth-table
         /// </summary>
         /// <param name="truthTable"></param>
@@ -74,6 +91,15 @@ namespace LPP
             }
 
             return default (T);
+        }
+        
+        /// <summary>
+        /// Convert integer number to a boolean
+        /// </summary>
+        /// <param name="n"></param>
+        /// <returns></returns>
+        public static bool ConvertIntToBool(int n) {
+            return n == 1;
         }
     }
 }

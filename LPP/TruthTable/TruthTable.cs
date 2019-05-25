@@ -88,6 +88,23 @@ namespace LPP.TruthTable
             RowResultPairs = simplifiedTruth;
         }
 
+        public string DisjunctiveForm() {
+
+            const int TRUTH = 1;
+
+            string s = string.Empty;
+            
+            foreach (KeyValuePair<RowCombination,int> pair in RowResultPairs) {
+                if (pair.Value == TRUTH) { // if the result of the row is true, we do a disjunctive form
+                    var row = pair.Key;
+                    string prefixDisjFormOfRow = row.GetPrefixDisjunctiveForm();
+                    s = Functions.Wrap(s, prefixDisjFormOfRow, '|');
+                }
+            }
+
+            return s;
+        }
+
         public string CreateDisjunctiveForm() {
             // TODO: Make disjunctive creation wok 
             string result = string.Empty;
