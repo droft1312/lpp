@@ -83,9 +83,20 @@ namespace LPP
         }
 
         private void disjunctiveFormButton_Click (object sender, EventArgs e) {
-            if (mainUnit.Truth == null) return;
+            if (mainUnit.Truth == null) {
+                MessageBox.Show("Please, generate a truth-table first!");
+                return;
+            }
 
-            OutputInformationToTextBox (mainUnit.Truth.DisjunctiveForm(), ref outputTextbox);
+            string disjunctivePrefixForm = mainUnit.Truth.DisjunctiveForm();
+            
+            // create a tree and display it
+            mainUnit.ProcessStringInput(disjunctivePrefixForm);
+            mainUnit.GenerateGraphImage (ref graphPicture, mainUnit.Root);
+            mainUnit.PrintOutInfixNotation (mainUnit.Root, infixTextBox);
+            
+            // show a truth-table
+            truthtableButton_Click(this, EventArgs.Empty);
         }
     }
 }
