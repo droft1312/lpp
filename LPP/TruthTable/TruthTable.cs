@@ -109,6 +109,7 @@ namespace LPP.TruthTable
         public void CreateTruthTable(Node root) {
             var props = "";
             root.GetAllPropositions(ref props);
+            props = String.Concat(props.OrderBy(c => c));
             var nodes = props.ToCharArray();
             var combinations = GetAllCombinations(nodes);
 
