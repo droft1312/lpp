@@ -66,21 +66,6 @@ namespace LPP.TruthTable
             return s;
         }
 
-        public string GetDisjunctiveForm() {
-            string result = string.Empty;
-
-            for (int i = 0; i < _nodeValues.Length; i++) {
-                if (_nodeValues[i].Value is Int32) { 
-                    result += (((int)_nodeValues[i].Value == 0) ? "~" : string.Empty) + _nodeValues[i].Name;
-                    result += (i != _nodeValues.Length - 1) ? " & " : string.Empty;
-                } else {
-                    throw new Exception ("There was a star in a row apparently");
-                }
-            }
-
-            return result;
-        }
-
         /// <summary>
         /// This method shall be used in simplification process. ONLY TO BE USED ON ROWS THAT DO NOT CONTAIN STRING VALUES (*)
         /// </summary>
@@ -110,7 +95,7 @@ namespace LPP.TruthTable
             }
 
             if (counter[0] == vals.Count - 1 || counter[1] == vals.Count - 1) return true;
-            else return false;
+            return false;
         }
 
         /// <summary>
@@ -124,12 +109,12 @@ namespace LPP.TruthTable
             // 1111     =>   1
             // 0101     =>   1
 
-            if (this._nodeValues.Length != r._nodeValues.Length) return false;
+            if (_nodeValues.Length != r._nodeValues.Length) return false;
 
             var length = _nodeValues.Length;
 
             for (int i = 0; i < length; i++) {
-                var ourValue = this._nodeValues[i];
+                var ourValue = _nodeValues[i];
                 var valueToCompare = r._nodeValues[i];
 
                 if (!(ourValue.Value is String || valueToCompare.Value is String)) {
@@ -174,10 +159,10 @@ namespace LPP.TruthTable
         public KeyValuePair<char, int> GetDistinctProposition() {
             if (!SatisfiesConditionForSimplification ()) throw new Exception ("This is not a Simplifiable RowCombination");
 
-            var truths = this._nodeValues.Where (x => (int)x.Value == 1).Count ();
-            var falses = this._nodeValues.Where (x => (int)x.Value == 0).Count ();
+            var truths = _nodeValues.Where (x => (int)x.Value == 1).Count ();
+            var falses = _nodeValues.Where (x => (int)x.Value == 0).Count ();
 
-            var result = this._nodeValues.First (node => (int)node.Value == ((truths < falses) ? 1 : 0));
+            var result = _nodeValues.First (node => (int)node.Value == ((truths < falses) ? 1 : 0));
 
             return new KeyValuePair<char, int> (result.Name, (int)result.Value);
         }
@@ -202,20 +187,20 @@ namespace LPP.TruthTable
         }
 
         public static bool operator ==(RowCombination r1, RowCombination r2) {
-            if (object.ReferenceEquals(r1, null)) {
-                if (object.ReferenceEquals(r2, null)) {
+            if (ReferenceEquals(r1, null)) {
+                if (ReferenceEquals(r2, null)) {
                     return true;
                 }
                 return false;
             }
-            if (object.ReferenceEquals (r2, null)) {
-                if (object.ReferenceEquals (r1, null)) {
+            if (ReferenceEquals (r2, null)) {
+                if (ReferenceEquals (r1, null)) {
                     return true;
                 }
                 return false;
             }
 
-            return Enumerable.SequenceEqual (r1._nodeValues, r2._nodeValues);
+            return r1._nodeValues.SequenceEqual (r2._nodeValues);
         }
 
         public static bool operator != (RowCombination r1, RowCombination r2) {

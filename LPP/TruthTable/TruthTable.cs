@@ -11,7 +11,7 @@ namespace LPP.TruthTable
         public Dictionary<RowCombination, int> RowResultPairs { get; private set; }
         private bool _truthTableSimplified;
 
-        // TODO: Simplify doesn't work properly awlays. FIX IT
+        // TODO: Simplify doesn't work properly always. FIX IT
         public void Simplify() {
             if (RowResultPairs == null) throw new Exception("There's no truth-table to simplify");
             if (_truthTableSimplified) return;
@@ -88,8 +88,9 @@ namespace LPP.TruthTable
             RowResultPairs = simplifiedTruth;
         }
 
+        // TODO: Finish disjunctive form
         public string DisjunctiveForm() {
-
+            
             const int TRUTH = 1;
 
             string s = string.Empty;
@@ -101,27 +102,8 @@ namespace LPP.TruthTable
                     s = Functions.Wrap(s, prefixDisjFormOfRow, '|');
                 }
             }
-
+ 
             return s;
-        }
-
-        public string CreateDisjunctiveForm() {
-            // TODO: Make disjunctive creation wok 
-            string result = string.Empty;
-
-            foreach (KeyValuePair<RowCombination, int> item in RowResultPairs) {
-                if (item.Value == 1) {
-                    var row = item.Key;
-
-                    result += "(";
-                    result += row.GetDisjunctiveForm();
-                    result += ")";
-                    if (item.Key == RowResultPairs.Last().Key && item.Value == RowResultPairs.Last().Value) break;
-                    result += " | ";
-                }
-            }
-
-            return result;
         }
 
         public void CreateTruthTable(Node root) {
