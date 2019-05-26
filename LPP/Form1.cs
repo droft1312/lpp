@@ -15,12 +15,12 @@ namespace LPP
 {
     public partial class Form1 : Form
     {
-        Processor mainUnit;
+        private readonly Processor _mainUnit;
 
         public Form1 () {
             InitializeComponent ();
 
-            mainUnit = new Processor ();
+            _mainUnit = new Processor ();
         }
 
         private void OutputInformationToTextBox(string input, ref RichTextBox textBox) {
@@ -29,22 +29,22 @@ namespace LPP
 
         private void processInput_Click (object sender, EventArgs e) {
             string input = inputTextBox.Text;
-            mainUnit.ProcessStringInput (input);
-            mainUnit.GenerateGraphImage (ref graphPicture, mainUnit.Root);
-            mainUnit.PrintOutInfixNotation (mainUnit.Root, infixTextBox);
+            _mainUnit.ProcessStringInput (input);
+            _mainUnit.GenerateGraphImage (ref graphPicture, _mainUnit.Root);
+            _mainUnit.PrintOutInfixNotation (_mainUnit.Root, infixTextBox);
         }
 
         private void inputTextBox_KeyDown (object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Enter) {
-                this.processInput_Click (sender, EventArgs.Empty);
+                processInput_Click (sender, EventArgs.Empty);
             }
         }
 
         private void propositionsNamesButton_Click (object sender, EventArgs e) {
-            if (mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
+            if (_mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
 
             string props = "";
-            mainUnit.Root.GetAllPropositions (ref props);
+            _mainUnit.Root.GetAllPropositions (ref props);
 
 
             string temp = "Propositions:\n";
@@ -59,41 +59,41 @@ namespace LPP
         }
 
         private void truthtableButton_Click (object sender, EventArgs e) {
-            if (mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
+            if (_mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
 
-            var truth_table = mainUnit.DetermineTruthTable (mainUnit.Root);
+            var truth_table = _mainUnit.DetermineTruthTable (_mainUnit.Root);
 
             string output = PrintOutTruthTable (truth_table.RowResultPairs);
 
-            output += "Hexadecimal: " + mainUnit.GenerateHexaDecimal (truth_table);
+            output += "Hexadecimal: " + _mainUnit.GenerateHexaDecimal (truth_table);
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }
 
         private void simplifyTruthTableButton_Click (object sender, EventArgs e) {
-            if (mainUnit.Truth == null) return;
+            if (_mainUnit.Truth == null) return;
 
-            var simplified = mainUnit.SimplifyTruthTable (mainUnit.Truth);
+            var simplified = _mainUnit.SimplifyTruthTable (_mainUnit.Truth);
 
             string output = PrintOutTruthTable (simplified.RowResultPairs);
 
-            output += "Hexadecimal: " + mainUnit.GenerateHexaDecimal (simplified);
+            output += "Hexadecimal: " + _mainUnit.GenerateHexaDecimal (simplified);
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }
 
         private void disjunctiveFormButton_Click (object sender, EventArgs e) {
-            if (mainUnit.Truth == null) {
+            if (_mainUnit.Truth == null) {
                 MessageBox.Show("Please, generate a truth-table first!");
                 return;
             }
 
-            string disjunctivePrefixForm = mainUnit.Truth.DisjunctiveForm();
+            string disjunctivePrefixForm = _mainUnit.Truth.DisjunctiveForm();
             
             // create a tree and display it
-            mainUnit.ProcessStringInput(disjunctivePrefixForm);
-            mainUnit.GenerateGraphImage (ref graphPicture, mainUnit.Root);
-            mainUnit.PrintOutInfixNotation (mainUnit.Root, infixTextBox);
+            _mainUnit.ProcessStringInput(disjunctivePrefixForm);
+            _mainUnit.GenerateGraphImage (ref graphPicture, _mainUnit.Root);
+            _mainUnit.PrintOutInfixNotation (_mainUnit.Root, infixTextBox);
             
             // show a truth-table
             truthtableButton_Click(this, EventArgs.Empty);
