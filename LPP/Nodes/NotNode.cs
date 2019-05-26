@@ -8,6 +8,10 @@ namespace LPP.Nodes
         private new readonly Node right;
 #pragma warning restore 0414
 
+        public NotNode(string input) : base(input) {
+            
+        }
+        
         public NotNode (string input, Node parent) : base (input, parent) {
             right = null; // want to make sure that this.right will never be changed or anything
         }

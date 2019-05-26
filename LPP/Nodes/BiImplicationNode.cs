@@ -2,6 +2,10 @@
 {
     public class BiImplicationNode : Node
     {
+        public BiImplicationNode(string input) : base(input) {
+            
+        }
+        
         public BiImplicationNode (string input, Node parent) : base (input, parent) {
 
         }

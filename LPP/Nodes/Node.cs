@@ -18,6 +18,11 @@ namespace LPP.Nodes
             number = ++GlobalCounter.nodes_count;
         }
 
+        public Node(string input) : this() { // instantiates parent,left,right with null; this constructor is primarily used when one wants to copy that node
+            value = input.Substring(1);
+            parent = right = left = null;
+        }
+        
         public Node (string input, Node parent) : this () {
             value = input.Substring (1);
             this.parent = parent;

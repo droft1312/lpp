@@ -2,6 +2,10 @@
 {
     public class ImplicationNode : Node
     {
+        public ImplicationNode(string input) : base(input) {
+            
+        }
+        
         public ImplicationNode(string input, Node parent) : base(input, parent) { }
 
         public override string GetInfix() {

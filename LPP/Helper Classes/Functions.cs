@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using LPP.Nodes;
 using LPP.TruthTable;
 
 namespace LPP
@@ -94,12 +94,44 @@ namespace LPP
         }
         
         /// <summary>
-        /// Convert integer number to a boolean
+        /// Copies given 'root' node but doesn't deep copy the whole tree
         /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
-        public static bool ConvertIntToBool(int n) {
-            return n == 1;
+        /// <param name="root">Node to copy</param>
+        /// <returns>Copy of a given node</returns>
+        /// <exception cref="Exception">Throws an exception if you input a not-specified-before Node</exception>
+        public static Node CopyNode(Node root) {
+            
+            Node node = null;
+
+            if (root == null) return node; // return null basically
+            
+
+            if (root is BiImplicationNode) {
+                node = new BiImplicationNode(root.Value);
+            }
+            else if (root is ConjunctionNode) {
+                node = new ConjunctionNode(root.Value);
+            }
+            else if (root is DisjunctionNode) {
+                node = new DisjunctionNode(root.Value);
+            }
+            else if (root is ImplicationNode) {
+                node = new ImplicationNode(root.Value);
+            }
+            else if (root is NandNode) {
+                node = new NandNode(root.Value);
+            }
+            else if (root is NotNode) {
+                node = new NotNode(root.Value);
+            }
+            else if (root is PropositionNode) {
+                node = new PropositionNode(((PropositionNode)root).Name, root.Value, null);
+            }
+            else {
+                throw new Exception("Something went wrong!");
+            }
+
+            return node;
         }
     }
 }

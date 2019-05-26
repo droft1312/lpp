@@ -127,6 +127,10 @@ namespace LPP
                 BuildTree (input, root);
             }
         }
+
+        public void CreateNANDTree(Node inputNode) {
+
+        }
         
         /// <summary>
         /// Prints out tree in infix notation as opposed to prefix

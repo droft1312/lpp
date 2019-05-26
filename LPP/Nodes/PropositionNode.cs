@@ -11,6 +11,10 @@ namespace LPP.Nodes
         public PropositionNode () {
             left = right = null;
         }
+        
+        public PropositionNode(string input) : base(input) {
+            
+        }
 
         public PropositionNode (char name, string input, Node parent) : base (input, parent) {
             this.name = name;

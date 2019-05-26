@@ -2,6 +2,10 @@
 {
     public class DisjunctionNode : Node
     {
+        public DisjunctionNode(string input) : base(input) {
+            
+        }
+        
         public DisjunctionNode (string input, Node parent) : base (input, parent) {
 
         }

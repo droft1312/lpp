@@ -2,6 +2,10 @@ namespace LPP.Nodes
 {
     public class NandNode : Node
     {
+        public NandNode(string input) : base(input) {
+            
+        }
+        
         public NandNode (string input, Node parent) : base (input, parent) {
 
         }
