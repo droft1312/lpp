@@ -57,9 +57,6 @@ namespace LPP.TruthTable
                 if (nodeValue.Value is Int32) {
                     s = Functions.Wrap(s, ((int) nodeValue.Value) == 1 ? nodeValue.Name.ToString() : "~(" + nodeValue.Name + ")", '&');
                 }
-                else {
-                    throw new Exception("There was a star in a row combination!");
-                }
             }
 
 
@@ -185,7 +182,8 @@ namespace LPP.TruthTable
             
             return s;
         }
-
+        
+        
         public static bool operator ==(RowCombination r1, RowCombination r2) {
             if (ReferenceEquals(r1, null)) {
                 if (ReferenceEquals(r2, null)) {

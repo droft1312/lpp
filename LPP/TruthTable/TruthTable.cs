@@ -96,6 +96,7 @@ namespace LPP.TruthTable
             string s = string.Empty;
             
             foreach (KeyValuePair<RowCombination,int> pair in RowResultPairs) {
+                
                 if (pair.Value == TRUTH) { // if the result of the row is true, we do a disjunctive form
                     var row = pair.Key;
                     string prefixDisjFormOfRow = row.GetPrefixDisjunctiveForm();
