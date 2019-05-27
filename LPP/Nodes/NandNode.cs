@@ -5,6 +5,12 @@ namespace LPP.Nodes
         public NandNode(string input) : base(input) {
             
         }
+
+        public NandNode(Node left, Node right, Node parent = null) {
+            this.left = left;
+            this.right = right;
+            this.parent = parent;
+        }
         
         public NandNode (string input, Node parent) : base (input, parent) {
 

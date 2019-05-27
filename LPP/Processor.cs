@@ -15,7 +15,9 @@ namespace LPP
         private Node root;
         private TruthTable.TruthTable truthTable;
 
-        public Node Root { get { return root; } }
+        public Node Root { get { return root; }
+            set { root = value; }
+        }
         public TruthTable.TruthTable Truth { get { return truthTable; } } 
 
         /// <summary>
@@ -128,8 +130,61 @@ namespace LPP
             }
         }
 
-        public void CreateNANDTree(Node inputNode) {
+        public Node Nandify(Node tree) {
+            /*
+             * possible cases:
+             * 1) implication
+             * 2) bi-implication
+             * 3) disjunction
+             * 4) conjunction
+             * 5) not
+             * 
+             */
 
+            if (tree == null) return null;
+
+            
+            var leftOfTree = tree.left;
+            var rightOfTree = tree.right;
+            
+            var nandifiedLeftSubtree = Nandify(leftOfTree);
+            var nandifiedRightSubtree = Nandify(rightOfTree);
+
+            Node newTree;
+            
+            if (tree is ImplicationNode) { 
+                newTree = new NandNode(nandifiedLeftSubtree, new NandNode(nandifiedRightSubtree, DeepCopyTree(nandifiedRightSubtree)));
+            }
+            else if (tree is BiImplicationNode) { 
+                newTree = new NandNode(
+                    new NandNode(
+                        new NandNode(nandifiedLeftSubtree, DeepCopyTree(nandifiedLeftSubtree)),
+                        new NandNode(nandifiedRightSubtree, DeepCopyTree(nandifiedRightSubtree))
+                        ),
+                    new NandNode(nandifiedLeftSubtree, nandifiedRightSubtree)
+                );
+                
+            }
+            else if (tree is DisjunctionNode) {
+                newTree = new NandNode(
+                    new NandNode(nandifiedLeftSubtree, nandifiedLeftSubtree),
+                    new NandNode(nandifiedRightSubtree, nandifiedRightSubtree)
+                    );
+            }
+            else if (tree is ConjunctionNode) {
+                newTree = new NandNode(
+                    new NandNode(nandifiedLeftSubtree, nandifiedRightSubtree),
+                    new NandNode(nandifiedLeftSubtree, nandifiedRightSubtree)
+                    );
+            }
+            else if (tree is NotNode) {
+                newTree = new NandNode(nandifiedLeftSubtree, nandifiedLeftSubtree);
+            }
+            else {
+                newTree = tree;
+            }
+
+            return newTree;
         }
         
         /// <summary>

@@ -99,7 +99,7 @@ namespace LPP
         /// <param name="root">Node to copy</param>
         /// <returns>Copy of a given node</returns>
         /// <exception cref="Exception">Throws an exception if you input a not-specified-before Node</exception>
-        public static Node CopyNode(Node root) {
+        public static Node DeepCopyTree(Node root) {
             
             Node node = null;
 
@@ -130,6 +130,9 @@ namespace LPP
             else {
                 throw new Exception("Something went wrong!");
             }
+
+            node.left = DeepCopyTree(root.left);
+            node.right = DeepCopyTree(root.right);
 
             return node;
         }

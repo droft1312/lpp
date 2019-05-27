@@ -1,0 +1,10 @@
+NAND:
+>(A,B) = %(A,%(B,B))
+=(A,B) = %(%(%(A,A),%(B,B)),%(A,B))
+|(A,B) = %(%(A,A),%(B,B))
+&(A,B) = %(%(A,B),%(A,B))
+~(A) = %(A,A)
+
+Algorithm for nandify:
+look at the current node, and based on it, create a NAND base node for the new tree
+in place of values of A and B run the same method again(so recursion) to get the left and right nandified subtrees
