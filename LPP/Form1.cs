@@ -100,11 +100,6 @@ namespace LPP
         }
 
         private void nandifyButton_Click(object sender, EventArgs e) {
-            if (_mainUnit.Truth == null) {
-                MessageBox.Show("Please, generate a truth-table first!");
-                return;
-            }
-
             _mainUnit.Root = _mainUnit.Nandify(_mainUnit.Root);
             _mainUnit.GenerateGraphImage(ref graphPicture, _mainUnit.Root);
         }

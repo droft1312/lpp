@@ -2,6 +2,12 @@
 {
     public class ImplicationNode : Node
     {
+        public ImplicationNode() : base() {
+            left = null;
+            right = null;
+            parent = null;
+        }
+        
         public ImplicationNode(string input) : base(input) {
             
         }

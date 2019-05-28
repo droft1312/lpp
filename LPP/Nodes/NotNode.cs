@@ -7,7 +7,13 @@ namespace LPP.Nodes
 #pragma warning disable 0414
         private new readonly Node right;
 #pragma warning restore 0414
-
+        
+        public NotNode() : base() {
+            left = null;
+            right = null;
+            parent = null;
+        }
+        
         public NotNode(string input) : base(input) {
             
         }

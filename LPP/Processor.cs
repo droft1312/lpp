@@ -161,24 +161,24 @@ namespace LPP
                         new NandNode(nandifiedLeftSubtree, DeepCopyTree(nandifiedLeftSubtree)),
                         new NandNode(nandifiedRightSubtree, DeepCopyTree(nandifiedRightSubtree))
                         ),
-                    new NandNode(nandifiedLeftSubtree, nandifiedRightSubtree)
+                    new NandNode(DeepCopyTree(nandifiedLeftSubtree), DeepCopyTree(nandifiedRightSubtree))
                 );
                 
             }
             else if (tree is DisjunctionNode) {
                 newTree = new NandNode(
-                    new NandNode(nandifiedLeftSubtree, nandifiedLeftSubtree),
-                    new NandNode(nandifiedRightSubtree, nandifiedRightSubtree)
+                    new NandNode(nandifiedLeftSubtree, DeepCopyTree(nandifiedLeftSubtree)),
+                    new NandNode(nandifiedRightSubtree, DeepCopyTree(nandifiedRightSubtree))
                     );
             }
             else if (tree is ConjunctionNode) {
                 newTree = new NandNode(
-                    new NandNode(nandifiedLeftSubtree, nandifiedRightSubtree),
-                    new NandNode(nandifiedLeftSubtree, nandifiedRightSubtree)
+                    new NandNode(nandifiedLeftSubtree, DeepCopyTree(nandifiedRightSubtree)),
+                    new NandNode(DeepCopyTree(nandifiedLeftSubtree), nandifiedRightSubtree)
                     );
             }
             else if (tree is NotNode) {
-                newTree = new NandNode(nandifiedLeftSubtree, nandifiedLeftSubtree);
+                newTree = new NandNode(nandifiedLeftSubtree, DeepCopyTree(nandifiedLeftSubtree));
             }
             else {
                 newTree = tree;

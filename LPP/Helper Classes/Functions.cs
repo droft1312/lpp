@@ -103,26 +103,25 @@ namespace LPP
             
             Node node = null;
 
-            if (root == null) return node; // return null basically
-            
+            if (root == null) return null; // return null basically
 
             if (root is BiImplicationNode) {
-                node = new BiImplicationNode(root.Value);
+                node = new BiImplicationNode();
             }
             else if (root is ConjunctionNode) {
-                node = new ConjunctionNode(root.Value);
+                node = new ConjunctionNode();
             }
             else if (root is DisjunctionNode) {
-                node = new DisjunctionNode(root.Value);
+                node = new DisjunctionNode();
             }
             else if (root is ImplicationNode) {
-                node = new ImplicationNode(root.Value);
+                node = new ImplicationNode();
             }
             else if (root is NandNode) {
-                node = new NandNode(root.Value);
+                node = new NandNode();
             }
             else if (root is NotNode) {
-                node = new NotNode(root.Value);
+                node = new NotNode();
             }
             else if (root is PropositionNode) {
                 node = new PropositionNode(((PropositionNode)root).Name, root.Value, null);

@@ -2,6 +2,12 @@ namespace LPP.Nodes
 {
     public class NandNode : Node
     {
+        public NandNode() : base() {
+            left = null;
+            right = null;
+            parent = null;
+        }
+        
         public NandNode(string input) : base(input) {
             
         }
