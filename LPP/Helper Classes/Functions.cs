@@ -101,7 +101,7 @@ namespace LPP
         /// <exception cref="Exception">Throws an exception if you input a not-specified-before Node</exception>
         public static Node DeepCopyTree(Node root) {
             
-            Node node = null;
+            Node node;
 
             if (root == null) return null; // return null basically
 

@@ -103,5 +103,16 @@ namespace LPP
             _mainUnit.Root = _mainUnit.Nandify(_mainUnit.Root);
             _mainUnit.GenerateGraphImage(ref graphPicture, _mainUnit.Root);
         }
+
+        private void sixTruthsButton_Click(object sender, EventArgs e) {
+            string input = inputTextBox.Text;
+
+            if (input == string.Empty) {
+                MessageBox.Show("Please enter input textbox!");
+                return;
+            }
+            
+            _mainUnit.GenerateSixTruths(input, outputTextbox);
+        }
     }
 }

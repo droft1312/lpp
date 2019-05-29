@@ -186,6 +186,39 @@ namespace LPP
 
             return newTree;
         }
+
+        // TODO: Implement a GenerateSixTruths() method
+        public void GenerateSixTruths(string input, RichTextBox outputTextBox) {
+            ProcessStringInput(input);
+
+            string hexadecimals = "";
+            outputTextBox.Text = "";
+            
+            // normal inputted tree
+            var truthTable = DetermineTruthTable(root);
+            hexadecimals += "Normal tree: " + GenerateHexaDecimal(truthTable);
+
+            
+            hexadecimals += "\n" + new string('-', 15) + "\n";
+            
+            
+            // dnf tree
+            string disjunctivePrefixForm = truthTable.DisjunctiveForm();
+            ProcessStringInput(disjunctivePrefixForm);
+            truthTable = DetermineTruthTable(root);
+            hexadecimals += "Disjunctive tree: " + GenerateHexaDecimal(truthTable);
+            
+            
+            hexadecimals += "\n" + new string('-', 15) + "\n";
+            
+            // nandified
+            root = Nandify(root);
+            truthTable = DetermineTruthTable(root);
+            hexadecimals += "Nandified: " + GenerateHexaDecimal(truthTable);
+            
+            
+            outputTextBox.Text = hexadecimals;
+        }
         
         /// <summary>
         /// Prints out tree in infix notation as opposed to prefix

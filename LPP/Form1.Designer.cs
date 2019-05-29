@@ -40,6 +40,7 @@
             this.simplifyTruthTableButton = new System.Windows.Forms.Button();
             this.disjunctiveFormButton = new System.Windows.Forms.Button();
             this.nandifyButton = new System.Windows.Forms.Button();
+            this.sixTruthsButton = new System.Windows.Forms.Button();
             this.graphPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize) (this.graphPicture)).BeginInit();
             this.SuspendLayout();
@@ -171,7 +172,8 @@
             // 
             // nandifyButton
             // 
-            this.nandifyButton.Location = new System.Drawing.Point(655, 48);
+            this.nandifyButton.Location = new System.Drawing.Point(654, 48);
+            this.nandifyButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.nandifyButton.Name = "nandifyButton";
             this.nandifyButton.Size = new System.Drawing.Size(75, 23);
             this.nandifyButton.TabIndex = 11;
@@ -179,11 +181,22 @@
             this.nandifyButton.UseVisualStyleBackColor = true;
             this.nandifyButton.Click += new System.EventHandler(this.nandifyButton_Click);
             // 
+            // sixTruthsButton
+            // 
+            this.sixTruthsButton.Location = new System.Drawing.Point(109, 46);
+            this.sixTruthsButton.Name = "sixTruthsButton";
+            this.sixTruthsButton.Size = new System.Drawing.Size(131, 23);
+            this.sixTruthsButton.TabIndex = 12;
+            this.sixTruthsButton.Text = "Six TRUTHS";
+            this.sixTruthsButton.UseVisualStyleBackColor = true;
+            this.sixTruthsButton.Click += new System.EventHandler(this.sixTruthsButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 519);
+            this.Controls.Add(this.sixTruthsButton);
             this.Controls.Add(this.nandifyButton);
             this.Controls.Add(this.disjunctiveFormButton);
             this.Controls.Add(this.simplifyTruthTableButton);
@@ -220,6 +233,7 @@
         private System.Windows.Forms.TextBox infixTextBox;
         private System.Windows.Forms.Button simplifyTruthTableButton;
         private System.Windows.Forms.Button nandifyButton;
+        private System.Windows.Forms.Button sixTruthsButton;
         private System.Windows.Forms.Button disjunctiveFormButton;
     }
 }
