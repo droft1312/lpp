@@ -187,7 +187,7 @@ namespace LPP
             return newTree;
         }
 
-        // TODO: Implement a GenerateSixTruths() method
+        // TODO: Finish GenerateSixTruths()
         public void GenerateSixTruths(string input, RichTextBox outputTextBox) {
             ProcessStringInput(input);
 
