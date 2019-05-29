@@ -88,7 +88,6 @@ namespace LPP.TruthTable
             RowResultPairs = simplifiedTruth;
         }
 
-        // TODO: Finish disjunctive form
         public string DisjunctiveForm() {
             
             const int TRUTH = 1;
