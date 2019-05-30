@@ -39,7 +39,32 @@ namespace Unit_Tests
             
             Assert.AreEqual(InfixInput1, p.GetInfixNotation(p.Root));
         }
+
+        [Test]
+        public void NANDGeneration_Test() {
+            Processor p = new Processor();
+            p.ProcessStringInput(Input1);
+
+            var root = p.Nandify(p.Root);
+            
+            Assert.AreEqual(HashInput1, p.GenerateHexaDecimal(p.DetermineTruthTable(root)));
+        }
+
+        [Test]
+        public void GetNames_Test() {
+            Processor p = new Processor();
+            p.ProcessStringInput(Input1);
+
+            const string expected = "PQRST";
+            string result = "";
+            
+            p.Root.GetAllPropositions(ref result);
+
+            Assert.AreEqual(expected, result);
+        }
         
         // TODO: Create more Unit tests
+        
+        
     }
 }
