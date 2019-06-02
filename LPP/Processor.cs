@@ -190,6 +190,15 @@ namespace LPP
         public void GenerateTableux() {
             if (root == null) return;
             
+            /*
+             * There is probably two cases:
+             * a) when the root is NOTNODE
+             * b) when the root IS NOT NOTNODE
+             * 
+             */
+            
+            Tableux tableux = new Tableux(root);
+            
         }
 
         // TODO: Finish GenerateSixTruths()
