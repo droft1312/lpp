@@ -187,6 +187,11 @@ namespace LPP
             return newTree;
         }
 
+        public void GenerateTableux() {
+            if (root == null) return;
+            
+        }
+
         // TODO: Finish GenerateSixTruths()
         public void GenerateSixTruths(string input, RichTextBox outputTextBox) {
             ProcessStringInput(input);

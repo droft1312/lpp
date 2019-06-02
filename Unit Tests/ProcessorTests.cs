@@ -9,6 +9,9 @@ namespace Unit_Tests
         private const string Input1 = "&(~(|(P,Q)),>(=(Q,R),=(S,T)))";
         private const string HashInput1 = "000000F9";
         private const string InfixInput1 = "(~((P) | (Q))) & (((Q) = (R)) > ((S) = (T)))";
+
+        private const string Input2 = "&(|(A,B),>(C,~(C)))";
+        private const string HashInput2 = "54";
         
         
         [Test]
@@ -48,6 +51,14 @@ namespace Unit_Tests
             var root = p.Nandify(p.Root);
             
             Assert.AreEqual(HashInput1, p.GenerateHexaDecimal(p.DetermineTruthTable(root)));
+        }
+
+        [Test]
+        public void Simplification_Test() {
+            Processor p = new Processor();
+            p.ProcessStringInput(Input2);
+
+            
         }
 
         [Test]
