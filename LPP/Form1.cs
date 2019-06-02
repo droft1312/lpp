@@ -114,5 +114,11 @@ namespace LPP
             
             _mainUnit.GenerateSixTruths(input, outputTextbox);
         }
+
+        private void tableuxButton_Click(object sender, EventArgs e) {
+            if (_mainUnit.Root == null) return;
+            
+            _mainUnit.GenerateTableux();
+        }
     }
 }

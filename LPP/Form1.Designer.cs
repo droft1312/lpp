@@ -41,6 +41,7 @@
             this.disjunctiveFormButton = new System.Windows.Forms.Button();
             this.nandifyButton = new System.Windows.Forms.Button();
             this.sixTruthsButton = new System.Windows.Forms.Button();
+            this.tableuxButton = new System.Windows.Forms.Button();
             this.graphPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize) (this.graphPicture)).BeginInit();
             this.SuspendLayout();
@@ -172,10 +173,10 @@
             // 
             // nandifyButton
             // 
-            this.nandifyButton.Location = new System.Drawing.Point(654, 48);
+            this.nandifyButton.Location = new System.Drawing.Point(648, 46);
             this.nandifyButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.nandifyButton.Name = "nandifyButton";
-            this.nandifyButton.Size = new System.Drawing.Size(75, 23);
+            this.nandifyButton.Size = new System.Drawing.Size(81, 27);
             this.nandifyButton.TabIndex = 11;
             this.nandifyButton.Text = "Nandify";
             this.nandifyButton.UseVisualStyleBackColor = true;
@@ -183,7 +184,8 @@
             // 
             // sixTruthsButton
             // 
-            this.sixTruthsButton.Location = new System.Drawing.Point(109, 46);
+            this.sixTruthsButton.Location = new System.Drawing.Point(108, 46);
+            this.sixTruthsButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.sixTruthsButton.Name = "sixTruthsButton";
             this.sixTruthsButton.Size = new System.Drawing.Size(131, 23);
             this.sixTruthsButton.TabIndex = 12;
@@ -191,11 +193,22 @@
             this.sixTruthsButton.UseVisualStyleBackColor = true;
             this.sixTruthsButton.Click += new System.EventHandler(this.sixTruthsButton_Click);
             // 
+            // tableuxButton
+            // 
+            this.tableuxButton.Location = new System.Drawing.Point(648, 12);
+            this.tableuxButton.Name = "tableuxButton";
+            this.tableuxButton.Size = new System.Drawing.Size(82, 25);
+            this.tableuxButton.TabIndex = 13;
+            this.tableuxButton.Text = "Tableux";
+            this.tableuxButton.UseVisualStyleBackColor = true;
+            this.tableuxButton.Click += new System.EventHandler(this.tableuxButton_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 519);
+            this.Controls.Add(this.tableuxButton);
             this.Controls.Add(this.sixTruthsButton);
             this.Controls.Add(this.nandifyButton);
             this.Controls.Add(this.disjunctiveFormButton);
@@ -234,6 +247,7 @@
         private System.Windows.Forms.Button simplifyTruthTableButton;
         private System.Windows.Forms.Button nandifyButton;
         private System.Windows.Forms.Button sixTruthsButton;
+        private System.Windows.Forms.Button tableuxButton;
         private System.Windows.Forms.Button disjunctiveFormButton;
     }
 }
