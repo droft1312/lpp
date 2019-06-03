@@ -10,6 +10,8 @@ namespace LPP.TruthTable
         public Tableux Right { get; set; } = null;
         // maybe will have to add a parent reference
 
+        public List<Node> ListOfNodes => listOfNodes;
+
         public TableuxNode(List<Node> nodes) {
             listOfNodes = nodes;
         }
@@ -29,32 +31,9 @@ namespace LPP.TruthTable
         public bool TableuxIsSimplifiable() {
             
             bool TreeIsSimplifiable(Node tree) {
-                bool simplifiable = false;
-            
-                /* MIGHT BE A PROBLEM HERE */
-                void Traverse(Node root) {
-                    if (root == null) return;
-
-                    if (root is NotNode) {
-                        var child = root.left;
-                        if (!(child is PropositionNode)) {
-                            simplifiable = true;
-                            return;
-                        }
-                    }
-
-                    if (!(root is PropositionNode)) {
-                        simplifiable = true;
-                        return;
-                    }
-                
-                    Traverse(root.left);
-                    Traverse(root.right);
-                }
-            
-                Traverse(tree);
-
-                return simplifiable;
+                if (tree is PropositionNode) return false;
+                if (!(tree is NotNode)) return true;
+                return !(tree.left is PropositionNode);
             }
             
             foreach (var node in listOfNodes) {

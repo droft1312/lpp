@@ -22,6 +22,8 @@ namespace LPP.TruthTable
 
         private void BuildTableux(TableuxNode root) {
             if (root.TableuxIsSimplifiable()) {
+                var listOfNodes = root.ListOfNodes;
+                
                 
             }
         }
