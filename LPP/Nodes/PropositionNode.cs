@@ -8,14 +8,14 @@ namespace LPP.Nodes
 
         public char Name { get { return name; } }
 
-        public PropositionNode () {
+        private PropositionNode () {
             left = right = null;
         }
-        
-        public PropositionNode(string input) : base(input) {
-            
-        }
 
+        public PropositionNode(char name) : this() {
+            this.name = name;
+        }
+        
         public PropositionNode (char name, string input, Node parent) : base (input, parent) {
             this.name = name;
         }

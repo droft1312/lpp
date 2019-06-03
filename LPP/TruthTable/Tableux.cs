@@ -11,7 +11,7 @@ namespace LPP.TruthTable
         private TableuxNode tree;
         
         public Tableux(Node root) {
-            _root = NegateTree(root);
+            _root = Functions.NegateTree(root);
 
             List<Node> passIN = new List<Node>(1);
             passIN.Add(_root);
@@ -22,19 +22,8 @@ namespace LPP.TruthTable
 
         private void BuildTableux(TableuxNode root) {
             if (root.TableuxIsSimplifiable()) {
-                var listOfNodes = root.ListOfNodes;
-                
-                
+                root.Generate();
             }
-        }
-
-        private Node NegateTree(Node root) {
-            if (!(root is NotNode)) {
-                NotNode notNode = new NotNode {left = Functions.DeepCopyTree(root)};
-                return notNode;
-            }
-
-            return Functions.DeepCopyTree(root);
         }
     }
 }

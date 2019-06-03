@@ -103,37 +103,50 @@ namespace LPP
             
             Node node;
 
-            if (root == null) return null; // return null basically
-
-            if (root is BiImplicationNode) {
-                node = new BiImplicationNode();
-            }
-            else if (root is ConjunctionNode) {
-                node = new ConjunctionNode();
-            }
-            else if (root is DisjunctionNode) {
-                node = new DisjunctionNode();
-            }
-            else if (root is ImplicationNode) {
-                node = new ImplicationNode();
-            }
-            else if (root is NandNode) {
-                node = new NandNode();
-            }
-            else if (root is NotNode) {
-                node = new NotNode();
-            }
-            else if (root is PropositionNode) {
-                node = new PropositionNode(((PropositionNode)root).Name, root.Value, null);
-            }
-            else {
-                throw new Exception("Something went wrong!");
+            switch (root) {
+                case null:
+                    return null; 
+                case BiImplicationNode _:
+                    node = new BiImplicationNode();
+                    break;
+                case ConjunctionNode _:
+                    node = new ConjunctionNode();
+                    break;
+                case DisjunctionNode _:
+                    node = new DisjunctionNode();
+                    break;
+                case ImplicationNode _:
+                    node = new ImplicationNode();
+                    break;
+                case NandNode _:
+                    node = new NandNode();
+                    break;
+                case NotNode _:
+                    node = new NotNode();
+                    break;
+                case PropositionNode propositionNode:
+                    node = new PropositionNode(propositionNode.Name);
+                    break;
+                default:
+                    throw new Exception("Something went wrong!");
             }
 
             node.left = DeepCopyTree(root.left);
             node.right = DeepCopyTree(root.right);
 
             return node;
+        }
+        
+        /// <summary>
+        /// Negates the tree if necessary. To be used in Tableux generation
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns>Negated tree</returns>
+        public static Node NegateTree(Node root) {
+            if (root is NotNode) return DeepCopyTree(root);
+            NotNode notNode = new NotNode {left = DeepCopyTree(root)};
+            return notNode;
+
         }
     }
 }

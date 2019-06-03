@@ -6,12 +6,20 @@ namespace Unit_Tests
     [TestFixture]
     public class ProcessorTests
     {
+        #region Custom Inputs
+
         private const string Input1 = "&(~(|(P,Q)),>(=(Q,R),=(S,T)))";
         private const string HashInput1 = "000000F9";
         private const string InfixInput1 = "(~((P) | (Q))) & (((Q) = (R)) > ((S) = (T)))";
 
         private const string Input2 = "&(|(A,B),>(C,~(C)))";
         private const string HashInput2 = "54";
+
+        private const string Input1_Tautology = ">(>(Q,P),|(~(Q),>(~(P),R)))";
+        private const string Input2_Tautology = ">(>(&(~(R),Q),~(P)),>(&(P,Q),R))";
+        
+
+        #endregion
         
         
         [Test]
