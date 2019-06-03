@@ -28,7 +28,7 @@ namespace LPP.TruthTable
 
             if (!TableuxIsSimplifiable()) return;
             
-            // TODO: Change this test code
+            // TODO: Finish this stuff off
             var (priorityTree, position) = GetPriorityTree();
             var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
             newList.AddRange(ApplyRules(priorityTree));
@@ -38,6 +38,9 @@ namespace LPP.TruthTable
 
             if (!insertionResult)
                 MessageBox.Show("Problems detected");
+
+            Left?.Generate();
+            Right?.Generate();
         }
 
         /// <summary>
@@ -74,7 +77,8 @@ namespace LPP.TruthTable
             List<Node> result = new List<Node>();
 
             if (tree is ConjunctionNode) {
-                
+                result.Add(tree.left);
+                result.Add(tree.right);
             }
             else if (tree is DisjunctionNode) {
                 
@@ -97,6 +101,8 @@ namespace LPP.TruthTable
                 if (child is ConjunctionNode) {
                 }
                 else if (child is DisjunctionNode) {
+                    result.Add(Functions.NegateTree(child.left));
+                    result.Add(Functions.NegateTree(child.right));
                 }
                 else if (child is ImplicationNode) {
                     
@@ -139,6 +145,9 @@ namespace LPP.TruthTable
             // looking for NotNode
             for (int i = 0; i < listOfNodes.Count; i++) {
                 if (listOfNodes[i] is NotNode) {
+                    
+                    if (listOfNodes[i].left is PropositionNode) continue;
+
                     tree = listOfNodes[i];
                     position = i;
                     return (tree, position);

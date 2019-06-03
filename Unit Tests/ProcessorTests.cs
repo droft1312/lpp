@@ -17,7 +17,7 @@ namespace Unit_Tests
 
         private const string Input1_Tautology = ">(>(Q,P),|(~(Q),>(~(P),R)))";
         private const string Input2_Tautology = ">(>(&(~(R),Q),~(P)),>(&(P,Q),R))";
-        
+        private const string Input3_Tautology = "|(A,>(A,B))";
 
         #endregion
         
