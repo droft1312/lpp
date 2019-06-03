@@ -65,7 +65,7 @@ namespace LPP
 
             string output = PrintOutTruthTable (truth_table.RowResultPairs);
 
-            output += "Hexadecimal: " + _mainUnit.GenerateHexaDecimal (truth_table);
+            output += "Hexadecimal: " + ClearOutHexadecimal(_mainUnit.GenerateHexaDecimal (truth_table));
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }
@@ -77,7 +77,7 @@ namespace LPP
 
             string output = PrintOutTruthTable (simplified.RowResultPairs);
 
-            output += "Hexadecimal: " + _mainUnit.GenerateHexaDecimal (simplified);
+            output += "Hexadecimal: " + ClearOutHexadecimal(_mainUnit.GenerateHexaDecimal (simplified));
 
             OutputInformationToTextBox (output, ref outputTextbox);
         }

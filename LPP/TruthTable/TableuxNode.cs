@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 using LPP.Nodes;
 
 namespace LPP.TruthTable
@@ -7,19 +9,35 @@ namespace LPP.TruthTable
     public class TableuxNode
     {
         private List<Node> listOfNodes;
-        public TableuxNode Left { get; set; } = null;
-        public TableuxNode Right { get; set; } = null;
-        // maybe will have to add a parent reference
+        public TableuxNode Left { get; set; }
+        public TableuxNode Right { get; set; } 
 
         public TableuxNode(List<Node> nodes) {
             listOfNodes = nodes;
         }
 
         public void Generate() {
-            if (TableuxIsSimplifiable()) {
-                // TODO: Change this test code
-                ApplyRules(listOfNodes[0]);
-            }
+            
+            /*
+             * Algorithm:
+             * 1) Get the priority node out of the list of nodes 
+             * 2) Apply rules to it
+             * 3) Create a new TableuxNode and insert it into the current one
+             * 4) Move on
+             */
+
+            if (!TableuxIsSimplifiable()) return;
+            
+            // TODO: Change this test code
+            var (priorityTree, position) = GetPriorityTree();
+            var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
+            newList.AddRange(ApplyRules(priorityTree));
+            
+            TableuxNode newNodeToInsert = new TableuxNode(newList);
+            var insertionResult = Insert(newNodeToInsert);
+
+            if (!insertionResult)
+                MessageBox.Show("Problems detected");
         }
 
         /// <summary>
@@ -101,14 +119,49 @@ namespace LPP.TruthTable
         }
         
         /// <summary>
-        /// Gets a priority tree out of the List of Trees
+        /// Gets a priority tree out of the List of Trees. ASSUMPTION: function TableuxIsSimplifiable() has been called upfront and returned true
         /// </summary>
         /// <returns></returns>
-        private Node GetPriorityTree() {
+        private (Node priorityTree, int position) GetPriorityTree() {
+            /*
+             * Priority is given to the trees whose root node is NotNode
+             * If those are already out of the equation(not literally), then it is at the god's will
+             * which tree shall get rules applied to
+             *
+             * Algorithm:
+             * 1) Look for trees whose root is NotNode
+             * 2) If those are not found, pick the first one that is just not a PropositionNode or NotNode whose child is a PropositionNode
+             */
             
-            // TODO: Write a function that prioritizes trees that have to be dealt with first
+            Node tree = null;
+            int position = -1;
 
-            return null;
+            // looking for NotNode
+            for (int i = 0; i < listOfNodes.Count; i++) {
+                if (listOfNodes[i] is NotNode) {
+                    tree = listOfNodes[i];
+                    position = i;
+                    return (tree, position);
+                }
+            }
+            
+            // looking for anything
+            for (int i = 0; i < listOfNodes.Count; i++) {
+                if (listOfNodes[i] is PropositionNode) continue;
+                tree = listOfNodes[i];
+                position = i;
+                return (tree, position);
+            }
+
+
+
+            return (tree, position);
+        }
+
+        private List<Node> GetListWithoutPriorityTree(int positionToSkip) {
+            List<Node> _newList = new List<Node>(listOfNodes.Count - 1);
+            _newList.AddRange(listOfNodes.Where((t, i) => i != positionToSkip));
+            return _newList;
         }
         
         /// <summary>

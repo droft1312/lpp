@@ -16,6 +16,35 @@ namespace LPP
     public static class Functions
     {
         /// <summary>
+        /// Clears redundant 0s from given hexadecimal
+        /// </summary>
+        /// <param name="hexa"></param>
+        /// <returns></returns>
+        public static string ClearOutHexadecimal(string hexa) {
+
+            var inputs = hexa.ToCharArray();
+
+            string s = "";
+            bool done = false;
+
+            foreach (var character in inputs) {
+                if (!done) {
+                    if (character != '0') {
+                        s += character;
+                        done = true;
+                    }
+                }
+                else {
+                    s += character;
+                }
+            }
+            
+            
+            return s;
+        }
+        
+        
+        /// <summary>
         /// Creates a prefix string
         /// </summary>
         /// <param name="initial">Current string</param>
