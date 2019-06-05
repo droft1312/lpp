@@ -177,6 +177,50 @@ namespace LPP
             return notNode;
 
         }
+
+        /// <summary>
+        /// Converts biimplication
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static Node ConvertBiImplication(BiImplicationNode root) {
+            // =(A,B)    ==     &(>(A,B),>(B,A))
+            
+            ConjunctionNode conj = new ConjunctionNode();
+            ImplicationNode imp1 = new ImplicationNode();
+            ImplicationNode imp2 = new ImplicationNode();
+
+            imp1.left = root.left;
+            imp1.right = root.right;
+
+            imp2.left = DeepCopyTree(root.right);
+            imp2.right = DeepCopyTree(root.left);
+
+            conj.left = imp1;
+            conj.right = imp2;
+
+            return conj;
+        }
+
+        /// <summary>
+        /// Converts NandNode
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static Node ConvertNand(NandNode root) {
+            
+            // %(A,B) == ~(&(A,B))
+
+            NotNode notNode = new NotNode();
+            
+            ConjunctionNode conjunctionNode = new ConjunctionNode();
+            conjunctionNode.left = root.left;
+            conjunctionNode.right = root.right;
+
+            notNode.left = conjunctionNode;
+            
+            return notNode;
+        }
         
         /// <summary>
         /// Clones a generic list

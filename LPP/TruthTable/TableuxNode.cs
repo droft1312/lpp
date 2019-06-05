@@ -20,27 +20,19 @@ namespace LPP.TruthTable
 
         public void Generate() {
             
-            /*
-             * Algorithm:
-             * 1) Get the priority node out of the list of nodes 
-             * 2) Apply rules to it
-             * 3) Create a new TableuxNode and insert it into the current one
-             * 4) Move on
-             */
-
             if (!TableuxIsSimplifiable()) return;
-            
-            // TODO: Finish this stuff off
-            
             
             /* get the most important tree to work on (NotNode based trees come first always) */
             var (priorityTree, position) = GetPriorityTree();
             
+            /* check if it's biimplication or nand */
+            
+            
             /* create a list that contains all previous elements but the one that you're gonna apply alpha/beta rules to */
             var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
 
-            if (TreeCreatesTwoBranches(priorityTree)) {
-                var (leftBranchList, rightBranchList) = ApplyRules(priorityTree, true);
+            if (IsBetaRule(priorityTree)) {
+                var (leftBranchList, rightBranchList) = ApplyBetaRules(priorityTree);
                  
                 leftBranchList.AddRange(newList);
                 rightBranchList.AddRange(newList);
@@ -53,7 +45,7 @@ namespace LPP.TruthTable
                     MessageBox.Show("Problems detected");
             }
             else {
-                newList.AddRange(ApplyRules(priorityTree));
+                newList.AddRange(ApplyAlphaRules(priorityTree));
             }
             
             /* create a new TableuxNode */
@@ -96,53 +88,44 @@ namespace LPP.TruthTable
         /// </summary>
         /// <param name="tree"></param>
         /// <returns></returns>
-        private List<Node> ApplyRules(Node tree) {
+        private List<Node> ApplyAlphaRules(Node tree) {
+            
+            // we check if the given root node is Biimplication because we need to convert that tree then
+            if (tree is BiImplicationNode node) tree = Functions.ConvertBiImplication(node);
+            else if (tree is NandNode tempNode) tree = Functions.ConvertNand(tempNode);
             
             List<Node> result = new List<Node>();
 
-            if (tree is ConjunctionNode) {
-                result.Add(tree.left);
-                result.Add(tree.right);
-            }
-            else if (tree is DisjunctionNode) {
-                
-            }
-            else if (tree is ImplicationNode) {
-                
-            }
-            else if (tree is BiImplicationNode) {
-                
-            }
-            else if (tree is NandNode) {
+            switch (tree) {
+                case ConjunctionNode _:
+                    result.Add(tree.left);
+                    result.Add(tree.right);
+                    break;
+                case NotNode _:
+                {
+                    var child = tree.left;
 
+                    switch (child) {
+                        // TODO: Implement
+                        case DisjunctionNode _:
+                            result.Add(Functions.NegateTree(child.left));
+                            result.Add(Functions.NegateTree(child.right));
+                            break;
+                        case ImplicationNode _:
+                            result.Add(child.left);
+                            result.Add(Functions.NegateTree(child.right));
+                            break;
+                        case BiImplicationNode _:
+                            break;
+                        case NandNode _:
+                            break;
+                    }
 
-            }
-            else if (tree is NotNode) {
-                
-                var child = tree.left;
+                    break;
+                }
 
-                // TODO: Implement
-                if (child is ConjunctionNode) {
-                }
-                else if (child is DisjunctionNode) {
-                    result.Add(Functions.NegateTree(child.left));
-                    result.Add(Functions.NegateTree(child.right));
-                }
-                else if (child is ImplicationNode) {
-                    
-                    
-                    result.Add(child.left);
-                    var negatedRightSubtree = Functions.NegateTree(child.right);
-                    result.Add(negatedRightSubtree);
-                    
-                }
-                else if (child is BiImplicationNode) {
-                }
-                else if (child is NandNode) {
-                }
-            }
-            else {
-                throw new Exception("Something went wrong");
+                default:
+                    throw new Exception("Something went wrong");
             }
 
             return result.Count == 0 ? null : result;
@@ -154,9 +137,7 @@ namespace LPP.TruthTable
         /// <param name="tree"></param>
         /// <param name="isBetaRule">You have to indicate this as true if you really want to use this function</param>
         /// <returns>Left and Right subtrees</returns>
-        private (List<Node> left, List<Node> right) ApplyRules(Node tree, bool isBetaRule) {
-
-            if (!isBetaRule) return (null,null); // if it's not a beta rule, though it doesn't make sense
+        private (List<Node> left, List<Node> right) ApplyBetaRules(Node tree) {
 
             List<Node> leftSubtree = new List<Node>();
             List<Node> rightSubtree = new List<Node>();
@@ -187,6 +168,9 @@ namespace LPP.TruthTable
         /// </summary>
         /// <returns></returns>
         private (Node priorityTree, int position) GetPriorityTree() {
+            
+            // TODO: Change the algorithm for prioritization. Preference is given to Alpha-rules
+            
             /*
              * Priority is given to the trees whose root node is NotNode
              * If those are already out of the equation(not literally), then it is at the god's will
@@ -253,7 +237,7 @@ namespace LPP.TruthTable
         /// </summary>
         /// <param name="tree"></param>
         /// <returns></returns>
-        private bool TreeCreatesTwoBranches(Node tree) {
+        private bool IsBetaRule(Node tree) {
             // TODO: Add more cases!
             switch (tree) {
                 case DisjunctionNode _:

@@ -86,7 +86,7 @@ namespace Unit_Tests
         public void TableuxCreation_Test() {
             Processor p = new Processor();
 
-            const string customInput = "&(A,B)";
+            const string customInput = "~(=(A,B))";
             
             p.ProcessStringInput(customInput);
             
