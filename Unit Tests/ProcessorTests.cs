@@ -93,6 +93,20 @@ namespace Unit_Tests
             p.GenerateTableux();
             
         }
+
+        [Test]
+        public void BiimplicationNandConvertion_Test() {
+            Processor p = new Processor();
+            
+            const string input = "~(>(A, &(=(B,C), %(C,Q))))";
+            const string input2 = ">(A,&(C,~(|(B,C))))";
+            
+            p.ProcessStringInput(input2);
+            
+            Functions.GetRidOfBiImplicationAndNand(ref p.root);
+            
+            Assert.True(true);
+        }
         
         // TODO: Create more Unit tests
         

@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using LPP.Nodes;
 using LPP.TruthTable;
 
@@ -178,12 +179,37 @@ namespace LPP
 
         }
 
+        #region Convertion of BiImplication and NAND
+
+        /// <summary>
+        /// Replaces all occurrences of Biimplication and Nand in a tree
+        /// </summary>
+        /// <param name="root"></param>
+        public static void GetRidOfBiImplicationAndNand(ref Node root) {
+
+            void Traverse(ref Node tree) {
+                if (tree == null) return;
+
+                if (tree is BiImplicationNode temp) {
+                    tree = ConvertBiImplication(temp);
+                }
+                else if (tree is NandNode tempNand) {
+                    tree = ConvertNand(tempNand);
+                }
+                
+                Traverse(ref tree.left);
+                Traverse(ref tree.right);
+            }
+            
+            Traverse(ref root);
+        }
+
         /// <summary>
         /// Converts biimplication
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public static Node ConvertBiImplication(BiImplicationNode root) {
+        private static Node ConvertBiImplication(BiImplicationNode root) {
             // =(A,B)    ==     &(>(A,B),>(B,A))
             
             ConjunctionNode conj = new ConjunctionNode();
@@ -207,7 +233,7 @@ namespace LPP
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
-        public static Node ConvertNand(NandNode root) {
+        private static Node ConvertNand(NandNode root) {
             
             // %(A,B) == ~(&(A,B))
 
@@ -221,6 +247,9 @@ namespace LPP
             
             return notNode;
         }
+
+        #endregion
+        
         
         /// <summary>
         /// Clones a generic list

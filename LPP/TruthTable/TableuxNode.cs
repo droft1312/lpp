@@ -25,8 +25,8 @@ namespace LPP.TruthTable
             /* get the most important tree to work on (NotNode based trees come first always) */
             var (priorityTree, position) = GetPriorityTree();
             
-            /* check if it's biimplication or nand */
-            
+            /* get id of all biimplications or nands if there are any */
+            Functions.GetRidOfBiImplicationAndNand(ref priorityTree);
             
             /* create a list that contains all previous elements but the one that you're gonna apply alpha/beta rules to */
             var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
@@ -55,6 +55,8 @@ namespace LPP.TruthTable
             if (!insertionResult)
                 MessageBox.Show("Problems detected");
 
+            
+            /* recursively do it all over again until there's no more work that needs to be done */
             Left?.Generate();
             Right?.Generate();
         }
@@ -89,11 +91,7 @@ namespace LPP.TruthTable
         /// <param name="tree"></param>
         /// <returns></returns>
         private List<Node> ApplyAlphaRules(Node tree) {
-            
-            // we check if the given root node is Biimplication because we need to convert that tree then
-            if (tree is BiImplicationNode node) tree = Functions.ConvertBiImplication(node);
-            else if (tree is NandNode tempNode) tree = Functions.ConvertNand(tempNode);
-            
+
             List<Node> result = new List<Node>();
 
             switch (tree) {
