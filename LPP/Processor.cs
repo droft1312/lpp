@@ -12,7 +12,7 @@ namespace LPP
 {
     public class Processor
     {
-        private Node root;
+        public Node root;
         private TruthTable.TruthTable truthTable;
 
         public Node Root { get { return root; }
@@ -59,6 +59,10 @@ namespace LPP
                 case '|':
                     root = new DisjunctionNode (input, null);
                     break;
+                
+                case '%':
+                    root = new NandNode(input, null);
+                    break;
 
                 default:
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
@@ -102,6 +106,12 @@ namespace LPP
                 DisjunctionNode node = new DisjunctionNode (input, root);
                 root.Insert (node);
                 BuildTree (node.Value, node);
+
+            } else if (first_character == '%') {
+
+                NandNode node = new NandNode(input, root);
+                root.Insert(node);
+                BuildTree(node.Value, node);
 
             } else if (first_character == ',') {
                 if (root.parent == null) throw new Exception ("Error in your input");
