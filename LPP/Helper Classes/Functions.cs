@@ -172,10 +172,21 @@ namespace LPP
         /// <param name="root"></param>
         /// <returns>Negated tree</returns>
         public static Node NegateTree(Node root) {
-            if (root is NotNode) return DeepCopyTree(root);
+            if (root is NotNode) return DeepCopyTree(root.left); // so if input was ~(>(A,B)) it becomes >(A,B)
             NotNode notNode = new NotNode {left = DeepCopyTree(root)};
             return notNode;
 
+        }
+        
+        /// <summary>
+        /// Clones a generic list
+        /// </summary>
+        /// <param name="listToClone"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IList<T> Clone<T>(this IList<T> listToClone) where T: ICloneable
+        {
+            return listToClone.Select(item => (T)item.Clone()).ToList();
         }
     }
 }

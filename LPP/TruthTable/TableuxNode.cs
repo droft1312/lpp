@@ -15,6 +15,8 @@ namespace LPP.TruthTable
         public TableuxNode(List<Node> nodes) {
             listOfNodes = nodes;
         }
+        
+        // TODO: Do a thing with ~(~(SomeProposition)) = SomeProposition
 
         public void Generate() {
             
@@ -29,10 +31,32 @@ namespace LPP.TruthTable
             if (!TableuxIsSimplifiable()) return;
             
             // TODO: Finish this stuff off
-            var (priorityTree, position) = GetPriorityTree();
-            var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
-            newList.AddRange(ApplyRules(priorityTree));
             
+            
+            /* get the most important tree to work on (NotNode based trees come first always) */
+            var (priorityTree, position) = GetPriorityTree();
+            
+            /* create a list that contains all previous elements but the one that you're gonna apply alpha/beta rules to */
+            var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
+
+            if (TreeCreatesTwoBranches(priorityTree)) {
+                var (leftBranchList, rightBranchList) = ApplyRules(priorityTree, true);
+                 
+                leftBranchList.AddRange(newList);
+                rightBranchList.AddRange(newList);
+                
+                TableuxNode newLeftNodeToInsert = new TableuxNode(leftBranchList);
+                TableuxNode newRightNodeToInsert = new TableuxNode(rightBranchList);
+                
+                // insert two new nodes
+                if (!(Insert(newLeftNodeToInsert) && Insert(newRightNodeToInsert)))
+                    MessageBox.Show("Problems detected");
+            }
+            else {
+                newList.AddRange(ApplyRules(priorityTree));
+            }
+            
+            /* create a new TableuxNode */
             TableuxNode newNodeToInsert = new TableuxNode(newList);
             var insertionResult = Insert(newNodeToInsert);
 
@@ -50,9 +74,9 @@ namespace LPP.TruthTable
         public bool TableuxIsSimplifiable() {
             
             bool TreeIsSimplifiable(Node tree) {
-                if (tree is PropositionNode) return false;
-                if (!(tree is NotNode)) return true;
-                return !(tree.left is PropositionNode);
+                if (tree is PropositionNode) return false; // if given tree consists of just a PropositionNode
+                if (!(tree is NotNode)) return true; // if given tree is not a NotNode
+                return !(tree.left is PropositionNode); // returns: tree is simplifiable if left of NotNode is not PropositionNode
             }
             
             foreach (var node in listOfNodes) {
@@ -68,7 +92,7 @@ namespace LPP.TruthTable
 
         
         /// <summary>
-        /// Applies alpha/beta rules to a given tree
+        /// Applies alpha/beta rules to a given tree.
         /// </summary>
         /// <param name="tree"></param>
         /// <returns></returns>
@@ -123,6 +147,40 @@ namespace LPP.TruthTable
 
             return result.Count == 0 ? null : result;
         }
+
+        /// <summary>
+        /// Applies rules to a tree that will generate two branches
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <param name="isBetaRule">You have to indicate this as true if you really want to use this function</param>
+        /// <returns>Left and Right subtrees</returns>
+        private (List<Node> left, List<Node> right) ApplyRules(Node tree, bool isBetaRule) {
+
+            if (!isBetaRule) return (null,null); // if it's not a beta rule, though it doesn't make sense
+
+            List<Node> leftSubtree = new List<Node>();
+            List<Node> rightSubtree = new List<Node>();
+
+            switch (tree) {
+                case DisjunctionNode _:
+                    leftSubtree.Add(tree.left);
+                    rightSubtree.Add(tree.right);
+                    break;
+                case ImplicationNode _:
+                    leftSubtree.Add(Functions.NegateTree(tree.left));
+                    rightSubtree.Add(tree.right);
+                    break;
+                case NotNode _ when tree.left is ConjunctionNode:
+                    leftSubtree.Add(Functions.NegateTree(tree.left.left));
+                    rightSubtree.Add(Functions.NegateTree(tree.left.right));
+                    break;
+                default:
+                    return (null, null);
+            }
+
+
+            return (leftSubtree, rightSubtree);
+        } 
         
         /// <summary>
         /// Gets a priority tree out of the List of Trees. ASSUMPTION: function TableuxIsSimplifiable() has been called upfront and returned true
@@ -188,6 +246,23 @@ namespace LPP.TruthTable
             }
 
             return false;
+        }
+        
+        /// <summary>
+        /// Returns true if given tree is beta-rule
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <returns></returns>
+        private bool TreeCreatesTwoBranches(Node tree) {
+            // TODO: Add more cases!
+            switch (tree) {
+                case DisjunctionNode _:
+                case ImplicationNode _:
+                case NotNode _ when tree.left is ConjunctionNode:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         #endregion

@@ -81,6 +81,18 @@ namespace Unit_Tests
 
             Assert.AreEqual(expected, result);
         }
+
+        [Test]
+        public void TableuxCreation_Test() {
+            Processor p = new Processor();
+
+            const string customInput = "&(A,B)";
+            
+            p.ProcessStringInput(customInput);
+            
+            p.GenerateTableux();
+            
+        }
         
         // TODO: Create more Unit tests
         
