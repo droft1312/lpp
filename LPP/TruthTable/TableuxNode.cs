@@ -113,10 +113,8 @@ namespace LPP.TruthTable
                             result.Add(child.left);
                             result.Add(Functions.NegateTree(child.right));
                             break;
-                        case BiImplicationNode _:
-                            break;
-                        case NandNode _:
-                            break;
+                        default:
+                            throw new Exception("Error. There is a Beta-rule");
                     }
 
                     break;
