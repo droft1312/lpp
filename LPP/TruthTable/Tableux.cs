@@ -9,6 +9,9 @@ namespace LPP.TruthTable
         private readonly Node _root;
         
         private TableuxNode tree;
+
+        private bool isTautology;
+        private bool resultGiven;
         
         public Tableux(Node root) {
             _root = Functions.NegateTree(root);
@@ -22,7 +25,7 @@ namespace LPP.TruthTable
 
         private void BuildTableux(TableuxNode root) {
             if (root.TableuxIsSimplifiable()) {
-                root.Generate();
+                root.Generate(ref isTautology, ref resultGiven);
             }
         }
     }

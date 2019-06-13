@@ -20,11 +20,16 @@ namespace LPP.TruthTable
             listOfNodes = nodes;
         }
 
-        public void Generate() {
+        public void Generate(ref bool result, ref bool resultGiven) {
 
             if (!TableuxIsSimplifiable()) {
 
                 bool tautologyOrNot = IsTautology(listOfNodes);
+
+                if (!resultGiven) {
+                    resultGiven = true;
+                    result = tautologyOrNot;
+                }
                 
                 return;
                 
@@ -74,8 +79,8 @@ namespace LPP.TruthTable
              
             
             /* recursively do it all over again until there's no more work that needs to be done */
-            Left?.Generate();
-            Right?.Generate();
+            Left?.Generate(ref result, ref resultGiven);
+            Right?.Generate(ref result, ref resultGiven);
         }
 
         /// <summary>
