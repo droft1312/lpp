@@ -6,6 +6,10 @@ using LPP.Nodes;
 
 namespace LPP.TruthTable
 {
+    // TODO: Add a function that doesn't allow multiple '~(R)' be added
+    // TODO: Add a function that will check if there's a tautology in one of the tableux nodes
+    
+    
     public class TableuxNode
     {
         private List<Node> listOfNodes;
@@ -15,12 +19,16 @@ namespace LPP.TruthTable
         public TableuxNode(List<Node> nodes) {
             listOfNodes = nodes;
         }
-        
-        // TODO: Do a thing with ~(~(SomeProposition)) = SomeProposition
 
         public void Generate() {
-            
-            if (!TableuxIsSimplifiable()) return;
+
+            if (!TableuxIsSimplifiable()) {
+
+                bool tautologyOrNot = IsTautology(listOfNodes);
+                
+                return;
+                
+            }
             
             /* get the most important tree to work on (NotNode based trees come first always) */
             var (priorityTree, position) = GetPriorityTree();
@@ -30,6 +38,8 @@ namespace LPP.TruthTable
             
             /* create a list that contains all previous elements but the one that you're gonna apply alpha/beta rules to */
             var newList = GetListWithoutPriorityTree(position); // everything except for a tree that we're going to apply rules onto
+
+            bool betaRuleWorked = false;
 
             if (IsBetaRule(priorityTree)) {
                 var (leftBranchList, rightBranchList) = ApplyBetaRules(priorityTree);
@@ -43,18 +53,25 @@ namespace LPP.TruthTable
                 // insert two new nodes
                 if (!(Insert(newLeftNodeToInsert) && Insert(newRightNodeToInsert)))
                     MessageBox.Show("Problems detected");
+                else {
+                    betaRuleWorked = true;
+                }
             }
             else {
                 newList.AddRange(ApplyAlphaRules(priorityTree));
             }
             
-            /* create a new TableuxNode */
-            TableuxNode newNodeToInsert = new TableuxNode(newList);
-            var insertionResult = Insert(newNodeToInsert);
-
-            if (!insertionResult)
-                MessageBox.Show("Problems detected");
-
+            // check if beta rule has been applied, if so, then do nothing and proceed to work on left and right branches
+            // if beta rule wasn't applied, then insert alpha-rule
+            if (!betaRuleWorked) {
+                TableuxNode newNodeToInsert = new TableuxNode(newList);
+                var insertionResult = Insert(newNodeToInsert);
+                 
+                 
+                if (!insertionResult)
+                    throw new Exception("Problems detected");
+            }
+             
             
             /* recursively do it all over again until there's no more work that needs to be done */
             Left?.Generate();
@@ -80,7 +97,6 @@ namespace LPP.TruthTable
 
             return false;
         }
-
 
         #region Hidden functions
 
@@ -165,32 +181,32 @@ namespace LPP.TruthTable
         /// <returns></returns>
         private (Node priorityTree, int position) GetPriorityTree() {
             
-            // TODO: Change the algorithm for prioritization. Preference is given to Alpha-rules
-            
             /*
-             * Priority is given to the trees whose root node is NotNode
-             * If those are already out of the equation(not literally), then it is at the god's will
-             * which tree shall get rules applied to
-             *
              * Algorithm:
-             * 1) Look for trees whose root is NotNode
-             * 2) If those are not found, pick the first one that is just not a PropositionNode or NotNode whose child is a PropositionNode
+             * 1) Go over the list of trees and find the one matching Alpha-rules. If found, return it.
+             * 2) If Alpha-rule is not found, look for beta rule. Return the first found one.
+             * 
              */
             
             Node tree = null;
             int position = -1;
-
-            // looking for NotNode
+            
+            // looking for alpha-rules
             for (int i = 0; i < listOfNodes.Count; i++) {
-                if (listOfNodes[i] is NotNode) {
-                    
-                    if (listOfNodes[i].left is PropositionNode) continue;
 
+                if (listOfNodes[i] is NotNode notNode) {
+                    if (notNode.left is PropositionNode) {
+                        continue;
+                    }
+                }
+                
+                if (!IsBetaRule(listOfNodes[i]) && !(listOfNodes[i] is PropositionNode)) {
                     tree = listOfNodes[i];
                     position = i;
                     return (tree, position);
                 }
             }
+            
             
             // looking for anything
             for (int i = 0; i < listOfNodes.Count; i++) {
@@ -234,7 +250,6 @@ namespace LPP.TruthTable
         /// <param name="tree"></param>
         /// <returns></returns>
         private bool IsBetaRule(Node tree) {
-            // TODO: Add more cases!
             switch (tree) {
                 case DisjunctionNode _:
                 case ImplicationNode _:
@@ -243,6 +258,53 @@ namespace LPP.TruthTable
                 default:
                     return false;
             }
+        }
+
+        /// <summary>
+        /// Checks if the given list of nodes contains two contradictions
+        /// </summary>
+        /// <param name="inputList"></param>
+        /// <returns></returns>
+        public static bool IsTautology(List<Node> inputList) {
+
+            /* returns true if two given string only differ by ~ , so for instance R and ~(R)*/
+            bool OnlyDifferByNot(string s1, string s2) {
+                int length1 = s1.Length;
+                int length2 = s2.Length;
+
+                if (s1[0] != '~' && s2[0] != '~') return false;
+                if (length1 != 1 && length2 != 1) return false;
+
+                var length1Is1 = length1 == 1;
+
+                if (length1Is1) {
+                    // s1 is the one that is of length 1
+
+                    string cutString = s2.Substring(2, 1);
+                    // returns true if stuff is the same
+                    return s1 == cutString;
+                }
+                else {
+                    // s2 is the one that is of length 1
+
+                    string cutString = s1.Substring(2, 1);
+                    return s2 == cutString;
+                }
+
+            }
+
+            foreach (var node in inputList) {
+                foreach (var comparingNode in inputList) {
+                    if (node == comparingNode) continue;
+                    
+                    string s1 = node.GetInfix();
+                    string s2 = comparingNode.GetInfix();
+
+                    if (OnlyDifferByNot(s1, s2)) return true;
+                }
+            }
+            
+            return false;
         }
 
         #endregion

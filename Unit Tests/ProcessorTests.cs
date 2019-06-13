@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using LPP;
+using LPP.Nodes;
+using LPP.TruthTable;
 using NUnit.Framework;
 
 namespace Unit_Tests
@@ -86,11 +89,26 @@ namespace Unit_Tests
         public void TableuxCreation_Test() {
             Processor p = new Processor();
 
-            const string customInput = "~(=(A,B))";
+            const string customInput = ">(>(|(P,Q),R),|(>(P,R),>(Q,R))) ";
             
             p.ProcessStringInput(customInput);
             
             p.GenerateTableux();
+            
+        }
+
+        [Test]
+        public void TautologyCheckInListOfTableuxNode() {
+            PropositionNode propNode = new PropositionNode('R');
+            
+            NotNode notNode = new NotNode();
+            notNode.left = Functions.DeepCopyTree(propNode);
+            
+            PropositionNode p2 = new PropositionNode('Q');
+            
+            List<Node> list = new List<Node> { propNode, notNode, p2 };
+            
+            Assert.True(TableuxNode.IsTautology(list));
             
         }
 

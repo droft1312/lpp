@@ -51,6 +51,22 @@ namespace LPP.Nodes
                 right?.GetAllPropositions (ref output);
             }
         }
+    
+        // TODO: This might cause problems bro
+        public static bool operator ==(Node n1, Node n2) {
+            if (ReferenceEquals(n1, null)) {
+                return ReferenceEquals(n2, null);
+            }
+            if (ReferenceEquals (n2, null)) {
+                return ReferenceEquals (n1, null);
+            }
+
+            return n1.GetInfix() == n2.GetInfix();
+        }
+
+        public static bool operator !=(Node n1, Node n2) {
+            return !(n1 == n2);
+        }
 
         /// <summary>
         /// Returns node connections used for making a Graphiz graph
