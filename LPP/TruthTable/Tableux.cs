@@ -24,7 +24,14 @@ namespace LPP.TruthTable
         }
 
         private void BuildTableux(TableuxNode root) {
+
+            void ResetVariable() {
+                isTautology = false;
+                resultGiven = false;
+            }
+            
             if (root.TableuxIsSimplifiable()) {
+                ResetVariable();
                 root.Generate(ref isTautology, ref resultGiven);
             }
         }

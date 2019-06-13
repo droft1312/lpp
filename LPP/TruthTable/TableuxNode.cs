@@ -12,11 +12,17 @@ namespace LPP.TruthTable
     
     public class TableuxNode
     {
+        private readonly int id;
+        
         private List<Node> listOfNodes;
         public TableuxNode Left { get; set; }
-        public TableuxNode Right { get; set; } 
+        public TableuxNode Right { get; set; }
 
-        public TableuxNode(List<Node> nodes) {
+        private TableuxNode() {
+            id = ++GlobalCounter.tableux_count;
+        }
+        
+        public TableuxNode(List<Node> nodes) : this() {
             listOfNodes = nodes;
         }
 
