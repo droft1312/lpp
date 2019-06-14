@@ -90,11 +90,13 @@ namespace Unit_Tests
             Processor p = new Processor();
 
             const string customInput = ">(>(|(P,Q),R),|(>(P,R),>(Q,R))) ";
+            const string customInput2 = "&(~(|(P,Q)),>(=(Q,R),=(S,T)))";
             
-            p.ProcessStringInput(customInput);
+            p.ProcessStringInput(customInput2);
             
             p.GenerateTableux();
             
+            Assert.True(p.Tableux.IsTautology);
         }
 
         [Test]

@@ -13,8 +13,11 @@ namespace LPP
     public class Processor
     {
         public Node root;
-        private TruthTable.TruthTable truthTable;
+        public Tableux Tableux => _tableux;
 
+        private TruthTable.TruthTable truthTable;
+        private Tableux _tableux;
+        
         public Node Root { get { return root; }
             set { root = value; }
         }
@@ -207,7 +210,7 @@ namespace LPP
              * 
              */
             
-            Tableux tableux = new Tableux(root);
+            _tableux = new Tableux(root);
             
         }
 

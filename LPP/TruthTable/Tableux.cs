@@ -12,7 +12,9 @@ namespace LPP.TruthTable
 
         private bool isTautology;
         private bool resultGiven;
-        
+
+        public bool IsTautology => isTautology;
+
         public Tableux(Node root) {
             _root = Functions.NegateTree(root);
 
@@ -25,15 +27,13 @@ namespace LPP.TruthTable
 
         private void BuildTableux(TableuxNode root) {
 
-            void ResetVariable() {
-                isTautology = false;
-                resultGiven = false;
-            }
+            void ResetVariable() { isTautology = false; resultGiven = false; }
             
-            if (root.TableuxIsSimplifiable()) {
-                ResetVariable();
-                root.Generate(ref isTautology, ref resultGiven);
-            }
+            if (!root.TableuxIsSimplifiable()) return;
+
+            ResetVariable();
+            
+            root.Generate(ref isTautology, ref resultGiven);
         }
     }
 }

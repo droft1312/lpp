@@ -12,7 +12,7 @@ namespace LPP.TruthTable
     
     public class TableuxNode
     {
-        private readonly int id;
+        public readonly int id;
         
         private List<Node> listOfNodes;
         public TableuxNode Left { get; set; }
@@ -88,6 +88,16 @@ namespace LPP.TruthTable
             Left?.Generate(ref result, ref resultGiven);
             Right?.Generate(ref result, ref resultGiven);
         }
+        public override string ToString() {
+
+            var result = "";
+
+            for (var i = 0; i < listOfNodes.Count; i++) {
+                result += listOfNodes[i].GetInfix() + (i != listOfNodes.Count - 1 ? ", " : "");
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Checks if the current TableuxNode can be broken down in pieces mor
@@ -98,6 +108,7 @@ namespace LPP.TruthTable
             bool TreeIsSimplifiable(Node tree) {
                 if (tree is PropositionNode) return false; // if given tree consists of just a PropositionNode
                 if (!(tree is NotNode)) return true; // if given tree is not a NotNode
+                if (tree.left is PropositionNode) return false;
                 return !(tree.left is PropositionNode); // returns: tree is simplifiable if left of NotNode is not PropositionNode
             }
             
@@ -107,6 +118,16 @@ namespace LPP.TruthTable
             }
 
             return false;
+        }
+
+        public string GetConnections() {
+
+            string result = "";
+            
+            if (Left != null) result += $"node{id} -- node{Left.id}";
+            if (Right != null) result += $"node{id} -- node{Right.id}";
+
+            return result;
         }
 
         #region Hidden functions
