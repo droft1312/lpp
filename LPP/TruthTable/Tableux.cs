@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using LPP.Nodes;
@@ -11,7 +12,6 @@ namespace LPP.TruthTable
         private TableuxNode tree;
 
         private bool isTautology;
-        private bool resultGiven;
 
         public TableuxNode Tree => tree;
 
@@ -29,13 +29,38 @@ namespace LPP.TruthTable
 
         private void BuildTableux(TableuxNode root) {
 
-            void ResetVariable() { isTautology = false; resultGiven = false; }
+            void ResetVariable() { isTautology = false; }
             
             if (!root.TableuxIsSimplifiable()) return;
 
             ResetVariable();
             
-            root.Generate(ref isTautology, ref resultGiven);
+            root.Generate();
+        }
+
+        public bool ValidateTautology() {
+            if (tree == null) throw new ArgumentNullException();
+
+            int leafsCounter = 0;
+            int truthsCounter = 0;
+            
+            void IterateOverLeafs(TableuxNode node) {
+                if (node == null) return;
+
+                if (node.Left == null && node.Right == null) {
+                    // we are in a leaf
+                    leafsCounter++;
+                    truthsCounter += TableuxNode.IsTautology(node.ListOfNodes) ? 1 : 0;
+                }
+                else {
+                    IterateOverLeafs(node.Left);
+                    IterateOverLeafs(node.Right);
+                }
+            }
+            
+            IterateOverLeafs(tree);
+
+            return leafsCounter == truthsCounter;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace LPP.TruthTable
         public TableuxNode Left { get; set; }
         public TableuxNode Right { get; set; }
 
+        public List<Node> ListOfNodes => listOfNodes;
+
         private TableuxNode() {
             id = ++GlobalCounter.tableux_count;
         }
@@ -24,11 +26,10 @@ namespace LPP.TruthTable
             listOfNodes = nodes;
         }
 
-        public void Generate(ref bool result, ref bool resultGiven) {
+        public void Generate() {
 
             if (!TableuxIsSimplifiable()) {
                 // TODO: Problem here, because you always reassign the variable. Hence, it may yield false results in the end
-                result = IsTautology(listOfNodes);
                 return;
             }
             
@@ -76,8 +77,8 @@ namespace LPP.TruthTable
              
             
             /* recursively do it all over again until there's no more work that needs to be done */
-            Left?.Generate(ref result, ref resultGiven);
-            Right?.Generate(ref result, ref resultGiven);
+            Left?.Generate();
+            Right?.Generate();
         }
         public override string ToString() {
 

@@ -121,7 +121,7 @@ namespace LPP
             _mainUnit.GenerateTableux();
             _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
 
-            var result = _mainUnit.Tableux.IsTautology;
+            var result = _mainUnit.Tableux.ValidateTautology();
 
             outputTextbox.Text = result ? "Given tree is a tautology!" : "Given tree IS NOT a tautology!";
         }
