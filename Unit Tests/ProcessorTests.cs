@@ -89,10 +89,9 @@ namespace Unit_Tests
         public void TableuxCreation_Test() {
             Processor p = new Processor();
 
-            const string customInput = ">(>(|(P,Q),R),|(>(P,R),>(Q,R))) ";
-            const string customInput2 = "&(|(A,B),>(C,~(C)))";
-            
-            p.ProcessStringInput(customInput2);
+            const string customInput = ">(&(|(~(A), C), =(A,B)), >(&(~(C),D),E))";
+
+            p.ProcessStringInput(customInput);
             
             p.GenerateTableux();
             

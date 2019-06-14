@@ -12,9 +12,6 @@ namespace LPP
         string output = string.Empty;
         int counterForInorderTraversal = 0;
         private string nodeConnections = "";
-    
-        
-        // TODO: Finish Drawing
 
         /// <summary>
         /// Returns a complete image of graphviz

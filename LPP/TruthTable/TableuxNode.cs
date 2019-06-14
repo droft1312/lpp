@@ -7,8 +7,6 @@ using LPP.Nodes;
 namespace LPP.TruthTable
 {
     // TODO: Add a function that doesn't allow multiple '~(R)' be added
-    // TODO: Add a function that will check if there's a tautology in one of the tableux nodes
-    
     
     public class TableuxNode : INode
     {
@@ -29,6 +27,7 @@ namespace LPP.TruthTable
         public void Generate(ref bool result, ref bool resultGiven) {
 
             if (!TableuxIsSimplifiable()) {
+                // TODO: Problem here, because you always reassign the variable. Hence, it may yield false results in the end
                 result = IsTautology(listOfNodes);
                 return;
             }
@@ -148,7 +147,6 @@ namespace LPP.TruthTable
                     var child = tree.left;
 
                     switch (child) {
-                        // TODO: Implement
                         case DisjunctionNode _:
                             result.Add(Functions.NegateTree(child.left));
                             result.Add(Functions.NegateTree(child.right));
