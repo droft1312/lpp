@@ -29,16 +29,8 @@ namespace LPP.TruthTable
         public void Generate(ref bool result, ref bool resultGiven) {
 
             if (!TableuxIsSimplifiable()) {
-
-                bool tautologyOrNot = IsTautology(listOfNodes);
-
-                if (!resultGiven) {
-                    resultGiven = true;
-                    result = tautologyOrNot;
-                }
-                
+                result = IsTautology(listOfNodes);
                 return;
-                
             }
             
             /* get the most important tree to work on (NotNode based trees come first always) */
@@ -106,10 +98,15 @@ namespace LPP.TruthTable
         public bool TableuxIsSimplifiable() {
             
             bool TreeIsSimplifiable(Node tree) {
-                if (tree is PropositionNode) return false; // if given tree consists of just a PropositionNode
-                if (!(tree is NotNode)) return true; // if given tree is not a NotNode
-                if (tree.left is PropositionNode) return false;
-                return !(tree.left is PropositionNode); // returns: tree is simplifiable if left of NotNode is not PropositionNode
+                switch (tree) {
+                    case PropositionNode _:
+                    case NotNode _ when tree.left is PropositionNode:
+                        return false;
+                    case NotNode _:
+                        return true;
+                    default:
+                        return true;
+                }
             }
             
             foreach (var node in listOfNodes) {
@@ -242,7 +239,12 @@ namespace LPP.TruthTable
             
             // looking for anything
             for (int i = 0; i < listOfNodes.Count; i++) {
-                if (listOfNodes[i] is PropositionNode) continue;
+                if (listOfNodes[i] is PropositionNode) 
+                    continue;
+                if (listOfNodes[i] is NotNode) 
+                    if (listOfNodes[i].left is PropositionNode) 
+                        continue;
+                
                 tree = listOfNodes[i];
                 position = i;
                 return (tree, position);
