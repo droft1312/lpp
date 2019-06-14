@@ -10,7 +10,7 @@ namespace LPP.TruthTable
     // TODO: Add a function that will check if there's a tautology in one of the tableux nodes
     
     
-    public class TableuxNode
+    public class TableuxNode : INode
     {
         public readonly int id;
         
@@ -91,6 +91,15 @@ namespace LPP.TruthTable
             return result;
         }
 
+        public string PrintConnections() {
+            string result = "";
+            
+            if (Left != null) result += $"node{id} -- node{Left.id}\n";
+            if (Right != null) result += $"node{id} -- node{Right.id}\n";
+
+            return result;
+        }
+
         /// <summary>
         /// Checks if the current TableuxNode can be broken down in pieces mor
         /// </summary>
@@ -115,16 +124,6 @@ namespace LPP.TruthTable
             }
 
             return false;
-        }
-
-        public string GetConnections() {
-
-            string result = "";
-            
-            if (Left != null) result += $"node{id} -- node{Left.id}";
-            if (Right != null) result += $"node{id} -- node{Right.id}";
-
-            return result;
         }
 
         #region Hidden functions

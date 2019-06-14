@@ -13,6 +13,8 @@ namespace LPP.TruthTable
         private bool isTautology;
         private bool resultGiven;
 
+        public TableuxNode Tree => tree;
+
         public bool IsTautology => isTautology;
 
         public Tableux(Node root) {

@@ -30,7 +30,7 @@ namespace LPP
         private void processInput_Click (object sender, EventArgs e) {
             string input = inputTextBox.Text;
             _mainUnit.ProcessStringInput (input);
-            _mainUnit.GenerateGraphImage (ref graphPicture, _mainUnit.Root);
+            _mainUnit.GenerateGraphImage (graphPicture, _mainUnit.Root);
             _mainUnit.PrintOutInfixNotation (_mainUnit.Root, infixTextBox);
         }
 
@@ -92,7 +92,7 @@ namespace LPP
             
             // create a tree and display it
             _mainUnit.ProcessStringInput(disjunctivePrefixForm);
-            _mainUnit.GenerateGraphImage (ref graphPicture, _mainUnit.Root);
+            _mainUnit.GenerateGraphImage (graphPicture, _mainUnit.Root);
             _mainUnit.PrintOutInfixNotation (_mainUnit.Root, infixTextBox);
             
             // show a truth-table
@@ -101,7 +101,7 @@ namespace LPP
 
         private void nandifyButton_Click(object sender, EventArgs e) {
             _mainUnit.Root = _mainUnit.Nandify(_mainUnit.Root);
-            _mainUnit.GenerateGraphImage(ref graphPicture, _mainUnit.Root);
+            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Root);
         }
 
         private void sixTruthsButton_Click(object sender, EventArgs e) {
@@ -119,6 +119,7 @@ namespace LPP
             if (_mainUnit.Root == null) return;
             
             _mainUnit.GenerateTableux();
+            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
         }
     }
 }

@@ -28,9 +28,14 @@ namespace LPP
         /// </summary>
         /// <param name="pictureBox">PictureBox image will be displayed on</param>
         /// <param name="node">Tree imagige will be based upon</param>
-        public void GenerateGraphImage (ref System.Windows.Forms.PictureBox pictureBox, Node node) {
+        public void GenerateGraphImage (PictureBox pictureBox, Node node) {
             Graphiz graphiz = new Graphiz ();
-            graphiz.GetGraphImage (ref pictureBox, in node);
+            graphiz.GetGraphImage (pictureBox, node);
+        }
+
+        public void GenerateGraphImage(PictureBox pictureBox, TableuxNode node) {
+            Graphiz graphiz = new Graphiz();
+            graphiz.GetGraphImage(pictureBox,node);
         }
 
         /// <summary>
