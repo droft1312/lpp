@@ -89,26 +89,6 @@ namespace LPP
         }
 
         /// <summary>
-        /// Substrings a string from start index till end index (inclusive of the end index)
-        /// </summary>
-        /// <param name="s"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="endIndex"></param>
-        /// <returns></returns>
-        public static string SubstringStartEndIndexBased(this string s, int startIndex, int endIndex) {
-            
-            if (startIndex < endIndex || startIndex < 0 || endIndex > s.Length) throw new IndexOutOfRangeException();
-
-            string result = string.Empty;
-            
-            for (int i = startIndex; i <= endIndex; i++) {
-                result += s[i];
-            }
-            
-            return result;
-        }
-
-        /// <summary>
         /// Calculates the number of levels your current node will have to go up (how many times root = root.Parent)
         /// </summary>
         /// <param name="input">Input string to parse</param>

@@ -42,8 +42,10 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="FunctionsTests.cs" />
         <Compile Include="ProcessorTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="TruthTableTests.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\LPP\LPP.csproj">
