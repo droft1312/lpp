@@ -28,11 +28,8 @@ namespace LPP.TruthTable
 
         public void Generate() {
 
-            if (!TableuxIsSimplifiable()) {
-                // TODO: Problem here, because you always reassign the variable. Hence, it may yield false results in the end
-                return;
-            }
-            
+            if (!TableuxIsSimplifiable()) return;
+
             /* get the most important tree to work on (NotNode based trees come first always) */
             var (priorityTree, position) = GetPriorityTree();
             
