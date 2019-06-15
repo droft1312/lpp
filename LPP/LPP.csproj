@@ -64,7 +64,11 @@
     </Compile>
     <Compile Include="Helper Classes\Functions.cs" />
     <Compile Include="Helper Classes\Graphiz.cs" />
+    <Compile Include="Nodes\ExistentialQuantifier.cs" />
+    <Compile Include="Nodes\ForAllQuantifier.cs" />
     <Compile Include="Nodes\NandNode.cs" />
+    <Compile Include="Nodes\PredicateNode.cs" />
+    <Compile Include="Nodes\Quantifier.cs" />
     <Compile Include="TruthTable\RowCombination.cs" />
     <Compile Include="INode.cs" />
     <Compile Include="Nodes\BiImplicationNode.cs" />

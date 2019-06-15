@@ -18,10 +18,12 @@ namespace LPP
         private TruthTable.TruthTable truthTable;
         private Tableux _tableux;
         
+        public TruthTable.TruthTable Truth => truthTable;
+        
+
         public Node Root { get { return root; }
             set { root = value; }
         }
-        public TruthTable.TruthTable Truth { get { return truthTable; } } 
 
         /// <summary>
         /// Generates Graphiz Image
@@ -46,6 +48,8 @@ namespace LPP
             input = ParseInputString (input); // delete all unneccesary stuff
 
             char first_character = input[0];
+            
+            bool containsQuantifier = false;
 
             switch (first_character) {
                 case '~':
@@ -71,14 +75,26 @@ namespace LPP
                 case '%':
                     root = new NandNode(input, null);
                     break;
+                
+                case '@':
+                    case '!':
+                    containsQuantifier = true;
+                    break;
 
                 default:
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
             }
-
-            BuildTree (root.Value, root);
+            
+            if (containsQuantifier) HandleQuantifierInput(input);
+            else BuildTree (root.Value, root);
         }
-
+        
+        /// <summary>
+        /// A method that is called to actually build a tree from a given input. Is called from ProcessStringInput()
+        /// </summary>
+        /// <param name="input">input string</param>
+        /// <param name="root">Node used in recursion for creating a binary tree</param>
+        /// <exception cref="Exception"></exception>
         private void BuildTree (string input, Node root) {
             if (input == string.Empty) return;
 
@@ -146,6 +162,25 @@ namespace LPP
                 input = input.Substring (numberOflevels);
                 BuildTree (input, root);
             }
+        }
+
+        private void HandleQuantifierInput(string input) {
+
+            char c = input[0];
+
+            switch (c) {
+                case '@':
+                    
+                    break;
+
+                case '!':
+
+                    break;
+                
+                default:
+                    throw new Exception("error in input");
+            }
+
         }
 
         public Node Nandify(Node tree) {

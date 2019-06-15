@@ -8,22 +8,22 @@ namespace LPP.Nodes
         public Node right;
         public Node parent;
 
-        protected readonly string value;
-        protected readonly int number;
+        private readonly string value;
+        private readonly int number;
 
-        public int NodeNumber { get { return number; } }
-        public string Value { get { return value; } }
+        public int NodeNumber => number;
+        public string Value => value;
 
-        public Node () {
+        protected Node () {
             number = ++GlobalCounter.nodes_count;
         }
 
-        public Node(string input) : this() { // instantiates parent,left,right with null; this constructor is primarily used when one wants to copy that node
+        protected Node(string input) : this() { // instantiates parent,left,right with null; this constructor is primarily used when one wants to copy that node
             value = input.Substring(1);
             parent = right = left = null;
         }
-        
-        public Node (string input, Node parent) : this () {
+
+        protected Node (string input, Node parent) : this () {
             value = input.Substring (1);
             this.parent = parent;
         }
