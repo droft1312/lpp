@@ -87,6 +87,27 @@ namespace LPP
         public static string ParseInputString(string input) {
             return input.Replace (" ", "").Replace ("(", "");
         }
+        
+        /// <summary>
+        /// Gets a substring until a certain character
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="stopAt"></param>
+        /// <returns></returns>
+        public static string GetUntilOrEmpty(this string text, string stopAt = "-")
+        {
+            if (!String.IsNullOrWhiteSpace(text))
+            {
+                int charLocation = text.IndexOf(stopAt, StringComparison.Ordinal);
+
+                if (charLocation > 0)
+                {
+                    return text.Substring(0, charLocation);
+                }
+            }
+
+            return String.Empty;
+        }
 
         /// <summary>
         /// Calculates the number of levels your current node will have to go up (how many times root = root.Parent)

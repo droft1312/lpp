@@ -37,10 +37,6 @@ namespace LPP.Nodes
             return !leftVal;
         }
 
-        public override string PrintConnections () {
-            return string.Format ("node{0} -- node{1}\n", NodeNumber, left.NodeNumber);
-        }
-
         public override string ToString () {
             return "~";
         }

@@ -93,7 +93,7 @@ namespace LPP
             }
 
             if (containsQuantifier) {
-                // TODO: handle quantifier creation
+                root = new QuantifierInputHandler(input).Create();
             }
             else BuildTree (root.Value, root);
         }

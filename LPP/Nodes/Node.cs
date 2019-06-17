@@ -73,7 +73,15 @@ namespace LPP.Nodes
         /// </summary>
         /// <returns></returns>
         public virtual string PrintConnections () {
-            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
+            
+            string result = "";
+                        
+            if (left != null) result += $"node{number} -- node{left.number}\n";
+            if (right != null) result += $"node{number} -- node{right.number}\n";
+            
+            return result;
+            
+//            return string.Format ("node{0} -- node{1}\nnode{0} -- node{2}\n", number, left.number, right.number);
         }
 
         /// <summary>

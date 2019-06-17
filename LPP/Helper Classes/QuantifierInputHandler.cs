@@ -102,11 +102,15 @@ namespace LPP
         }
         
         private string StringBetweenParenthesis(string s) {
-            int index1 = s.IndexOf('(');
+            /*int index1 = s.IndexOf('(');
             string temp = s.Substring(++index1);
             int index2 = temp.IndexOf(')');
             string result = temp.Substring(0, index2);
-            return result;
+            return result;*/
+
+            string temp = s.Substring(1);
+
+            return temp.GetUntilOrEmpty(")");
         }
 
         private void AddAllowableVar(char c) {

@@ -17,7 +17,9 @@ namespace LPP.Nodes
         public Quantifier(PropositionNode propositionNode) {
             variable = propositionNode;
         }
-        
-        
+
+        public override string GetInfix() {
+            return ToString() + "(" + variable + ", " + left.GetInfix() + ")";
+        }
     }
 }
