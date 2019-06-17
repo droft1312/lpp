@@ -91,8 +91,10 @@ namespace LPP
                 default:
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
             }
-            
-            if (containsQuantifier) HandleQuantifierInput(input);
+
+            if (containsQuantifier) {
+                // TODO: handle quantifier creation
+            }
             else BuildTree (root.Value, root);
         }
         
@@ -169,47 +171,6 @@ namespace LPP
                 input = input.Substring (numberOflevels);
                 BuildTree (input, root);
             }
-        }
-
-        private void HandleQuantifierInput(string input) {
-
-            // Typical input: @x.P(x)
-            // Typical input: !y.@x.P(x,y)
-            
-            char c = input[0]; // 'c' will be either '@' or '!'
-            
-            PropositionNode propositionNode = new PropositionNode(input[1]); // this will be the variable
-            string inputForFormula = input.Substring(input.IndexOf('.') + 1);
-
-            Quantifier q = null;
-            Node formula = null;
-
-            switch (c) {
-                case '@':
-                    q = new ForAllQuantifier(propositionNode);
-                    break;
-                case '!':
-                    q = new ExistentialQuantifier(propositionNode);
-                    break;
-                default:
-                    throw new Exception("error in input");
-            }
-            
-            if (ContainsPredicate(inputForFormula)) {
-                HandlePredicateInput(inputForFormula);
-            }
-            else {
-                ProcessStringInput(inputForFormula);
-                formula = root;
-            }
-            
-            q.Insert(formula);
-            // might fuck up things? think about deep coping here
-            root = q;
-        }
-
-        private PredicateNode HandlePredicateInput(string input) {
-            return null;
         }
 
         public Node Nandify(Node tree) {
