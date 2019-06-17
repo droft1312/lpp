@@ -10,6 +10,12 @@ using static LPP.Functions;
 
 namespace LPP
 {
+    // TODO: Implement a method that will change all appearances of a variable into another one
+
+    // TODO: Finish GenerateSixTruths()
+    
+    // TODO: Implement HandlePredicateFormula()
+    
     public class Processor
     {
         public Node root;
@@ -76,6 +82,7 @@ namespace LPP
                     root = new NandNode(input, null);
                     break;
                 
+                /* quantifiers */
                 case '@':
                     case '!':
                     containsQuantifier = true;
@@ -166,21 +173,43 @@ namespace LPP
 
         private void HandleQuantifierInput(string input) {
 
-            char c = input[0];
+            // Typical input: @x.P(x)
+            // Typical input: !y.@x.P(x,y)
+            
+            char c = input[0]; // 'c' will be either '@' or '!'
+            
+            PropositionNode propositionNode = new PropositionNode(input[1]); // this will be the variable
+            string inputForFormula = input.Substring(input.IndexOf('.') + 1);
+
+            Quantifier q = null;
+            Node formula = null;
 
             switch (c) {
                 case '@':
-                    
+                    q = new ForAllQuantifier(propositionNode);
                     break;
-
                 case '!':
-
+                    q = new ExistentialQuantifier(propositionNode);
                     break;
-                
                 default:
                     throw new Exception("error in input");
             }
+            
+            if (ContainsPredicate(inputForFormula)) {
+                HandlePredicateInput(inputForFormula);
+            }
+            else {
+                ProcessStringInput(inputForFormula);
+                formula = root;
+            }
+            
+            q.Insert(formula);
+            // might fuck up things? think about deep coping here
+            root = q;
+        }
 
+        private PredicateNode HandlePredicateInput(string input) {
+            return null;
         }
 
         public Node Nandify(Node tree) {
@@ -240,21 +269,18 @@ namespace LPP
             return newTree;
         }
 
-        public void GenerateTableux() {
-            if (root == null) return;
-            
-            /*
-             * There is probably two cases:
-             * a) when the root is NOTNODE
-             * b) when the root IS NOT NOTNODE
-             * 
-             */
-            
-            _tableux = new Tableux(root);
-            
+        public void ChangeVariable(char currentVar, char newVar) {
+            // TODO: Implement ChangeVariable()
         }
 
-        // TODO: Finish GenerateSixTruths()
+        /// <summary>
+        /// Generates tableux based on the beforehand created tree
+        /// </summary>
+        public void GenerateTableux() {
+            if (root == null) return;
+            _tableux = new Tableux(root);
+        }
+
         public void GenerateSixTruths(string input, RichTextBox outputTextBox) {
             ProcessStringInput(input);
 
@@ -326,5 +352,43 @@ namespace LPP
         public string GenerateHexaDecimal(TruthTable.TruthTable truth) {
             return truth.GetHexaDecimal ();
         }
+
+        #region Little helper methods
+
+        /// <summary>
+        /// Returns true if given string is a predicate
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private bool ContainsPredicate(string input) {
+
+            for (int i = 0; i < input.Length; i++) {
+                var c = input[i];
+                
+                // if current char is not an upper letter, skip
+                if (!char.IsUpper(c)) continue;
+                
+                // if it is and the next character is '(', then return true cuz this is a predicate for sure
+                try {
+                    if (input[i + 1] == '(') return true;
+                }
+                catch (IndexOutOfRangeException e) {
+                    return false;
+                }
+            }
+
+            return false;
+            
+//            return char.IsUpper(input[0]) && char.IsLetter(input[0]);
+        }
+
+        private bool IsPropositionFormula(string input) {
+            bool existenceOfPredicate = ContainsPredicate(input);
+            bool existenceOfQuantifiers = input.Contains("@") || input.Contains("!") || input.Contains(".");
+
+            return !(existenceOfPredicate && existenceOfQuantifiers);
+        }
+
+        #endregion
     }
 }

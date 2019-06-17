@@ -45,6 +45,7 @@
         <Compile Include="FunctionsTests.cs" />
         <Compile Include="ProcessorTests.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="QuantifierTests.cs" />
         <Compile Include="TruthTableTests.cs" />
     </ItemGroup>
     <ItemGroup>

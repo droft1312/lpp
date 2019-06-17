@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Helper Classes\Functions.cs" />
     <Compile Include="Helper Classes\Graphiz.cs" />
+    <Compile Include="Helper Classes\QuantifierInputHandler.cs" />
     <Compile Include="Nodes\ExistentialQuantifier.cs" />
     <Compile Include="Nodes\ForAllQuantifier.cs" />
     <Compile Include="Nodes\NandNode.cs" />
