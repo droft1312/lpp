@@ -34,6 +34,15 @@ namespace Unit_Tests
         }
 
         [Test]
+        public void BuildingTreeWithQuantifiers_Test() {
+
+            const string input = ">(@x.P(x),!y.F(y))";
+            
+            Processor p = new Processor();
+            p.ProcessStringInput(input);
+        }
+
+        [Test]
         public void DNFTree_Test() {
             Processor p = new Processor();
             p.ProcessStringInput(Input1);

@@ -51,7 +51,7 @@ namespace LPP
 
             char first_character = input[0];
             
-            bool containsQuantifier = false;
+            bool firstCharacterisQuantifier = false;
 
             switch (first_character) {
                 case '~':
@@ -81,14 +81,14 @@ namespace LPP
                 /* quantifiers */
                 case '@':
                     case '!':
-                    containsQuantifier = true;
+                    firstCharacterisQuantifier = true;
                     break;
 
                 default:
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
             }
 
-            if (containsQuantifier) root = new QuantifierInputHandler(input).Create();
+            if (firstCharacterisQuantifier) root = new QuantifierInputHandler(input).Create();
             else BuildTree (root.Value, root);
         }
         
@@ -139,6 +139,20 @@ namespace LPP
                 NandNode node = new NandNode(input, root);
                 root.Insert(node);
                 BuildTree(node.Value, node);
+
+            } else if (first_character == '@' || first_character == '!') {
+
+                string quantifierInput = input.Substring(0, input.IndexOf(')') + 1);
+                QuantifierInputHandler quantifierInputHandler = new QuantifierInputHandler(quantifierInput);
+                var node = quantifierInputHandler.Create();
+
+                node.parent = root;
+
+                root.Insert(node);
+
+                var newInput = input.Substring(input.IndexOf(')') + 1);
+                
+                BuildTree(newInput, node);
 
             } else if (first_character == ',') {
                 if (root.parent == null) throw new Exception ("Error in your input");

@@ -34,7 +34,6 @@ namespace ConsoleApplication
         }
 
         
-        /*in development*/
         private static string ParseOutStringForParenthesis(string s) {
             int openingParenthesisCounter = 0;
             int closingParenthesisCounter = 0;
@@ -58,5 +57,67 @@ namespace ConsoleApplication
 
             return null;
         }
+
+
+        
+        /* Typical input: >(~(!x.P(x)),@y.F(y)) */
+        /* @z.!y.@x.P(x,y,z),>(???,??) */
+        private static string ParseOutQuantifierString(string s) {
+            
+            /* assumption: s[0] is either @ or ! */
+
+            const char openingBracket = '(';
+            const char closingBracket = ')';
+            
+            string res = "";
+            int counter = 0;
+            
+            while (counter < s.Length && s[counter] != '(') {
+                res += s[counter];
+                counter++;
+            }
+
+            int openingBracketsCounter = 0;
+            int closingBracketsCounter = 0;
+
+
+            for (int i = counter; i < s.Length; i++) {
+                if (s[i] == openingBracket) openingBracketsCounter++;
+                else if (s[i] == closingBracket) closingBracketsCounter++;
+
+                if (openingBracketsCounter == closingBracketsCounter) break;
+            }
+            
+            return res;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     }
 }

@@ -13,11 +13,20 @@ namespace LPP.TruthTable
 
         private bool isTautology;
 
+        private readonly bool containsQuantifiers;
+
+        #region Properties
+
+        
         public TableuxNode Tree => tree;
 
         public bool IsTautology => isTautology;
 
-        public Tableux(Node root) {
+        
+        #endregion
+
+        public Tableux(Node root, bool containsQuantifiers = false) {
+            this.containsQuantifiers = containsQuantifiers;
             _root = Functions.NegateTree(root);
 
             List<Node> passIN = new List<Node>(1);

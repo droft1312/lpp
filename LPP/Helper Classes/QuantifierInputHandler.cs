@@ -6,6 +6,7 @@ using LPP.Nodes;
 // Typical input: @x.P(x)
 // Typical input: !y.@x.P(x,y)
 // Typical input: !y.@z.!x.F(x,y,z)
+// Typical input: >(~(!x.P(x)),@y.F(y))
 
 namespace LPP
 {
@@ -102,14 +103,7 @@ namespace LPP
         }
         
         private string StringBetweenParenthesis(string s) {
-            /*int index1 = s.IndexOf('(');
-            string temp = s.Substring(++index1);
-            int index2 = temp.IndexOf(')');
-            string result = temp.Substring(0, index2);
-            return result;*/
-
             string temp = s.Substring(1);
-
             return temp.GetUntilOrEmpty(")");
         }
 

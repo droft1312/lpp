@@ -20,6 +20,7 @@ namespace LPP.TruthTable
 
         private TableuxNode() {
             id = ++GlobalCounter.tableux_count;
+            
         }
         
         public TableuxNode(List<Node> nodes) : this() {
