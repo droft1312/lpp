@@ -8,6 +8,7 @@ namespace LPP.Nodes
         public PropositionNode Variable
         {
             set => variable = value;
+            protected get => variable;
         }
         
         public Quantifier() {

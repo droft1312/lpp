@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using LPP.Nodes;
 using static LPP.Functions;
 
 namespace LPP
@@ -61,6 +61,8 @@ namespace LPP
         private void truthtableButton_Click (object sender, EventArgs e) {
             if (_mainUnit.Root == null) { MessageBox.Show ("Enter your proposition first!"); return; }
 
+            if (_mainUnit.Root is Quantifier) { MessageBox.Show("Cannot do that stuff on a quantifier!"); return; }
+
             var truth_table = _mainUnit.DetermineTruthTable (_mainUnit.Root);
 
             string output = PrintOutTruthTable (truth_table.RowResultPairs);
@@ -72,7 +74,9 @@ namespace LPP
 
         private void simplifyTruthTableButton_Click (object sender, EventArgs e) {
             if (_mainUnit.Truth == null) return;
-
+            
+            if (_mainUnit.Root is Quantifier) { MessageBox.Show("Cannot do that stuff on a quantifier!"); return; }
+            
             var simplified = _mainUnit.SimplifyTruthTable (_mainUnit.Truth);
 
             string output = PrintOutTruthTable (simplified.RowResultPairs);
@@ -87,6 +91,8 @@ namespace LPP
                 MessageBox.Show("Please, generate a truth-table first!");
                 return;
             }
+            
+            if (_mainUnit.Root is Quantifier) { MessageBox.Show("Cannot do that stuff on a quantifier!"); return; }
 
             string disjunctivePrefixForm = _mainUnit.Truth.DisjunctiveForm();
             
@@ -100,11 +106,15 @@ namespace LPP
         }
 
         private void nandifyButton_Click(object sender, EventArgs e) {
+            if (_mainUnit.Root is Quantifier) { MessageBox.Show("Cannot do that stuff on a quantifier!"); return; }
+
             _mainUnit.Root = _mainUnit.Nandify(_mainUnit.Root);
             _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Root);
         }
 
         private void sixTruthsButton_Click(object sender, EventArgs e) {
+            if (_mainUnit.Root is Quantifier) { MessageBox.Show("Cannot do that stuff on a quantifier!"); return; }
+            
             string input = inputTextBox.Text;
 
             if (input == string.Empty) {

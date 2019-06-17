@@ -10,12 +10,8 @@ using static LPP.Functions;
 
 namespace LPP
 {
-    // TODO: Implement a method that will change all appearances of a variable into another one
-
     // TODO: Finish GenerateSixTruths()
-    
-    // TODO: Implement HandlePredicateFormula()
-    
+
     public class Processor
     {
         public Node root;
@@ -92,9 +88,7 @@ namespace LPP
                     throw new Exception ("String processing went wrong. Source: class Processor, method ProcessStringInput(string input)");
             }
 
-            if (containsQuantifier) {
-                root = new QuantifierInputHandler(input).Create();
-            }
+            if (containsQuantifier) root = new QuantifierInputHandler(input).Create();
             else BuildTree (root.Value, root);
         }
         
