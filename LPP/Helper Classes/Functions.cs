@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using LPP.Nodes;
 using LPP.TruthTable;
 
@@ -174,6 +173,19 @@ namespace LPP
                 case PropositionNode propositionNode:
                     node = new PropositionNode(propositionNode.Name);
                     break;
+                case ForAllQuantifier universalQuantifier:
+                    node = new ForAllQuantifier();
+                    ((Quantifier) node).Variable = universalQuantifier.Variable;
+                    break;
+                case ExistentialQuantifier existentialQuantifier:
+                    node = new ExistentialQuantifier();
+                    ((Quantifier) node).Variable = existentialQuantifier.Variable;
+                    break;
+                case PredicateNode predicateNode:
+                    node = new PredicateNode(predicateNode.Title);
+                    ((PredicateNode) node).Formulas = predicateNode.Formulas;
+                    break;
+                
                 default:
                     throw new Exception("Something went wrong!");
             }
@@ -194,6 +206,14 @@ namespace LPP
             NotNode notNode = new NotNode {left = DeepCopyTree(root)};
             return notNode;
 
+        }
+
+        /// <summary>
+        /// Creates a new char for variable creation in tableux-quantifier
+        /// </summary>
+        /// <returns></returns>
+        public static char GetNewVariable() {
+            return (char) ++GlobalCounter.variable_count;
         }
 
         #region Convertion of BiImplication and NAND
@@ -266,17 +286,5 @@ namespace LPP
         }
 
         #endregion
-        
-        
-        /// <summary>
-        /// Clones a generic list
-        /// </summary>
-        /// <param name="listToClone"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public static IList<T> Clone<T>(this IList<T> listToClone) where T: ICloneable
-        {
-            return listToClone.Select(item => (T)item.Clone()).ToList();
-        }
     }
 }

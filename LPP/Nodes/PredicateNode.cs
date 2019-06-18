@@ -10,10 +10,13 @@ namespace LPP.Nodes
         private new readonly Node left, right;
 
         private char title;
-        
+
+        public char Title => title;
+
         public List<PropositionNode> Formulas
         {
             set => formulas = value;
+            get => formulas;
         }
 
         private PredicateNode() {
@@ -23,6 +26,14 @@ namespace LPP.Nodes
 
         public PredicateNode(char title) : this() {
             this.title = title;
+        }
+
+        public void ChangeVariable(char _oldVariable, char _newVariable) {
+            for (int i = 0; i < formulas.Count; i++) {
+                if (formulas[i].Name == _oldVariable) {
+                    formulas[i] = new PropositionNode(_newVariable);
+                }
+            }
         }
 
         public override string ToString() {

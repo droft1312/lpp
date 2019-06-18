@@ -59,6 +59,8 @@ namespace LPP.TruthTable
                 else {
                     betaRuleWorked = true;
                 }
+            } else if (IsDeltaRule(priorityTree)) {
+                newList.AddRange(ApplyDeltaRules(priorityTree));
             }
             else {
                 newList.AddRange(ApplyAlphaRules(priorityTree));
@@ -80,6 +82,10 @@ namespace LPP.TruthTable
             Left?.Generate();
             Right?.Generate();
         }
+        
+        
+        
+        
         public override string ToString() {
 
             var result = "";
@@ -105,6 +111,8 @@ namespace LPP.TruthTable
         /// </summary>
         /// <returns></returns>
         public bool TableuxIsSimplifiable() {
+            
+            // TODO: You might have to redo this Function as well
             
             bool TreeIsSimplifiable(Node tree) {
                 switch (tree) {
@@ -200,7 +208,34 @@ namespace LPP.TruthTable
 
 
             return (leftSubtree, rightSubtree);
-        } 
+        }
+
+        private List<Node> ApplyGammaRules(Node tree) {
+            throw new NotImplementedException();
+        }
+
+        private List<Node> ApplyDeltaRules(Node tree) {
+
+            List<Node> result = new List<Node>();
+
+            if (tree is ExistentialQuantifier || tree is ForAllQuantifier) {
+                var quantifier = (Quantifier) tree;
+
+                var leftOfQuantifier = quantifier.left;
+                var newVariable = Functions.GetNewVariable();
+                
+                if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
+                else ((PredicateNode)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
+                
+                result.Add(
+                    quantifier is ExistentialQuantifier ? leftOfQuantifier : Functions.NegateTree(leftOfQuantifier)
+                    );
+
+                return result;
+            }
+            
+            return null;
+        }
         
         /// <summary>
         /// Gets a priority tree out of the List of Trees. ASSUMPTION: function TableuxIsSimplifiable() has been called upfront and returned true
@@ -208,11 +243,10 @@ namespace LPP.TruthTable
         /// <returns></returns>
         private (Node priorityTree, int position) GetPriorityTree() {
             
+            // TODO: Rewrite this method taking into account Gamma and Delta rules
+            
             /*
-             * Algorithm:
-             * 1) Go over the list of trees and find the one matching Alpha-rules. If found, return it.
-             * 2) If Alpha-rule is not found, look for beta rule. Return the first found one.
-             * 
+             * Priority: alpha, delta (looks like an egg), beta, gamma (looks like Y)
              */
             
             Node tree = null;
@@ -234,20 +268,52 @@ namespace LPP.TruthTable
                 }
             }
             
-            
-            // looking for anything
+            // looking for delta rules
             for (int i = 0; i < listOfNodes.Count; i++) {
+                switch (listOfNodes[i]) {
+                    case ExistentialQuantifier _:
+                        tree = listOfNodes[i];
+                        position = i;
+                        return (tree, position);
+                    case NotNode notNode when notNode.left is ForAllQuantifier:
+                        tree = listOfNodes[i];
+                        position = i;
+                        return (tree, position);
+                }
+            }
+            
+            
+            /*looking for beta rules*/
+            
+            for (int i = 0; i < listOfNodes.Count; i++) {
+                switch (listOfNodes[i]) {
+                    case NotNode not when not.left is ConjunctionNode:
+                        tree = listOfNodes[i];
+                        position = i;
+                        return (tree, position);
+                    case DisjunctionNode _:
+                    case ImplicationNode _:
+                        tree = listOfNodes[i];
+                        position = i;
+                        return (tree, position);
+                }
+            }
+            
+            /*looking for gamma rules (or basically anything)*/
+
+            for (int i = 0; i < listOfNodes.Count; i++) {
+                
                 if (listOfNodes[i] is PropositionNode) 
                     continue;
                 if (listOfNodes[i] is NotNode) 
                     if (listOfNodes[i].left is PropositionNode) 
                         continue;
-                
+
                 tree = listOfNodes[i];
                 position = i;
                 return (tree, position);
-            }
 
+            }
 
 
             return (tree, position);
@@ -293,11 +359,28 @@ namespace LPP.TruthTable
         }
 
         /// <summary>
+        /// Returns true if given tree is a delta-rule
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <returns></returns>
+        private bool IsDeltaRule(Node tree) {
+            switch (tree) {
+                case ExistentialQuantifier _:
+                case NotNode _ when tree.left is ForAllQuantifier:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        /// <summary>
         /// Checks if the given list of nodes contains two contradictions
         /// </summary>
         /// <param name="inputList"></param>
         /// <returns></returns>
         public static bool IsTautology(List<Node> inputList) {
+            
+            // TODO: Adapt it to quantifiers
 
             /* returns true if two given string only differ by ~ , so for instance R and ~(R)*/
             bool OnlyDifferByNot(string s1, string s2) {

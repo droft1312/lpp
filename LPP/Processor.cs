@@ -238,10 +238,6 @@ namespace LPP
             return newTree;
         }
 
-        public void ChangeVariable(char currentVar, char newVar) {
-            // TODO: Implement ChangeVariable()
-        }
-
         /// <summary>
         /// Generates tableux based on the beforehand created tree
         /// </summary>

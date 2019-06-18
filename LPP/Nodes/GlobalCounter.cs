@@ -10,5 +10,6 @@ namespace LPP.Nodes
     {
         public static int nodes_count = 0;
         public static int tableux_count = 0;
+        public static int variable_count = 65; // is used in semantic tableux bullshit for quantifiers cuz they need a new variable
     }
 }

@@ -108,6 +108,17 @@ namespace Unit_Tests
         }
 
         [Test]
+        public void TableuxWithQuantifiersCreation_Test() {
+            Processor p = new Processor();
+
+            const string customInput = ">(~(!x.P(x)),@y.F(y))"; // should return that it's a tautology
+            
+            p.ProcessStringInput(customInput);
+            
+            p.GenerateTableux();
+        }
+
+        [Test]
         public void TautologyCheckInListOfTableuxNode() {
             PropositionNode propNode = new PropositionNode('R');
             

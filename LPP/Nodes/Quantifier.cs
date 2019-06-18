@@ -8,7 +8,7 @@ namespace LPP.Nodes
         public PropositionNode Variable
         {
             set => variable = value;
-            protected get => variable;
+            get => variable;
         }
         
         public Quantifier() {
@@ -21,6 +21,19 @@ namespace LPP.Nodes
 
         public override string GetInfix() {
             return ToString() + "(" + variable + ", " + left.GetInfix() + ")";
+        }
+
+        public void ChangeVariable(char _oldVariable, char _newVariable) {
+
+            if (variable.Name == _oldVariable) {
+                variable = new PropositionNode(_newVariable);
+            }
+
+            if (left is Quantifier q) {
+                q?.ChangeVariable(_oldVariable, _newVariable);
+            } else if (left is PredicateNode p) {
+                p?.ChangeVariable(_oldVariable, _newVariable);
+            }
         }
     }
 }
