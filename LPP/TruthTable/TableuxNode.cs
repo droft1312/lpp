@@ -7,8 +7,7 @@ using LPP.Nodes;
 namespace LPP.TruthTable
 {
     // TODO: Add a function that doesn't allow multiple '~(R)' be added
-    // TODO: Add Quantifier support
-    // TODO: Add Gamma and Delta rules
+    // TODO: Finish Gamma rules
     
     public class TableuxNode : INode
     {
@@ -61,8 +60,9 @@ namespace LPP.TruthTable
                 }
             } else if (IsDeltaRule(priorityTree)) {
                 newList.AddRange(ApplyDeltaRules(priorityTree));
-            }
-            else {
+            } else if (IsGammaRule(priorityTree)) {
+                newList.AddRange(ApplyGammaRules(priorityTree));
+            } else {
                 newList.AddRange(ApplyAlphaRules(priorityTree));
             }
             
@@ -210,10 +210,59 @@ namespace LPP.TruthTable
             return (leftSubtree, rightSubtree);
         }
 
+        /// <summary>
+        /// Applies gamma rules
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <returns></returns>
         private List<Node> ApplyGammaRules(Node tree) {
-            throw new NotImplementedException();
+            
+            /* Gamma rules: @x.P   =>   @x.P,P[x:=t]
+                            ~(!x.P) =>  ~(!x.P), ~(P[x:=t])    , where 't' is a new variable       */
+
+            List<Node> result = new List<Node>(2);
+            
+            result.Add(tree);
+            
+            switch (tree) {
+                case ForAllQuantifier forAllQuantifier:
+                {
+                    var leftOfQuantifier = forAllQuantifier.left;
+                    var newVariable = Functions.GetNewVariable();
+                
+                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name, newVariable);
+                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name, newVariable);
+                
+                    result.Add(leftOfQuantifier);
+
+                    return result;
+                }
+
+                case NotNode notNode when notNode.left is ExistentialQuantifier existentialQuantifier:
+                {
+                    var leftOfQuantifier = existentialQuantifier.left;
+                    var newVariable = Functions.GetNewVariable();
+                    
+                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name, newVariable);
+                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name, newVariable);
+
+                    var negated = Functions.NegateTree(leftOfQuantifier);
+                    
+                    result.Add(negated);
+
+                    return result;
+                }
+
+                default:
+                    return null;
+            }
         }
 
+        /// <summary>
+        /// Applies delta rules to a given tree (quantifier related)
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <returns></returns>
         private List<Node> ApplyDeltaRules(Node tree) {
 
             List<Node> result = new List<Node>();
@@ -367,6 +416,16 @@ namespace LPP.TruthTable
             switch (tree) {
                 case ExistentialQuantifier _:
                 case NotNode _ when tree.left is ForAllQuantifier:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        private bool IsGammaRule(Node tree) {
+            switch (tree) {
+                case ForAllQuantifier _:
+                case NotNode _ when tree.left is ExistentialQuantifier:
                     return true;
                 default:
                     return false;
