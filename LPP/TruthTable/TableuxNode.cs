@@ -7,6 +7,8 @@ using LPP.Nodes;
 namespace LPP.TruthTable
 {
     // TODO: Add a function that doesn't allow multiple '~(R)' be added
+    // TODO: Add Quantifier support
+    // TODO: Add Gamma and Delta rules
     
     public class TableuxNode : INode
     {
