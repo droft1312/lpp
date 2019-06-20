@@ -230,8 +230,8 @@ namespace LPP.TruthTable
                     var leftOfQuantifier = forAllQuantifier.left;
                     var newVariable = Functions.GetNewVariable();
                 
-                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name, newVariable);
-                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name, newVariable);
+                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name.ToString(), newVariable);
+                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name.ToString(), newVariable);
                 
                     result.Add(leftOfQuantifier);
 
@@ -243,8 +243,8 @@ namespace LPP.TruthTable
                     var leftOfQuantifier = existentialQuantifier.left;
                     var newVariable = Functions.GetNewVariable();
                     
-                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name, newVariable);
-                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name, newVariable);
+                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name.ToString(), newVariable);
+                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name.ToString(), newVariable);
 
                     var negated = Functions.NegateTree(leftOfQuantifier);
                     
@@ -273,8 +273,8 @@ namespace LPP.TruthTable
                 var leftOfQuantifier = quantifier.left;
                 var newVariable = Functions.GetNewVariable();
                 
-                if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
-                else ((PredicateNode)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
+                if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name.ToString(), newVariable);
+                else ((PredicateNode)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name.ToString(), newVariable);
                 
                 result.Add(
                     quantifier is ExistentialQuantifier ? leftOfQuantifier : Functions.NegateTree(leftOfQuantifier)

@@ -4,19 +4,19 @@ namespace LPP.Nodes
 {
     public class PropositionNode : Node
     {
-        private readonly char name;
+        private readonly string name;
 
-        public char Name { get { return name; } }
+        public string Name { get { return name; } }
 
         private PropositionNode () {
             left = right = null;
         }
 
-        public PropositionNode(char name) : this() {
+        public PropositionNode(string name) : this() {
             this.name = name;
         }
         
-        public PropositionNode (char name, string input, Node parent) : base (input, parent) {
+        public PropositionNode (string name, string input, Node parent) : base (input, parent) {
             this.name = name;
         }
 

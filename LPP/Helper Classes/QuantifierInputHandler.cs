@@ -49,7 +49,7 @@ namespace LPP
                     
                     if (!listOfAcceptableVars.Contains(s[0])) throw new InputException();
                     
-                    propositions.Add(new PropositionNode(s[0]));
+                    propositions.Add(new PropositionNode(s[0].ToString()));
                 }
 
                 predicate.Formulas = propositions;
@@ -62,7 +62,7 @@ namespace LPP
                 
             var quantifier = GenerateQuantifier(input[0]);
             
-            quantifier.Variable = new PropositionNode(input[1]);
+            quantifier.Variable = new PropositionNode(input[1].ToString());
             
             AddAllowableVar(input[1]);
 

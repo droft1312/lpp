@@ -23,7 +23,7 @@ namespace LPP.Nodes
             return ToString() + "(" + variable + ", " + left.GetInfix() + ")";
         }
 
-        public void ChangeVariable(char _oldVariable, char _newVariable) {
+        public void ChangeVariable(string _oldVariable, string _newVariable) {
 
             if (variable.Name == _oldVariable) {
                 variable = new PropositionNode(_newVariable);

@@ -163,7 +163,7 @@ namespace LPP
 
             } else if (Char.IsLetter (first_character)) {
 
-                PropositionNode node = new PropositionNode (first_character, input, root);
+                PropositionNode node = new PropositionNode (first_character.ToString(), input, root);
                 root.Insert (node);
                 BuildTree (node.Value, node);
 

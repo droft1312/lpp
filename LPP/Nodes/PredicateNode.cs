@@ -28,7 +28,7 @@ namespace LPP.Nodes
             this.title = title;
         }
 
-        public void ChangeVariable(char _oldVariable, char _newVariable) {
+        public void ChangeVariable(string _oldVariable, string _newVariable) {
             for (int i = 0; i < formulas.Count; i++) {
                 if (formulas[i].Name == _oldVariable) {
                     formulas[i] = new PropositionNode(_newVariable);

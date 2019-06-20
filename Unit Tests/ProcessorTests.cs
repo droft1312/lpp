@@ -120,12 +120,12 @@ namespace Unit_Tests
 
         [Test]
         public void TautologyCheckInListOfTableuxNode() {
-            PropositionNode propNode = new PropositionNode('R');
+            PropositionNode propNode = new PropositionNode('R'.ToString());
             
             NotNode notNode = new NotNode();
             notNode.left = Functions.DeepCopyTree(propNode);
             
-            PropositionNode p2 = new PropositionNode('Q');
+            PropositionNode p2 = new PropositionNode('Q'.ToString());
             
             List<Node> list = new List<Node> { propNode, notNode, p2 };
             

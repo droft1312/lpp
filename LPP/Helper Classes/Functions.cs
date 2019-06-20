@@ -212,8 +212,8 @@ namespace LPP
         /// Creates a new char for variable creation in tableux-quantifier
         /// </summary>
         /// <returns></returns>
-        public static char GetNewVariable() {
-            return (char) ++GlobalCounter.variable_count;
+        public static string GetNewVariable() {
+            return "v" + ++GlobalCounter.variable_count;
         }
 
         #region Convertion of BiImplication and NAND
