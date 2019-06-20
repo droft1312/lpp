@@ -227,7 +227,8 @@ namespace LPP.TruthTable
             
             result.Add(tree);
             
-            
+            // TODO: put gamma rule to the end of the list
+
             switch (tree) {
                 case ForAllQuantifier forAllQuantifier:
                 {
@@ -246,6 +247,7 @@ namespace LPP.TruthTable
                     });
 
                     result.AddRange(list);
+                    // TODO: change the order. Should be: list.Add(result)
 
                     return result;
                 }

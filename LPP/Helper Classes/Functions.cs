@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Windows.Forms;
 using LPP.Nodes;
 using LPP.TruthTable;
 
@@ -106,6 +108,43 @@ namespace LPP
             }
 
             return String.Empty;
+        }
+        
+        
+        /// <summary>
+        /// Deletes opening and closing brackets from a string
+        /// </summary>
+        /// <param name="expression">To delete from</param>
+        /// <param name="index">index of an opening string</param>
+        public static void DeleteBrackets(ref string expression, int index) {
+            
+            int GetIndexOfClosingBracket(string input, int indexOfOpeningBracket) {
+                if (input[indexOfOpeningBracket] != '(') {
+                    MessageBox.Show("This wasn't an opening bracket!");
+                    return -1;
+                }
+
+                int i;
+            
+                Stack st = new Stack();
+
+                for (i = indexOfOpeningBracket; i < input.Length; i++) {
+                    if (input[i] == '(') st.Push((int)input[i]);
+                    else if (input[i] == ')') {
+                        st.Pop();
+
+                        if (st.Count == 0) {
+                            return i;
+                        }
+                    }
+                }
+
+                return -1;
+            }
+            
+            int closingBracketIndex = GetIndexOfClosingBracket(expression, index);
+            expression = expression.Remove(index, 1);
+            expression = expression.Remove(closingBracketIndex, 1);
         }
 
         /// <summary>

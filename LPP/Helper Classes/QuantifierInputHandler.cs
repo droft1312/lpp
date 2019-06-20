@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using LPP.Custom_Exception;
 using LPP.Nodes;
 
@@ -46,8 +48,12 @@ namespace LPP
 
                 foreach (var s in varsOfPredicate) {
                     if (!IsVariable(s[0])) throw new Exception("problems");
-                    
-                    if (!listOfAcceptableVars.Contains(s[0])) throw new InputException();
+
+                    if (!listOfAcceptableVars.Contains(s[0])) {
+                        MessageBox.Show(
+                            "You cannot create a predicate with variables that have not been introduced by a quantifier!");
+                        throw new InputException();
+                    }
                     
                     propositions.Add(new PropositionNode(s[0].ToString()));
                 }
@@ -65,7 +71,7 @@ namespace LPP
             quantifier.Variable = new PropositionNode(input[1].ToString());
             
             AddAllowableVar(input[1]);
-
+            
             input = input.Substring(3); // get the string starting (excluding) from '.'
             
             quantifier.Insert(Create());

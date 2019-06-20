@@ -137,7 +137,7 @@ namespace LPP
             if (_mainUnit.Root == null) return;
             
             _mainUnit.GenerateTableux();
-//            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
+            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
 
             var result = _mainUnit.Tableux.ValidateTautology();
 

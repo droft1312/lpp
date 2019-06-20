@@ -49,6 +49,7 @@ namespace LPP
         /// </summary>
         /// <param name="input"></param>
         public void ProcessStringInput (string input) {
+            ClearOutBracketsForQuantifiers(ref input);
             input = ParseInputString (input); // delete all unneccesary stuff
 
             char first_character = input[0];
@@ -347,6 +348,25 @@ namespace LPP
             return false;
             
 //            return char.IsUpper(input[0]) && char.IsLetter(input[0]);
+        }
+
+        /// <summary>
+        /// Deletes unnecessary brackets for quantifiers
+        /// </summary>
+        /// <param name="expression"></param>
+        private void ClearOutBracketsForQuantifiers(ref string expression) {
+            for (int i = 0; i < expression.Length; i++) {
+                if (expression[i] == '.') {
+                    try {
+                        if (expression[i + 1] == '(') {
+                            DeleteBrackets(ref expression, i + 1);
+                        }
+                    }
+                    catch (IndexOutOfRangeException) {
+                        continue;
+                    }
+                }
+            }
         }
 
         private bool IsPropositionFormula(string input) {

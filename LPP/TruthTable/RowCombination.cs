@@ -68,7 +68,6 @@ namespace LPP.TruthTable
         /// </summary>
         /// <returns></returns>
         public bool SatisfiesConditionForSimplification() {
-
             List<int> GetValues () {
                 List<int> result = new List<int> (_nodeValues.Length);
                 foreach (var item in _nodeValues) {
@@ -87,8 +86,9 @@ namespace LPP.TruthTable
             counter.Add (0, 0);
             counter.Add (1, 0);
 
-            for (int i = 0; i < vals.Count(); i++) {
-                counter[vals[i]]++;
+            var listOfVars = GetValues();
+            for (int i = 0; i < listOfVars.Count; i++) {
+                counter[listOfVars[i]]++;
             }
 
             if (counter[0] == vals.Count - 1 || counter[1] == vals.Count - 1) return true;
