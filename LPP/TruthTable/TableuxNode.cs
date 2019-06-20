@@ -224,6 +224,8 @@ namespace LPP.TruthTable
             
             result.Add(tree);
             
+            // TODO: New Variable is not the right way because it's a gamma rule
+            
             switch (tree) {
                 case ForAllQuantifier forAllQuantifier:
                 {

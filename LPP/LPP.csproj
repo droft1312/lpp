@@ -64,6 +64,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper Classes\Functions.cs" />
+    <Compile Include="Helper Classes\GlobalConstants.cs" />
     <Compile Include="Helper Classes\Graphiz.cs" />
     <Compile Include="Helper Classes\QuantifierInputHandler.cs" />
     <Compile Include="Nodes\ExistentialQuantifier.cs" />
