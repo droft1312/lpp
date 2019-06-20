@@ -86,7 +86,7 @@ namespace LPP
         /// <param name="input">String to parse</param>
         /// <returns>String without specific characters</returns>
         public static string ParseInputString(string input) {
-            return input.Replace (" ", "").Replace ("(", "");
+            return input.Replace (" ", "");
         }
         
         /// <summary>
@@ -144,7 +144,31 @@ namespace LPP
             
             int closingBracketIndex = GetIndexOfClosingBracket(expression, index);
             expression = expression.Remove(index, 1);
-            expression = expression.Remove(closingBracketIndex, 1);
+            expression = expression.Remove(closingBracketIndex - 1, 1);
+        }
+
+        public static int GetIndexOfClosingBracket(string input, int indexOfOpeningBracket) {
+            if (input[indexOfOpeningBracket] != '(') {
+                MessageBox.Show("This wasn't an opening bracket!");
+                return -1;
+            }
+
+            int i;
+
+            Stack st = new Stack();
+
+            for (i = indexOfOpeningBracket; i < input.Length; i++) {
+                if (input[i] == '(') st.Push((int) input[i]);
+                else if (input[i] == ')') {
+                    st.Pop();
+
+                    if (st.Count == 0) {
+                        return i;
+                    }
+                }
+            }
+
+            return -1;
         }
 
         /// <summary>

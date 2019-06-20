@@ -62,8 +62,21 @@ namespace LPP
 
                 return predicate;
 
-            }
+            } 
             
+            if (IsBasicExpression(input[0])) {
+                /* for instance: |(P(x),Q(x))), need to get: |(P(x),Q(x))*/
+
+                int indexOfClosingBracket = Functions.GetIndexOfClosingBracket(input, 1);
+
+                string expression = StringStartEndIndex(input, 0, indexOfClosingBracket);
+                
+                Processor temp = new Processor();
+                temp.ProcessStringInput(expression);
+
+                return temp.Root;
+            }
+
             /* case with quantifiers */
                 
             var quantifier = GenerateQuantifier(input[0]);
@@ -77,6 +90,16 @@ namespace LPP
             quantifier.Insert(Create());
 
             return quantifier;
+        }
+
+        public static string ParseOutInputForQuantifiers(string expression) {
+
+            int indexOfOpeningBracket = expression.IndexOf('(');
+
+            int indexOfClosingBracket = Functions.GetIndexOfClosingBracket(expression, indexOfOpeningBracket);
+
+
+            return StringStartEndIndex(expression, 0, indexOfClosingBracket);
         }
 
         private Quantifier GenerateQuantifier(char c) {
@@ -100,17 +123,30 @@ namespace LPP
             return char.IsUpper(c);
         }
 
+        private bool IsBasicExpression(char c) {
+            return c == '>' || c == '|' || c == '=' || c == '&' || c == '%' || c == '~';
+        }
+
         private bool IsVariable(char c) {
             return char.IsLower(c);
         }
 
         private string[] GetVariables(string s) {
-            return s.Replace(" ", "").Split(',');
+            return s.Replace(" ", "").Replace("(", "").Split(',');
         }
-        
+
         private string StringBetweenParenthesis(string s) {
             string temp = s.Substring(1);
             return temp.GetUntilOrEmpty(")");
+        }
+
+        private static string StringStartEndIndex(string s, int start, int end) {
+            string result = "";
+
+            for (int i = start; i <= end; i++)
+                result += s[i];
+
+            return result;
         }
 
         private void AddAllowableVar(char c) {

@@ -49,8 +49,8 @@ namespace LPP
         /// </summary>
         /// <param name="input"></param>
         public void ProcessStringInput (string input) {
-            ClearOutBracketsForQuantifiers(ref input);
-            input = ParseInputString (input); // delete all unneccesary stuff
+            ClearOutBracketsForQuantifiers(ref input); // deletes brackets for quantifiers
+            input = ParseInputString (input); // delete white spaces
 
             char first_character = input[0];
             
@@ -145,7 +145,8 @@ namespace LPP
 
             } else if (first_character == '@' || first_character == '!') {
 
-                string quantifierInput = input.Substring(0, input.IndexOf(')') + 1);
+//                string quantifierInput = input.Substring(0, input.IndexOf(')') + 1); 
+                string quantifierInput = QuantifierInputHandler.ParseOutInputForQuantifiers(input);
                 QuantifierInputHandler quantifierInputHandler = new QuantifierInputHandler(quantifierInput);
                 var node = quantifierInputHandler.Create();
 
@@ -181,6 +182,9 @@ namespace LPP
 
                 input = input.Substring (numberOflevels);
                 BuildTree (input, root);
+            } else if (first_character == '(') {
+                input = input.Substring(1);
+                BuildTree(input, root);
             }
         }
 
