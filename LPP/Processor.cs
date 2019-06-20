@@ -143,9 +143,34 @@ namespace LPP
                 root.Insert(node);
                 BuildTree(node.Value, node);
 
+            } else if (Char.IsUpper(first_character) && input[1] == '(') {
+                
+                /* predicate case */
+                /* P(x), Q(x) */
+
+                int closingBracketIndex = GetIndexOfClosingBracket(input, 1);
+                
+                var vars = QuantifierInputHandler.StringStartEndIndex(input, 2, closingBracketIndex - 1).Split(',');
+                
+                PredicateNode predicate = new PredicateNode(first_character);
+                
+                List<PropositionNode> propositions = new List<PropositionNode>();
+                
+                foreach (var variable in vars) {
+                    propositions.Add(new PropositionNode(variable));
+                }
+
+                predicate.Formulas = propositions;
+                
+                root.Insert(predicate);
+                predicate.parent = root;
+
+                input = input.Substring(closingBracketIndex + 1);
+                
+                BuildTree(input, predicate);
+
             } else if (first_character == '@' || first_character == '!') {
 
-//                string quantifierInput = input.Substring(0, input.IndexOf(')') + 1); 
                 string quantifierInput = QuantifierInputHandler.ParseOutInputForQuantifiers(input);
                 QuantifierInputHandler quantifierInputHandler = new QuantifierInputHandler(quantifierInput);
                 var node = quantifierInputHandler.Create();
@@ -154,7 +179,7 @@ namespace LPP
 
                 root.Insert(node);
 
-                var newInput = input.Substring(input.IndexOf(')') + 1);
+                var newInput = input.Substring(IndexTillWhichStringAreSame(quantifierInput, input)+1);
                 
                 BuildTree(newInput, node);
 

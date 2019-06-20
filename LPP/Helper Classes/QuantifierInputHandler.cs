@@ -140,7 +140,7 @@ namespace LPP
             return temp.GetUntilOrEmpty(")");
         }
 
-        private static string StringStartEndIndex(string s, int start, int end) {
+        public static string StringStartEndIndex(string s, int start, int end) {
             string result = "";
 
             for (int i = start; i <= end; i++)

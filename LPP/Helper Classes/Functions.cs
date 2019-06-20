@@ -172,6 +172,28 @@ namespace LPP
         }
 
         /// <summary>
+        /// Returns an index in a string at which two differ
+        /// </summary>
+        /// <param name="s1">s1 is supposed to be inside of s2</param>
+        /// <param name="s2">s2 is supposed to be bigger than s1</param>
+        /// <returns></returns>
+        public static int IndexTillWhichStringAreSame(string s1, string s2) {
+            if (s1.Length > s2.Length) return -1;
+
+            int index = -1;
+
+            for (int i = 0; i < s2.Length; i++) {
+                if (i >= s1.Length) return s1.Length - 1;
+                if (s1[i] != s2[i]) {
+                    index = i;
+                    return index;
+                }
+            }
+
+            return index;
+        }
+
+        /// <summary>
         /// Calculates the number of levels your current node will have to go up (how many times root = root.Parent)
         /// </summary>
         /// <param name="input">Input string to parse</param>
