@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LPP.Nodes;
@@ -32,6 +33,7 @@ namespace LPP
             _mainUnit.ProcessStringInput (input);
             _mainUnit.GenerateGraphImage (graphPicture, _mainUnit.Root);
             _mainUnit.PrintOutInfixNotation (_mainUnit.Root, infixTextBox);
+            PrintOutDepthOfTree();
         }
 
         private void inputTextBox_KeyDown (object sender, KeyEventArgs e) {
@@ -100,6 +102,7 @@ namespace LPP
             _mainUnit.ProcessStringInput(disjunctivePrefixForm);
             _mainUnit.GenerateGraphImage (graphPicture, _mainUnit.Root);
             _mainUnit.PrintOutInfixNotation (_mainUnit.Root, infixTextBox);
+            PrintOutDepthOfTree();
             
             // show a truth-table
             truthtableButton_Click(this, EventArgs.Empty);
@@ -109,7 +112,12 @@ namespace LPP
             if (_mainUnit.Root is Quantifier) { MessageBox.Show("Cannot do that stuff on a quantifier!"); return; }
 
             _mainUnit.Root = _mainUnit.Nandify(_mainUnit.Root);
-            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Root);
+            
+//            new Thread(delegate() { _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.root); }).Start();
+
+            PrintOutDepthOfTree();
+
+//            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Root);
         }
 
         private void sixTruthsButton_Click(object sender, EventArgs e) {
@@ -129,11 +137,18 @@ namespace LPP
             if (_mainUnit.Root == null) return;
             
             _mainUnit.GenerateTableux();
-            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
+//            _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
 
             var result = _mainUnit.Tableux.ValidateTautology();
 
             outputTextbox.Text = result ? "Given tree is a tautology!" : "Given tree IS NOT a tautology!";
+            PrintOutDepthOfTree();
+        }
+
+
+        private void PrintOutDepthOfTree() {
+            if (_mainUnit.Root == null) return;
+            outputTextbox.Text += $"\n{new string('-', 15)}\nDepth: " + MaxDepthOfTree(_mainUnit.Root);
         }
     }
 }

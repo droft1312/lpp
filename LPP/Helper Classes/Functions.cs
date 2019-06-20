@@ -69,7 +69,7 @@ namespace LPP
                 var rowCombination = pair.Key;
                 var result = pair.Value;
 
-                string temp = rowCombination.ToString () + " -- " + result;
+                string temp = rowCombination + " -- " + result;
 
                 output += temp;
                 output += Environment.NewLine;
@@ -136,7 +136,24 @@ namespace LPP
                 return (T)typeConverter.ConvertFrom (s);
             }
 
-            return default (T);
+            return default;
+        }
+
+        /// <summary>
+        /// Returns the depth (height) of the tree
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public static int MaxDepthOfTree(Node node) {
+            if (node == null) return 0;
+
+            int lDepth = MaxDepthOfTree(node.left);
+            int rDepth = MaxDepthOfTree(node.right);
+
+            if (lDepth > rDepth) 
+                return (lDepth + 1);
+            
+            return (rDepth + 1);
         }
         
         /// <summary>

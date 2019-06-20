@@ -18,6 +18,9 @@ namespace LPP.TruthTable
         public TableuxNode Right { get; set; }
 
         public List<Node> ListOfNodes => listOfNodes;
+        
+        /* variables that Functions.GetNewVariable() returns */
+        public static List<string> ReturnedVariables { get; private set; } = new List<string>();
 
         private TableuxNode() {
             id = ++GlobalCounter.tableux_count;
@@ -220,22 +223,29 @@ namespace LPP.TruthTable
             /* Gamma rules: @x.P   =>   @x.P,P[x:=t]
                             ~(!x.P) =>  ~(!x.P), ~(P[x:=t])    , where 't' is a new variable       */
 
-            List<Node> result = new List<Node>(2);
+            List<Node> result = new List<Node>(ReturnedVariables.Count + 1);
             
             result.Add(tree);
             
-            // TODO: New Variable is not the right way because it's a gamma rule
             
             switch (tree) {
                 case ForAllQuantifier forAllQuantifier:
                 {
+                    // TODO: There might a case when leftOfQuantifier is neither Quantifier nor Predicate
                     var leftOfQuantifier = forAllQuantifier.left;
-                    var newVariable = Functions.GetNewVariable();
-                
-                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name.ToString(), newVariable);
-                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(forAllQuantifier.Variable.Name.ToString(), newVariable);
-                
-                    result.Add(leftOfQuantifier);
+                    
+                    // list of the new Predicates(or whatever) that will be added
+                    /* So if we have three previously introduced variables: v1, v2 v3
+                     @y.P(v1,y) => @y.P(v1,y), P(v1,v1), P(v1,v2), P(v1, v3)
+                     */
+                    var list = InstantiateNClones(leftOfQuantifier, ReturnedVariables.Count);
+                    int counterForVariables = 0;
+                    list.ForEach(item => {
+                        item.ChangeVariable(forAllQuantifier.Variable.Name, ReturnedVariables[counterForVariables]);
+                        counterForVariables++;
+                    });
+
+                    result.AddRange(list);
 
                     return result;
                 }
@@ -243,15 +253,20 @@ namespace LPP.TruthTable
                 case NotNode notNode when notNode.left is ExistentialQuantifier existentialQuantifier:
                 {
                     var leftOfQuantifier = existentialQuantifier.left;
-                    var newVariable = Functions.GetNewVariable();
-                    
-                    if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name.ToString(), newVariable);
-                    else ((PredicateNode)leftOfQuantifier).ChangeVariable(existentialQuantifier.Variable.Name.ToString(), newVariable);
 
-                    var negated = Functions.NegateTree(leftOfQuantifier);
+                    var list = InstantiateNClones(leftOfQuantifier, ReturnedVariables.Count);
                     
-                    result.Add(negated);
-
+                    int counterForVariables = 0;
+                    
+                    list.ForEach(item => {
+                        item.ChangeVariable(existentialQuantifier.Variable.Name, ReturnedVariables[counterForVariables]);
+                        counterForVariables++;
+                    });
+                    
+                    list.ForEach(item => Functions.NegateTree(item));
+                    
+                    result.AddRange(list);
+                    
                     return result;
                 }
 
@@ -275,8 +290,10 @@ namespace LPP.TruthTable
                 var leftOfQuantifier = quantifier.left;
                 var newVariable = Functions.GetNewVariable();
                 
-                if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name.ToString(), newVariable);
-                else ((PredicateNode)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name.ToString(), newVariable);
+                if (ReturnedVariables.Contains(newVariable)) ReturnedVariables.Add(newVariable);
+
+                if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
+                else ((PredicateNode)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
                 
                 result.Add(
                     quantifier is ExistentialQuantifier ? leftOfQuantifier : Functions.NegateTree(leftOfQuantifier)
@@ -481,6 +498,26 @@ namespace LPP.TruthTable
             }
             
             return false;
+        }
+
+        #endregion
+
+        #region Helper functions
+
+        /// <summary>
+        /// Creates N clones of a specified node
+        /// </summary>
+        /// <param name="node">Node to clone</param>
+        /// <param name="N">Number of times to clone</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        private List<T> InstantiateNClones<T>(T node, int N) where T : Node {
+            List<T> result = new List<T>();
+            
+            for (int i = 0; i < N; i++)
+                result.Add(Functions.DeepCopyTree(node) as T);
+
+            return result;
         }
 
         #endregion

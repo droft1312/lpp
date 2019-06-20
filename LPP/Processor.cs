@@ -11,6 +11,8 @@ using static LPP.Functions;
 namespace LPP
 {
     // TODO: Finish GenerateSixTruths()
+    // TODO: Finish Quantifiers (+fix all bugs)
+    // TODO: Finish Simplification
 
     public class Processor
     {

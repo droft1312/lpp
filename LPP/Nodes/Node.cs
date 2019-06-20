@@ -51,6 +51,12 @@ namespace LPP.Nodes
                 right?.GetAllPropositions (ref output);
             }
         }
+
+        public virtual void ChangeVariable(string _oldVariable, string _newVariable) {
+            (this as PredicateNode)?.ChangeVariable(_oldVariable, _newVariable);
+            left?.ChangeVariable(_oldVariable, _newVariable);
+            right?.ChangeVariable(_oldVariable, _newVariable);
+        }
     
         // TODO: This might cause problems bro
         public static bool operator ==(Node n1, Node n2) {

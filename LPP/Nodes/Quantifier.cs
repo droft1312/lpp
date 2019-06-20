@@ -23,17 +23,19 @@ namespace LPP.Nodes
             return ToString() + "(" + variable + ", " + left.GetInfix() + ")";
         }
 
-        public void ChangeVariable(string _oldVariable, string _newVariable) {
+        public override void ChangeVariable(string _oldVariable, string _newVariable) {
 
             if (variable.Name == _oldVariable) {
                 variable = new PropositionNode(_newVariable);
             }
 
-            if (left is Quantifier q) {
-                q?.ChangeVariable(_oldVariable, _newVariable);
-            } else if (left is PredicateNode p) {
-                p?.ChangeVariable(_oldVariable, _newVariable);
-            }
+            base.ChangeVariable(_oldVariable, _newVariable);
+
+//            if (left is Quantifier q) {
+//                q?.ChangeVariable(_oldVariable, _newVariable);
+//            } else if (left is PredicateNode p) {
+//                p?.ChangeVariable(_oldVariable, _newVariable);
+//            }
         }
     }
 }
