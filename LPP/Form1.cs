@@ -10,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LPP.Nodes;
+using LPP.TruthTable;
 using static LPP.Functions;
 
 namespace LPP
@@ -139,9 +140,12 @@ namespace LPP
             _mainUnit.GenerateTableux();
             _mainUnit.GenerateGraphImage(graphPicture, _mainUnit.Tableux.Tree);
 
-//            var result = _mainUnit.Tableux.ValidateTautology();
+            if (!Tableux.treeHasQuantifiers)
+            {
+                var result = Tableux.ValidateTautology(_mainUnit.Tableux.Tree);
+                outputTextbox.Text = result ? "Given tree is a tautology!" : "Given tree IS NOT a tautology!";
+            }
 
-//            outputTextbox.Text = result ? "Given tree is a tautology!" : "Given tree IS NOT a tautology!";
             PrintOutDepthOfTree();
         }
 

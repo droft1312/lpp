@@ -6,9 +6,6 @@ using LPP.Nodes;
 
 namespace LPP.TruthTable
 {
-    // TODO: Add a function that doesn't allow multiple '~(R)' be added
-    // TODO: Finish Gamma rules
-    
     public class TableuxNode : INode
     {
         public readonly int id;
@@ -89,15 +86,23 @@ namespace LPP.TruthTable
                     throw new Exception("Problems detected");
             }
             
-            // TODO: insert a check for tautology here
-
+            
             if (Tableux.treeHasQuantifiers) {
                 var isItTautologyNow = IsTautologyQuantifiers(listOfNodes);
                 if (isItTautologyNow) GlobalCounter.nrOfTruthsReturnedByQuantifiers++;
 
-                // TODO: The function that checks if there is a tautology is probably broken
                 if (GlobalCounter.nrOfTruthsReturnedByQuantifiers == GlobalCounter.nrOfBetaRules) {
                     MessageBox.Show("It's a tautology!");
+                    GlobalCounter.tautologyBeenIdentified = true;
+                    return;
+                }
+            }
+            else {
+                var isTautologyNow = IsTautology(listOfNodes);
+
+                if (isTautologyNow) GlobalCounter.nrOfTruthsReturnedNotByQuantifiers++;
+
+                if (GlobalCounter.nrOfTruthsReturnedNotByQuantifiers == GlobalCounter.nrOfBetaRules) {
                     GlobalCounter.tautologyBeenIdentified = true;
                     return;
                 }
@@ -136,8 +141,6 @@ namespace LPP.TruthTable
         /// </summary>
         /// <returns></returns>
         public bool TableuxIsSimplifiable() {
-            
-            // TODO: You might have to redo this Function as well
             
             bool TreeIsSimplifiable(Node tree) {
                 switch (tree) {
@@ -342,9 +345,6 @@ namespace LPP.TruthTable
         /// </summary>
         /// <returns></returns>
         private (Node priorityTree, int position) GetPriorityTree() {
-            
-            // TODO: Rewrite this method taking into account Gamma and Delta rules
-            
             /*
              * Priority: alpha, delta (looks like an egg), beta, gamma (looks like Y)
              */
@@ -509,8 +509,6 @@ namespace LPP.TruthTable
         /// <param name="inputList"></param>
         /// <returns></returns>
         public static bool IsTautology(List<Node> inputList) {
-            
-            // TODO: Adapt it to quantifiers
             
             foreach (var node in inputList) {
                 foreach (var comparingNode in inputList) {

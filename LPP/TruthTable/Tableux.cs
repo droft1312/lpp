@@ -33,10 +33,10 @@ namespace LPP.TruthTable
         public Tableux(Node root, bool containsQuantifiers = false) {
             GlobalCounter.nrOfBetaRules = 1;
             GlobalCounter.nrOfGammaRules = 0;
-            GlobalCounter.nrOfBetaRules = 1;
             GlobalCounter.nrOfGammaRules = 0;
             GlobalCounter.tautologyBeenIdentified = false;
             GlobalCounter.nrOfTruthsReturnedByQuantifiers = 0;
+            GlobalCounter.nrOfTruthsReturnedNotByQuantifiers = 0;
             
             this.containsQuantifiers = containsQuantifiers;
             _root = Functions.NegateTree(root);
@@ -59,6 +59,7 @@ namespace LPP.TruthTable
                 GlobalCounter.nrOfGammaRules = 0;
                 GlobalCounter.tautologyBeenIdentified = false;
                 GlobalCounter.nrOfTruthsReturnedByQuantifiers = 0;
+                GlobalCounter.nrOfTruthsReturnedNotByQuantifiers = 0;
             }
             
             if (!root.TableuxIsSimplifiable()) return;
