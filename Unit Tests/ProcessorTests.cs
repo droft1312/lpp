@@ -111,7 +111,7 @@ namespace Unit_Tests
         public void TableuxWithQuantifiersCreation_Test() {
             Processor p = new Processor();
 
-            const string customInput = ">(~(!x.P(x)),@y.F(y))"; // should return that it's a tautology
+            const string customInput = ">(!x.(@y.(P(x,y))),@q.(!p.(P(p,q))))"; // should return that it's a tautology
             
             p.ProcessStringInput(customInput);
             

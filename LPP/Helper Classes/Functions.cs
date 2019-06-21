@@ -194,6 +194,25 @@ namespace LPP
         }
 
         /// <summary>
+        /// Returns true if two given strings differ only by one character
+        /// </summary>
+        /// <param name="s1"></param>
+        /// <param name="s2"></param>
+        /// <returns></returns>
+        public static bool DifferByOneCharacter(this string s1, string s2) {
+
+            if (s1.Length == s2.Length) return false;
+
+            const int diffsAllowed = 1;
+            int diffsFound = 0;
+
+            for (int i = 0; i < Math.Min(s1.Length, s2.Length); i++) 
+                if (s1[i] != s2[i]) diffsFound++;
+
+            return diffsFound == diffsAllowed;
+        }
+
+        /// <summary>
         /// Calculates the number of levels your current node will have to go up (how many times root = root.Parent)
         /// </summary>
         /// <param name="input">Input string to parse</param>
@@ -285,7 +304,9 @@ namespace LPP
                     break;
                 case PredicateNode predicateNode:
                     node = new PredicateNode(predicateNode.Title);
-                    ((PredicateNode) node).Formulas = predicateNode.Formulas;
+                    foreach (var formula in predicateNode.Formulas) {
+                        ((PredicateNode) node).Formulas.Add(DeepCopyTree(formula) as PropositionNode);
+                    }
                     break;
                 
                 default:

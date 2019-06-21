@@ -79,7 +79,8 @@ namespace LPP.TruthTable
                 if (!insertionResult)
                     throw new Exception("Problems detected");
             }
-             
+            
+            // TODO: insert a check for tautology here
             
             /* recursively do it all over again until there's no more work that needs to be done */
             Left?.Generate();
@@ -223,16 +224,9 @@ namespace LPP.TruthTable
             /* Gamma rules: @x.P   =>   @x.P,P[x:=t]
                             ~(!x.P) =>  ~(!x.P), ~(P[x:=t])    , where 't' is a new variable       */
 
-            List<Node> result = new List<Node>(ReturnedVariables.Count + 1);
-            
-            result.Add(tree);
-            
-            // TODO: put gamma rule to the end of the list
-
             switch (tree) {
                 case ForAllQuantifier forAllQuantifier:
                 {
-                    // TODO: There might a case when leftOfQuantifier is neither Quantifier nor Predicate
                     var leftOfQuantifier = forAllQuantifier.left;
                     
                     // list of the new Predicates(or whatever) that will be added
@@ -240,16 +234,16 @@ namespace LPP.TruthTable
                      @y.P(v1,y) => @y.P(v1,y), P(v1,v1), P(v1,v2), P(v1, v3)
                      */
                     var list = InstantiateNClones(leftOfQuantifier, ReturnedVariables.Count);
+                    
                     int counterForVariables = 0;
                     list.ForEach(item => {
                         item.ChangeVariable(forAllQuantifier.Variable.Name, ReturnedVariables[counterForVariables]);
                         counterForVariables++;
                     });
-
-                    result.AddRange(list);
-                    // TODO: change the order. Should be: list.Add(result)
-
-                    return result;
+                    
+                    list.Add(tree);
+                    
+                    return list;
                 }
 
                 case NotNode notNode when notNode.left is ExistentialQuantifier existentialQuantifier:
@@ -264,12 +258,17 @@ namespace LPP.TruthTable
                         item.ChangeVariable(existentialQuantifier.Variable.Name, ReturnedVariables[counterForVariables]);
                         counterForVariables++;
                     });
+
+                    List<Node> negatedList = new List<Node>();
                     
-                    list.ForEach(item => Functions.NegateTree(item));
+                    foreach (var node in list) {
+                        var t = Functions.NegateTree(node);
+                        negatedList.Add(t);
+                    }
                     
-                    result.AddRange(list);
-                    
-                    return result;
+                    negatedList.Add(tree);                    
+
+                    return negatedList;
                 }
 
                 default:
@@ -286,20 +285,30 @@ namespace LPP.TruthTable
 
             List<Node> result = new List<Node>();
 
-            if (tree is ExistentialQuantifier || tree is ForAllQuantifier) {
-                var quantifier = (Quantifier) tree;
+            var newVariable = Functions.GetNewVariable();
+            
+            if (tree is NotNode && tree.left is ForAllQuantifier) {
+                Quantifier quantifier = (Quantifier) tree.left;
+                var leftOfQuantifier = (Quantifier) quantifier.left;
 
+                if (!ReturnedVariables.Contains(newVariable)) ReturnedVariables.Add(newVariable);
+                
+                leftOfQuantifier.ChangeVariable(quantifier.Variable.Name, newVariable);
+                
+                result.Add(Functions.NegateTree(leftOfQuantifier));
+
+                return result;
+            }
+
+            if (tree is ExistentialQuantifier ) {
+                Quantifier quantifier = (Quantifier) tree;
                 var leftOfQuantifier = quantifier.left;
-                var newVariable = Functions.GetNewVariable();
                 
-                if (ReturnedVariables.Contains(newVariable)) ReturnedVariables.Add(newVariable);
+                if (!ReturnedVariables.Contains(newVariable)) ReturnedVariables.Add(newVariable);
 
-                if (leftOfQuantifier is Quantifier) ((Quantifier)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
-                else ((PredicateNode)leftOfQuantifier).ChangeVariable(quantifier.Variable.Name, newVariable);
-                
-                result.Add(
-                    quantifier is ExistentialQuantifier ? leftOfQuantifier : Functions.NegateTree(leftOfQuantifier)
-                    );
+                leftOfQuantifier.ChangeVariable(quantifier.Variable.Name, newVariable);
+
+                result.Add(leftOfQuantifier);
 
                 return result;
             }
@@ -461,33 +470,7 @@ namespace LPP.TruthTable
         public static bool IsTautology(List<Node> inputList) {
             
             // TODO: Adapt it to quantifiers
-
-            /* returns true if two given string only differ by ~ , so for instance R and ~(R)*/
-            bool OnlyDifferByNot(string s1, string s2) {
-                int length1 = s1.Length;
-                int length2 = s2.Length;
-
-                if (s1[0] != '~' && s2[0] != '~') return false;
-                if (length1 != 1 && length2 != 1) return false;
-
-                var length1Is1 = length1 == 1;
-
-                if (length1Is1) {
-                    // s1 is the one that is of length 1
-
-                    string cutString = s2.Substring(2, 1);
-                    // returns true if stuff is the same
-                    return s1 == cutString;
-                }
-                else {
-                    // s2 is the one that is of length 1
-
-                    string cutString = s1.Substring(2, 1);
-                    return s2 == cutString;
-                }
-
-            }
-
+            
             foreach (var node in inputList) {
                 foreach (var comparingNode in inputList) {
                     if (node == comparingNode) continue;
@@ -495,7 +478,7 @@ namespace LPP.TruthTable
                     string s1 = node.GetInfix();
                     string s2 = comparingNode.GetInfix();
 
-                    if (OnlyDifferByNot(s1, s2)) return true;
+                    if (s1.DifferByOneCharacter(s2)) return true;
                 }
             }
             

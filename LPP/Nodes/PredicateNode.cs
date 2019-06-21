@@ -5,7 +5,7 @@ namespace LPP.Nodes
 {
     public class PredicateNode : Node
     {
-        private List<PropositionNode> formulas;
+        private List<PropositionNode> formulas = new List<PropositionNode>();
 
         private new readonly Node left, right;
 
