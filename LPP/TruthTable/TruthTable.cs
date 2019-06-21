@@ -52,6 +52,8 @@ namespace LPP.TruthTable
                 allPatterns.Add(new RowCombination(propositions.ToCharArray(), temp));
             }
 
+//            allPatterns.RemoveAt(allPatterns.Count - 1);
+            
             #endregion
 
             #region Get the list of patterns and their matches
@@ -75,7 +77,8 @@ namespace LPP.TruthTable
             }
 
             #endregion
-
+            
+            
             for (int i = 0; i < patterns.Count; i++) {
                 bool removeAtExecuted = false;
                 
@@ -104,7 +107,7 @@ namespace LPP.TruthTable
 
                 if (removeAtExecuted) i--;
             }
-            
+
             /* assumption: unnecessary patterns deleting is done */
 
             for (int i = 0; i < RowResultPairs.Count; i++) {
@@ -275,7 +278,14 @@ namespace LPP.TruthTable
         }
 
         private bool AreAllElementsSame(List<int> list) {
-            return list.Any(o => o != list[0]);
+
+            int a = list[0];
+
+            for (int i = 0; i < list.Count; i++) {
+                if (list[i] != a) return false;
+            }
+
+            return true;
         }
     }
 }

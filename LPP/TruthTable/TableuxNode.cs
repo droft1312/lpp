@@ -435,6 +435,18 @@ namespace LPP.TruthTable
 
             }
 
+            for (int i = 0; i < listOfNodes.Count; i++) {
+                if (listOfNodes[i] is NotNode notNode) {
+                    if (notNode.left is PropositionNode) {
+                        continue;
+                    }
+                }
+
+                tree = listOfNodes[i];
+                position = i;
+                return (tree, position);
+            }
+
 
             return (tree, position);
         }
