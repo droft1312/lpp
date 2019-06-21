@@ -33,7 +33,7 @@ namespace LPP.TruthTable
 
         public void Generate() {
 
-            if (GlobalCounter.tautologyBeenIdentified) return;
+            if (GlobalCounter.tautologyBeenIdentified || GlobalCounter.nrOfGammaRules > 250) return;
             if (!TableuxIsSimplifiable()) return;
 
             /* get the most important tree to work on (NotNode based trees come first always) */
