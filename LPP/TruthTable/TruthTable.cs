@@ -87,6 +87,7 @@ namespace LPP.TruthTable
                     var _toCompareRowMatches = matchingRowsForPatterns[j];
 
                     if (matchingRowsResults[i] == matchingRowsResults[j]) {
+                        // TODO: Fix
                         var commonElementsCounter = _thisRowMatches.Intersect(_toCompareRowMatches).Count();
                         if (commonElementsCounter == _thisRowMatches.Count) {
                             // means i is inside of j
@@ -123,6 +124,17 @@ namespace LPP.TruthTable
                 }
             }
             
+            Dictionary<RowCombination, int> simplified = new Dictionary<RowCombination, int>();
+
+            for (int i = 0; i < patterns.Count; i++) {
+                var pattern = patterns[i];
+                var result = matchingRowsResults[i];
+                
+                simplified.Add(pattern, result);
+            }
+
+            RowResultPairs = simplified;
+            _truthTableSimplified = true;
         }
 
 
