@@ -77,8 +77,49 @@ namespace LPP.TruthTable
             #endregion
 
             for (int i = 0; i < patterns.Count; i++) {
+                bool removeAtExecuted = false;
+                
                 for (int j = 0; j < patterns.Count; j++) {
-//                    bool jIsIni = matchingRowsForPatterns[j].Intersect(matchingRowsForPatterns[i]).Count() == ;
+                    
+                    if (i == j) continue;
+
+                    var _thisRowMatches = matchingRowsForPatterns[i];
+                    var _toCompareRowMatches = matchingRowsForPatterns[j];
+
+                    if (matchingRowsResults[i] == matchingRowsResults[j]) {
+                        var commonElementsCounter = _thisRowMatches.Intersect(_toCompareRowMatches).Count();
+                        if (commonElementsCounter == _thisRowMatches.Count) {
+                            // means i is inside of j
+                            patterns.RemoveAt(i);
+                            matchingRowsForPatterns.RemoveAt(i);
+                            matchingRowsResults.RemoveAt(i);
+
+                            removeAtExecuted = true;
+
+                            j--;
+                        }
+                    }
+                }
+
+                if (removeAtExecuted) i--;
+            }
+            
+            /* assumption: unnecessary patterns deleting is done */
+
+            for (int i = 0; i < RowResultPairs.Count; i++) {
+                bool rowResultPairMatchedSomething = false;
+
+                for (int j = 0; j < patterns.Count; j++) {
+                    if (patterns[j].Matches(RowResultPairs.ElementAt(i)) &&
+                        matchingRowsResults[j] == RowResultPairs.ElementAt(i).Value) {
+                        rowResultPairMatchedSomething = true;
+                        break;
+                    }
+                }
+
+                if (!rowResultPairMatchedSomething) {
+                    patterns.Add(RowResultPairs.ElementAt(i).Key);
+                    matchingRowsResults.Add(RowResultPairs.ElementAt(i).Value);
                 }
             }
             
