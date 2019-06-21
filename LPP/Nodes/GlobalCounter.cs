@@ -17,5 +17,6 @@ namespace LPP.Nodes
         public static int nrOfTruthsReturnedByQuantifiers = 0;
         public static int nrOfBetaRules = 1;
         public static int nrOfGammaRules = 0;
+        public static bool tautologyBeenIdentified = false;
     }
 }

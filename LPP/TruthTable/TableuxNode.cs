@@ -33,6 +33,7 @@ namespace LPP.TruthTable
 
         public void Generate() {
 
+            if (GlobalCounter.tautologyBeenIdentified) return;
             if (!TableuxIsSimplifiable()) return;
 
             /* get the most important tree to work on (NotNode based trees come first always) */
@@ -97,6 +98,7 @@ namespace LPP.TruthTable
                 // TODO: The function that checks if there is a tautology is probably broken
                 if (GlobalCounter.nrOfTruthsReturnedByQuantifiers == GlobalCounter.nrOfBetaRules) {
                     MessageBox.Show("It's a tautology!");
+                    GlobalCounter.tautologyBeenIdentified = true;
                     return;
                 }
             }
@@ -308,7 +310,7 @@ namespace LPP.TruthTable
             
             if (tree is NotNode && tree.left is ForAllQuantifier) {
                 Quantifier quantifier = (Quantifier) tree.left;
-                var leftOfQuantifier = (Quantifier) quantifier.left;
+                var leftOfQuantifier = quantifier.left;
 
                 if (!ReturnedVariables.Contains(newVariable)) ReturnedVariables.Add(newVariable);
                 
