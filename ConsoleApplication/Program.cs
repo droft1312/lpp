@@ -17,7 +17,10 @@ namespace ConsoleApplication
 
         static void Main (string[] args) {
 
-            string input = "P(x,y,z)";
+            string s1 = "~(P(x))";
+            string s2 = "P(x)";
+
+            Console.WriteLine(Functions.DifferenceBetweenStrings(s1,s2));
 
             Console.ReadKey ();
             

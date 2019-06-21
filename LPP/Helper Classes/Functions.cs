@@ -19,7 +19,6 @@ namespace LPP
         /// <param name="hexa"></param>
         /// <returns></returns>
         public static string ClearOutHexadecimal(string hexa) {
-
             var inputs = hexa.ToCharArray();
 
             string s = "";
@@ -36,12 +35,12 @@ namespace LPP
                     s += character;
                 }
             }
-            
-            
+
+
             return s;
         }
-        
-        
+
+
         /// <summary>
         /// Creates a prefix string
         /// </summary>
@@ -50,7 +49,6 @@ namespace LPP
         /// <param name="symbol">Symbol that you wrap it all around with</param>
         /// <returns>Wrapped new string</returns>
         public static string Wrap(string initial, string toAdd, char symbol) {
-
             const char openingParentheses = '(';
             const char closingParentheses = ')';
             const char comma = ',';
@@ -58,7 +56,7 @@ namespace LPP
             if (initial == string.Empty) return toAdd;
             return symbol.ToString() + openingParentheses + toAdd + comma + initial + closingParentheses;
         }
-        
+
         /// <summary>
         /// Returns a printed truth-table
         /// </summary>
@@ -66,7 +64,7 @@ namespace LPP
         /// <returns></returns>
         public static string PrintOutTruthTable(Dictionary<RowCombination, int> truthTable) {
             string output = string.Empty;
-            
+
             foreach (var pair in truthTable) {
                 var rowCombination = pair.Key;
                 var result = pair.Value;
@@ -86,38 +84,34 @@ namespace LPP
         /// <param name="input">String to parse</param>
         /// <returns>String without specific characters</returns>
         public static string ParseInputString(string input) {
-            return input.Replace (" ", "");
+            return input.Replace(" ", "");
         }
-        
+
         /// <summary>
         /// Gets a substring until a certain character
         /// </summary>
         /// <param name="text"></param>
         /// <param name="stopAt"></param>
         /// <returns></returns>
-        public static string GetUntilOrEmpty(this string text, string stopAt = "-")
-        {
-            if (!String.IsNullOrWhiteSpace(text))
-            {
+        public static string GetUntilOrEmpty(this string text, string stopAt = "-") {
+            if (!String.IsNullOrWhiteSpace(text)) {
                 int charLocation = text.IndexOf(stopAt, StringComparison.Ordinal);
 
-                if (charLocation > 0)
-                {
+                if (charLocation > 0) {
                     return text.Substring(0, charLocation);
                 }
             }
 
             return String.Empty;
         }
-        
-        
+
+
         /// <summary>
         /// Deletes opening and closing brackets from a string
         /// </summary>
         /// <param name="expression">To delete from</param>
         /// <param name="index">index of an opening string</param>
         public static void DeleteBrackets(ref string expression, int index) {
-            
             int GetIndexOfClosingBracket(string input, int indexOfOpeningBracket) {
                 if (input[indexOfOpeningBracket] != '(') {
                     MessageBox.Show("This wasn't an opening bracket!");
@@ -125,11 +119,11 @@ namespace LPP
                 }
 
                 int i;
-            
+
                 Stack st = new Stack();
 
                 for (i = indexOfOpeningBracket; i < input.Length; i++) {
-                    if (input[i] == '(') st.Push((int)input[i]);
+                    if (input[i] == '(') st.Push((int) input[i]);
                     else if (input[i] == ')') {
                         st.Pop();
 
@@ -141,7 +135,7 @@ namespace LPP
 
                 return -1;
             }
-            
+
             int closingBracketIndex = GetIndexOfClosingBracket(expression, index);
             expression = expression.Remove(index, 1);
             expression = expression.Remove(closingBracketIndex - 1, 1);
@@ -199,17 +193,30 @@ namespace LPP
         /// <param name="s1"></param>
         /// <param name="s2"></param>
         /// <returns></returns>
-        public static bool DifferByOneCharacter(this string s1, string s2) {
-
+        public static bool DifferByNCharacters(this string s1, string s2, int n) {
             if (s1.Length == s2.Length) return false;
 
-            const int diffsAllowed = 1;
+            int diffsAllowed = n;
             int diffsFound = 0;
 
-            for (int i = 0; i < Math.Min(s1.Length, s2.Length); i++) 
-                if (s1[i] != s2[i]) diffsFound++;
+            for (int i = 0; i < Math.Min(s1.Length, s2.Length); i++)
+                if (s1[i] != s2[i])
+                    diffsFound++;
 
             return diffsFound == diffsAllowed;
+        }
+
+
+        public static string DifferenceBetweenStrings(string s1, string s2) {
+            string temp = "";
+
+            for (int i = 0; i < Math.Min(s1.Length, s2.Length); i++) {
+                if (s1[i] != s2[i]) {
+                    temp += s1[i];
+                }
+            }
+
+            return temp;
         }
 
         /// <summary>
@@ -234,10 +241,10 @@ namespace LPP
         /// <typeparam name="T"></typeparam>
         /// <param name="s"></param>
         /// <returns></returns>
-        public static T Convert<T> (string s) {
-            var typeConverter = TypeDescriptor.GetConverter (typeof (T));
-            if (typeConverter != null && typeConverter.CanConvertFrom (typeof (string))) {
-                return (T)typeConverter.ConvertFrom (s);
+        public static T Convert<T>(string s) {
+            var typeConverter = TypeDescriptor.GetConverter(typeof(T));
+            if (typeConverter != null && typeConverter.CanConvertFrom(typeof(string))) {
+                return (T) typeConverter.ConvertFrom(s);
             }
 
             return default;
@@ -254,12 +261,12 @@ namespace LPP
             int lDepth = MaxDepthOfTree(node.left);
             int rDepth = MaxDepthOfTree(node.right);
 
-            if (lDepth > rDepth) 
+            if (lDepth > rDepth)
                 return (lDepth + 1);
-            
+
             return (rDepth + 1);
         }
-        
+
         /// <summary>
         /// Copies given 'root' node but doesn't deep copy the whole tree
         /// </summary>
@@ -267,12 +274,11 @@ namespace LPP
         /// <returns>Copy of a given node</returns>
         /// <exception cref="Exception">Throws an exception if you input a not-specified-before Node</exception>
         public static Node DeepCopyTree(Node root) {
-            
             Node node;
 
             switch (root) {
                 case null:
-                    return null; 
+                    return null;
                 case BiImplicationNode _:
                     node = new BiImplicationNode();
                     break;
@@ -307,8 +313,9 @@ namespace LPP
                     foreach (var formula in predicateNode.Formulas) {
                         ((PredicateNode) node).Formulas.Add(DeepCopyTree(formula) as PropositionNode);
                     }
+
                     break;
-                
+
                 default:
                     throw new Exception("Something went wrong!");
             }
@@ -318,7 +325,7 @@ namespace LPP
 
             return node;
         }
-        
+
         /// <summary>
         /// Negates the tree if necessary. To be used in Tableux generation
         /// </summary>
@@ -328,7 +335,6 @@ namespace LPP
             if (root is NotNode) return DeepCopyTree(root.left); // so if input was ~(>(A,B)) it becomes >(A,B)
             NotNode notNode = new NotNode {left = DeepCopyTree(root)};
             return notNode;
-
         }
 
         /// <summary>
@@ -346,7 +352,6 @@ namespace LPP
         /// </summary>
         /// <param name="root"></param>
         public static void GetRidOfBiImplicationAndNand(ref Node root) {
-
             void Traverse(ref Node tree) {
                 if (tree == null) return;
 
@@ -356,11 +361,11 @@ namespace LPP
                 else if (tree is NandNode tempNand) {
                     tree = ConvertNand(tempNand);
                 }
-                
+
                 Traverse(ref tree.left);
                 Traverse(ref tree.right);
             }
-            
+
             Traverse(ref root);
         }
 
@@ -371,7 +376,7 @@ namespace LPP
         /// <returns></returns>
         private static Node ConvertBiImplication(BiImplicationNode root) {
             // =(A,B)    ==     &(>(A,B),>(B,A))
-            
+
             ConjunctionNode conj = new ConjunctionNode();
             ImplicationNode imp1 = new ImplicationNode();
             ImplicationNode imp2 = new ImplicationNode();
@@ -394,17 +399,16 @@ namespace LPP
         /// <param name="root"></param>
         /// <returns></returns>
         private static Node ConvertNand(NandNode root) {
-            
             // %(A,B) == ~(&(A,B))
 
             NotNode notNode = new NotNode();
-            
+
             ConjunctionNode conjunctionNode = new ConjunctionNode();
             conjunctionNode.left = root.left;
             conjunctionNode.right = root.right;
 
             notNode.left = conjunctionNode;
-            
+
             return notNode;
         }
 

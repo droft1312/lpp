@@ -47,6 +47,7 @@ namespace LPP.TruthTable
             bool betaRuleWorked = false;
 
             if (IsBetaRule(priorityTree)) {
+                GlobalCounter.nrOfBetaRules++;
                 var (leftBranchList, rightBranchList) = ApplyBetaRules(priorityTree);
                  
                 leftBranchList.AddRange(newList);
@@ -65,6 +66,13 @@ namespace LPP.TruthTable
                 newList.AddRange(ApplyDeltaRules(priorityTree));
             } else if (IsGammaRule(priorityTree)) {
                 newList.AddRange(ApplyGammaRules(priorityTree));
+                GlobalCounter.nrOfGammaRules++;
+
+                if (GlobalCounter.nrOfGammaRules > 250) {
+                    MessageBox.Show(
+                        "Have done 250 iterations... didn't find anything. So it's probably not a tautology");
+                    return;
+                }
             } else {
                 newList.AddRange(ApplyAlphaRules(priorityTree));
             }
@@ -81,6 +89,17 @@ namespace LPP.TruthTable
             }
             
             // TODO: insert a check for tautology here
+
+            if (Tableux.treeHasQuantifiers) {
+                var isItTautologyNow = IsTautologyQuantifiers(listOfNodes);
+                if (isItTautologyNow) GlobalCounter.nrOfTruthsReturnedByQuantifiers++;
+
+                // TODO: The function that checks if there is a tautology is probably broken
+                if (GlobalCounter.nrOfTruthsReturnedByQuantifiers == GlobalCounter.nrOfBetaRules) {
+                    MessageBox.Show("It's a tautology!");
+                    return;
+                }
+            }
             
             /* recursively do it all over again until there's no more work that needs to be done */
             Left?.Generate();
@@ -249,7 +268,7 @@ namespace LPP.TruthTable
                 case NotNode notNode when notNode.left is ExistentialQuantifier existentialQuantifier:
                 {
                     var leftOfQuantifier = existentialQuantifier.left;
-
+    
                     var list = InstantiateNClones(leftOfQuantifier, ReturnedVariables.Count);
                     
                     int counterForVariables = 0;
@@ -339,8 +358,20 @@ namespace LPP.TruthTable
                         continue;
                     }
                 }
-                
-                if (!IsBetaRule(listOfNodes[i]) && !(listOfNodes[i] is PropositionNode)) {
+
+                if (listOfNodes[i] is ConjunctionNode) {
+                    tree = listOfNodes[i];
+                    position = i;
+                    return (tree, position);
+                }
+
+                if (listOfNodes[i] is NotNode && listOfNodes[i].left is DisjunctionNode) {
+                    tree = listOfNodes[i];
+                    position = i;
+                    return (tree, position);
+                }
+
+                if (listOfNodes[i] is NotNode && listOfNodes[i].left is ImplicationNode) {
                     tree = listOfNodes[i];
                     position = i;
                     return (tree, position);
@@ -384,13 +415,21 @@ namespace LPP.TruthTable
                 
                 if (listOfNodes[i] is PropositionNode) 
                     continue;
-                if (listOfNodes[i] is NotNode) 
-                    if (listOfNodes[i].left is PropositionNode) 
+                if (listOfNodes[i] is NotNode)
+                    if (listOfNodes[i].left is PropositionNode)
                         continue;
 
-                tree = listOfNodes[i];
-                position = i;
-                return (tree, position);
+                if (listOfNodes[i] is ForAllQuantifier) {
+                    tree = listOfNodes[i];
+                    position = i;
+                    return (tree, position);
+                }
+
+                if (listOfNodes[i] is NotNode && listOfNodes[i].left is ExistentialQuantifier) {
+                    tree = listOfNodes[i];
+                    position = i;
+                    return (tree, position);
+                }
 
             }
 
@@ -478,10 +517,43 @@ namespace LPP.TruthTable
                     string s1 = node.GetInfix();
                     string s2 = comparingNode.GetInfix();
 
-                    if (s1.DifferByOneCharacter(s2)) return true;
+                    if (s1.DifferByNCharacters(s2,1)) return true;
                 }
             }
             
+            return false;
+        }
+
+        public static bool IsTautologyQuantifiers(List<Node> inputList) {
+//            foreach (var node in inputList) {
+//                foreach (var comparingNode in inputList) {
+//                    if (node == comparingNode) continue;
+//                    
+//                    string s1 = node.GetInfix();
+//                    string s2 = comparingNode.GetInfix();
+//
+//                    if (s1.DifferByNCharacters(s2,3)) return true;
+//                }
+//            }
+//            
+//            return false;
+
+            foreach (var node in inputList) {
+                foreach (var comparingNode in inputList) {
+                    if (node == comparingNode) continue;
+
+                    string s1 = node.GetInfix();
+                    string s2 = comparingNode.GetInfix();
+
+                    s1 = s1.Substring(1);// delete first character
+
+                    Functions.DeleteBrackets(ref s1, s1.IndexOf('('));
+
+                    if (s1 == s2) return true;
+
+                }
+            }
+
             return false;
         }
 
