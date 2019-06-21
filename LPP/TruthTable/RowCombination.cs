@@ -14,7 +14,7 @@ namespace LPP.TruthTable
         private struct NodeValue
         {
             public char Name { get; set; }
-            public object Value { get; set; }
+            public int Value { get; set; }
 
             public NodeValue (char name, int value) {
                 Name = name;
@@ -22,10 +22,6 @@ namespace LPP.TruthTable
             }
 
             public void SetValue(int value) {
-                Value = value;
-            }
-
-            public void SetValue (string value) {
                 Value = value;
             }
 
@@ -64,68 +60,6 @@ namespace LPP.TruthTable
         }
 
         /// <summary>
-        /// This method shall be used in simplification process. ONLY TO BE USED ON ROWS THAT DO NOT CONTAIN STRING VALUES (*)
-        /// </summary>
-        /// <returns></returns>
-        public bool SatisfiesConditionForSimplification() {
-            List<int> GetValues () {
-                List<int> result = new List<int> (_nodeValues.Length);
-                foreach (var item in _nodeValues) {
-                    if (item.Value is String) throw new Exception ("You used SatisfiesConditionForSimplification() on a row that has * in it!");
-                    result.Add ((int)item.Value);
-                }
-                return result;
-            }
-
-            var vals = GetValues ().Distinct().ToList();
-
-            if (vals.Count != 2) return false;
-
-            // count 0s and 1s
-            Dictionary<int, int> counter = new Dictionary<int, int> ();
-            counter.Add (0, 0);
-            counter.Add (1, 0);
-
-            var listOfVars = GetValues();
-            for (int i = 0; i < listOfVars.Count; i++) {
-                counter[listOfVars[i]]++;
-            }
-
-            if (counter[0] == vals.Count - 1 || counter[1] == vals.Count - 1) return true;
-            return false;
-        }
-
-        /// <summary>
-        /// Checks whether 'r' matches this instance of RowCombination
-        /// </summary>
-        /// <param name="r">Row combination to compare with</param>
-        /// <returns></returns>
-        public bool Matches(RowCombination r) {
-
-            // 0001     =>   1
-            // 1111     =>   1
-            // 0101     =>   1
-
-            if (_nodeValues.Length != r._nodeValues.Length) return false;
-
-            var length = _nodeValues.Length;
-
-            for (int i = 0; i < length; i++) {
-                var ourValue = _nodeValues[i];
-                var valueToCompare = r._nodeValues[i];
-
-                if (!(ourValue.Value is String || valueToCompare.Value is String)) {
-                    if ((int)ourValue.Value != (int)valueToCompare.Value) {
-                        return false;
-                    }
-                }
-            }
-
-
-            return true;
-        }
-
-        /// <summary>
         /// Parses the input to assign values to the nodes
         /// </summary>
         /// <param name="input"></param>
@@ -145,23 +79,6 @@ namespace LPP.TruthTable
                     _nodeValues[i].SetValue (toAdd);
                 }
             }
-        }
-
-        /// <summary>
-        /// Returns a KeyValuePair of a variable in a rowcombination that is different.
-        /// For instance: A:0, B:0, C:1. This function will return C:1, because it's a different one.
-        /// Before calling this function, <b>make sure</b> that this RowCombination satisifies condition for Simplification
-        /// </summary>
-        /// <returns></returns>
-        public KeyValuePair<char, int> GetDistinctProposition() {
-            if (!SatisfiesConditionForSimplification ()) throw new Exception ("This is not a Simplifiable RowCombination");
-
-            var truths = _nodeValues.Where (x => (int)x.Value == 1).Count ();
-            var falses = _nodeValues.Where (x => (int)x.Value == 0).Count ();
-
-            var result = _nodeValues.First (node => (int)node.Value == ((truths < falses) ? 1 : 0));
-
-            return new KeyValuePair<char, int> (result.Name, (int)result.Value);
         }
 
         public string GetNames() {
@@ -207,6 +124,19 @@ namespace LPP.TruthTable
 
         public static RowCombination InstantiateRowCombinationOnlyWithStars(char[] names) {
             return new RowCombination (names, new string ('*', names.Length));
+        }
+
+        public bool Matches(KeyValuePair<RowCombination, int> rowResult) {
+            var row = rowResult.Key;
+
+            if (row.GetNames().Length != GetNames().Length) return false;
+
+            for (int i = 0; i < _nodeValues.Length; i++) {
+                if (this._nodeValues[i].Value == 2) continue;
+                if (this._nodeValues[i].Value != row._nodeValues[i].Value) return false;
+            }
+
+            return true;
         }
     }
 

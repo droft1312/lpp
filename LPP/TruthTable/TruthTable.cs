@@ -34,38 +34,54 @@ namespace LPP.TruthTable
 
             #endregion
 
+            List<RowCombination> allPatterns = new List<RowCombination>();
+            
+            List<RowCombination> patterns = new List<RowCombination>(); // pattern
+            List<List<RowCombination>> matchingRowsForPatterns = new List<List<RowCombination>>(); // rows from a truthtable that match it
+            List<int> matchingRowsResults = new List<int>(); // result it returns (either 1 or 0)
+            
+            #region Initialize patterns
+            
+            var propositions = RowResultPairs.First().Key.GetNames();
 
-            bool DictionaryHasRowCombination(KeyValuePair<RowCombination, int> r, Dictionary<RowCombination, int> d) {
-                foreach (KeyValuePair<RowCombination, int> item in d) {
-                    if (r.Key.Matches(item.Key) && r.Value == item.Value) {
-                        return true;
+            var allStarCombinations = GenerateAllPossibilities(propositions.Length);
+
+            foreach (var combination in allStarCombinations) {
+                string temp = ""; foreach (var c in combination) temp += c;
+                
+                allPatterns.Add(new RowCombination(propositions.ToCharArray(), temp));
+            }
+
+            #endregion
+
+            #region Get the list of patterns and their matches
+
+            for (int i = 0; i < allPatterns.Count; i++) {
+                List<RowCombination> matches = new List<RowCombination>();
+                List<int> matchesResults = new List<int>();
+                
+                foreach (var rowResult in RowResultPairs) {
+                    if (allPatterns[i].Matches(rowResult)) {
+                        matches.Add(rowResult.Key);
+                        matchesResults.Add(rowResult.Value);
                     }
                 }
 
-                return false;
-            }
-
-            Dictionary<RowCombination, int> simplifiedTruth = new Dictionary<RowCombination, int>();
-
-            foreach (KeyValuePair<RowCombination, int> pair in RowResultPairs) {
-                if (DictionaryHasRowCombination(pair, simplifiedTruth)) continue;
-
-                if (pair.Key.SatisfiesConditionForSimplification()) {
-                    var distinctVariable = pair.Key.GetDistinctProposition();
-
-                    simplifiedTruth.Add(CreateRowCombinationWithStars(distinctVariable), pair.Value);
+                if (AreAllElementsSame(matchesResults) && matches.Count > 1) {
+                    patterns.Add(allPatterns[i]);
+                    matchingRowsForPatterns.Add(matches);
+                    matchingRowsResults.Add(matchesResults[0]);
                 }
             }
 
-            foreach (KeyValuePair<RowCombination, int> pair in RowResultPairs) {
-                if (!DictionaryHasRowCombination(pair, simplifiedTruth) &&
-                    !pair.Key.SatisfiesConditionForSimplification()) {
-                    simplifiedTruth.Add(pair.Key, pair.Value);
+            #endregion
+
+            for (int i = 0; i < patterns.Count; i++) {
+                for (int j = 0; j < patterns.Count; j++) {
+//                    bool jIsIni = matchingRowsForPatterns[j].Intersect(matchingRowsForPatterns[i]).Count() == ;
                 }
             }
-
-            RowResultPairs = simplifiedTruth;
-            _truthTableSimplified = true;
+            
         }
 
 
@@ -160,6 +176,14 @@ namespace LPP.TruthTable
             return result;
         }
 
+        private dynamic GenerateAllPossibilities(int numberOfVariables) {
+            const string set = "012";
+            List<char[]> setOfSets = new List<char[]>();
+            for (int i = 0; i < numberOfVariables; i++) setOfSets.Add(set.ToArray());
+            var result = setOfSets.CartesianProduct();
+            return result;
+        }
+
         public string GetHexaDecimal() {
             // code taken from here: https://stackoverflow.com/questions/5612306/converting-long-string-of-binary-to-hex-c-sharp
             string binary = string.Empty;
@@ -181,23 +205,6 @@ namespace LPP.TruthTable
             return result.ToString();
         }
 
-        private RowCombination CreateRowCombinationWithStars(KeyValuePair<char, int> pair) {
-            var random_row = RowResultPairs.First().Key;
-            string names = random_row.GetNames();
-            string values = string.Empty;
-
-            for (int i = 0; i < names.Length; i++) {
-                if (names[i] != pair.Key) {
-                    values += "*";
-                }
-                else {
-                    values += pair.Value;
-                }
-            }
-
-            return new RowCombination(names.ToCharArray(), values);
-        }
-
         /// <summary>
         /// checks if a truth-table is tautology
         /// </summary>
@@ -212,6 +219,10 @@ namespace LPP.TruthTable
         /// <returns></returns>
         private bool IsContradiction() {
             return RowResultPairs.Values.All(x => x == 0);
+        }
+
+        private bool AreAllElementsSame(List<int> list) {
+            return list.Any(o => o != list[0]);
         }
     }
 }
